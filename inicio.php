@@ -1,4 +1,4 @@
-<?php
+<?
     if (isset($_REQUEST['dace-info'])) {
         include_once("lib/scriptcas-daceinfo.php");
 
@@ -29,11 +29,8 @@
         <title>Sistema de Solicitud - DACE</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
         <link rel="shortcut icon" href="images/favicon.ico"> 
-        <link rel="stylesheet" type="text/css" href="css/style.css" />
-        <link rel="stylesheet" type="text/css" href="css/tab.css" />
-		<script type="text/javascript" src="js/modernizr.custom.04022.js"></script>
-		<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300,300italic' rel='stylesheet' type='text/css'>
-		<!--[if lt IE 9]>
+        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">		
+        <!--[if lt IE 9]>
 			<style>
 				.content{
 					height: auto;
@@ -44,11 +41,15 @@
 				}
 			</style>
 		<![endif]-->
-    <style type="text/css">
-	A:link, A:visited {color:#2F6EB1; text-decoration: none }
-    </style>
+
     </head>
     <body>
+    <script src="js/jquery-1.8.2.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+        <div class="row">
+            <div class="span4">...</div>
+            <div class="span8">...</div>
+        </div>
         <div class="container">
             
 			<header>

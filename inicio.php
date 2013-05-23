@@ -24,34 +24,45 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+        <meta charset="utf-8">
         <title>Sistema de Solicitud - DACE</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
-        <link rel="shortcut icon" href="images/favicon.ico"> 
-        <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">		
-        <!--[if lt IE 9]>
-			<style>
-				.content{
-					height: auto;
-					margin: 0;
-				}
-				.content div {
-					position: relative;
-				}
-			</style>
-		<![endif]-->
-
+        <link rel="shortcut icon" href="img/favicon.ico"> 
+        <link rel="stylesheet" href="css/bootstrap.min.css">
     </head>
     <body>
     <script src="js/jquery-1.8.2.min.js"></script>
-    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+
+    <div class="container">
+         
+        <div class="hero-unit">
+            <h1>Awesome responsive layout</h1>
+            <p>Hello guys i am a ".hero-unit" and you can use me if you wanna say something important.</p>
+            <p><a class="btn btn-primary btn-large">Super important &raquo;</a></p>
+        </div><!-- .hero-unit -->
+        
         <div class="row">
-            <div class="span4">...</div>
-            <div class="span8">...</div>
-        </div>
-        <div class="container">
-            
+            <div class="span4">
+                <h2>Box Number 1</h2>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                <p><a class="btn" href="#">Click meeee &raquo;</a></p>
+            </div><!-- .span4 -->
+   
+            <div class="span4">
+                <h2>Box Number 2</h2>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                <p><a class="btn" href="#">Click meeee &raquo;</a></p>
+            </div><!-- .span4 -->
+   
+            <div class="span4">
+                <h2>Box Number 3</h2>
+                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+                <p><a class="btn" href="#">Click meeee &raquo;</a></p>
+            </div><!-- .span4 -->
+   
+        </div><!-- .row -->
+    </div><!-- .container -->
+           
 			<header>
                 
 

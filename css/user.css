@@ -1,0 +1,10 @@
+/* Basic style rule to outline and space block-level elements */
+[class*="span"] {
+    background: #eee;
+    margin-bottom: 10px;
+}
+
+header [class*="span"],
+nav [class*="span"] {
+    background: #fff;
+}

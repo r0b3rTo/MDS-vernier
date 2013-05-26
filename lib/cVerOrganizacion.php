@@ -9,7 +9,7 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
-    $ORG_ID = obtenerORGs($conexion);
+    $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
 
     $sql ="SELECT * ";
     $sql.="FROM ORGANIZACION ";

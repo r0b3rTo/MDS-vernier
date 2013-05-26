@@ -326,12 +326,12 @@ function obtenerFilas($conexion, $sql, $tabla, $atts){
     return $LISTA;
 }
 
-function obtenerORGs($conexion){
+function obtenerIds($conexion, $tabla){
 
     $sql ="SELECT * ";
-    $sql.="FROM Organizacion ";
+    $sql.="FROM ".$tabla;
 
-    $ORG_ID=array();
+    $FAM_ID=array();
 
     $modo_depuracion=FALSE;
         
@@ -341,11 +341,11 @@ function obtenerORGs($conexion){
         $resultado=ejecutarConsulta($sql, $conexion);
         $i=0;
         while ($fila=obtenerResultados($resultado)){
-            $ORG_ID[$fila['id']] = $fila['nombre'];
+            $FAM_ID[$fila['id']] = $fila['nombre'];
         }
         $i++;   
     }
-    return $ORG_ID;
+    return $FAM_ID;
 }
 
 function obtenerOrganizacion($sql, $conexion){
@@ -353,5 +353,19 @@ function obtenerOrganizacion($sql, $conexion){
     $atts = array("id", "idsup", "nombre", "codigo", "descripcion", "observacion" );
 
     return $LISTA_ORG = obtenerFilas($conexion, $sql, "Org", $atts);
+}
+
+function obtenerCargo($sql, $conexion){
+
+    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
+
+    return $LISTA_CARG = obtenerFilas($conexion, $sql, "Carg", $atts);
+}
+
+function obtenerRol($sql, $conexion){
+
+    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
+
+    return $LISTA_ROL = obtenerFilas($conexion, $sql, "Rol", $atts);
 }
 ?>

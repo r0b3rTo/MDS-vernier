@@ -31,6 +31,13 @@
                 desc: "required",
                 obs: "required"
             },
+            messages: {
+                oname:"Campo Requerido.",
+                sup: "Campo Requerido.",
+                cod: "Campo Requerido.",
+                desc: "Campo Requerido.",
+                obs: "Campo Requerido."
+            },
 
             errorClass: "help-inline"
 

@@ -1,6 +1,6 @@
 <?php
     session_start();
-    require_once "cAutorizacion.php";
+    require "cAutorizacion.php";
     extract($_GET);
     extract($_POST);
     //include "cMail.php";

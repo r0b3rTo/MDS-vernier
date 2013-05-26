@@ -300,7 +300,7 @@ function mostrarDatosUsuario(){
     $tabla      - nombre de la tabla
     $atts       - atributos a obtener
 */
-function obtenerFilas($conexion, $sql, $tabla, $atts){
+function obtenerDatos($sql, $conexion, $atts, $tabla){
 
     $LISTA=array();
 
@@ -348,24 +348,4 @@ function obtenerIds($conexion, $tabla){
     return $FAM_ID;
 }
 
-function obtenerOrganizacion($sql, $conexion){
-
-    $atts = array("id", "idsup", "nombre", "codigo", "descripcion", "observacion" );
-
-    return $LISTA_ORG = obtenerFilas($conexion, $sql, "Org", $atts);
-}
-
-function obtenerCargo($sql, $conexion){
-
-    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
-
-    return $LISTA_CARG = obtenerFilas($conexion, $sql, "Carg", $atts);
-}
-
-function obtenerRol($sql, $conexion){
-
-    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
-
-    return $LISTA_ROL = obtenerFilas($conexion, $sql, "Rol", $atts);
-}
 ?>

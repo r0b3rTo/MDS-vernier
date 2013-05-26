@@ -11,9 +11,10 @@
 
     $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
 
+    $atts = array("id", "idsup", "nombre", "codigo", "descripcion", "observacion" );
+
     $sql ="SELECT * ";
     $sql.="FROM ORGANIZACION ";
-
 
     if (isset($_GET['id'])) {
         $sql.="WHERE id='".$_GET['id']."'";
@@ -21,7 +22,7 @@
         $sql.="ORDER BY id ";
     }
 
-    $LISTA_ORG = obtenerOrganizacion($sql, $conexion);
+    $LISTA_ORG = obtenerDatos($sql, $conexion, $atts, "Org");
 
     cerrarConexion($conexion);
 //    include_once("cEnviarCorreo.php");

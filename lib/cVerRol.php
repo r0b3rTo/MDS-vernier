@@ -12,6 +12,8 @@
     $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
     $FAM_ID = obtenerIds($conexion, "FAMILIA_ROL");
 
+    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
+
     $sql ="SELECT * ";
     $sql.="FROM ROL ";
 
@@ -21,7 +23,7 @@
         $sql.="ORDER BY id ";
     }
 
-    $LISTA_ROL = obtenerRol($sql, $conexion);
+    $LISTA_ROL = obtenerDatos($sql, $conexion, $atts, "Rol");
 
     cerrarConexion($conexion);
 //    include_once("cEnviarCorreo.php");

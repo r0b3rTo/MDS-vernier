@@ -9,13 +9,13 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
-    $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
-    $FAM_ID = obtenerFam($conexion, "FAMILIA_CARGO");
+    //$ORG_ID = obtenerIds($conexion, "ORGANIZACION");
+    //$FAM_ID = obtenerIds($conexion, "FAMILIA_ROL");
 
-    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
+    $atts = array("id", "nombre", "cedula", "sexo", "fecha_nac", "direccion", "telefono", "email" );
 
     $sql ="SELECT * ";
-    $sql.="FROM CARGO ";
+    $sql.="FROM PERSONA ";
 
     if (isset($_GET['id'])) {
         $sql.="WHERE id='".$_GET['id']."'";
@@ -23,7 +23,7 @@
         $sql.="ORDER BY id ";
     }
 
-    $LISTA_CARG = obtenerDatos($sql, $conexion, $atts, "Carg");
+    $LISTA_PER = obtenerDatos($sql, $conexion, $atts, "Per");
 
     cerrarConexion($conexion);
 //    include_once("cEnviarCorreo.php");

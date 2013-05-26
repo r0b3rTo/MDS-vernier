@@ -6,35 +6,150 @@
          <link rel="stylesheet" href="css/bootstrap.min.css">
  </head>
  <body>
-         
+<script src="js/jquery-1.8.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.validate.js"></script>
+ &nbsp;<script type="text/javascript">
+$(document).ready(function(){
+
+$("#signup").validate({
+rules:{
+fname:"required",
+lname:"required",
+email:{
+required:true,
+email: true
+},
+passwd:{
+required:true,
+minlength: 8
+},
+conpasswd:{
+required:true,
+equalTo: "#passwd"
+},
+gender:"required"
+},
+
+errorClass: "help-inline"
+
+});
+});
+</script>
+   <script>
+$(function() {
+    $('div.btn-group[data-toggle-name]').each(function() {
+        var group = $(this);
+        var form = group.parents('form').eq(0);
+        var name = group.attr('data-toggle-name');
+        var hidden = $('input[name="' + name + '"]', form);
+        $('button', group).each(function() {
+            var button = $(this);
+            button.live('click', function() {
+                hidden.val($(this).val());
+            });
+            if (button.val() == hidden.val()) {
+                button.addClass('active');
+            }
+        });
+    });
+});
+   </script>
  <div class="container">
          
-         <div class="hero-unit">
-         <h1>Awesome responsive layout</h1>
-         <p>Hello guys i am a ".hero-unit" and you can use me if you wanna say something important.</p>
-         <p><a class="btn btn-primary btn-large">Super important &raquo;</a></p>
-         </div><!-- .hero-unit -->
-        
- <div class="row">
-         <div class="span4">
-         <h2>Box Number 1</h2>
-         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-         <p><a class="btn" href="#">Click meeee &raquo;</a></p>
-         </div><!-- .span4 -->
-   
-         <div class="span4">
-                 <h2>Box Number 2</h2>
-         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-         <p><a class="btn" href="#">Click meeee &raquo;</a></p>
-         </div><!-- .span4 -->
-   
-         <div class="span4">
-                 <h2>Box Number 3</h2>
-         <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-         <p><a class="btn" href="#">Click meeee &raquo;</a></p>
-         </div><!-- .span4 -->
-   
- </div><!-- .row -->
+           <body>
+
+       <div class="container">
+<legend>Sign Up</legend>
+<div class="well">
+      <form id="signup" class="form-horizontal" method="post" action="success.php">
+      <legend>Sign Up</legend>
+      <div class="control-group">
+           <label class="control-label">First Name</label>
+         <div class="controls">
+             <div class="input-prepend">
+            <span class="add-on"><i class="icon-user"></i></span>
+               <input type="text" class="input-xlarge" id="fname" name="fname" placeholder="First Name">
+            </div>
+         </div>
+      </div>
+      <div class="control-group ">
+           <label class="control-label">Last Name</label>
+         <div class="controls">
+             <div class="input-prepend">
+            <span class="add-on"><i class="icon-user"></i></span>
+               <input type="text" class="input-xlarge" id="lname" name="lname" placeholder="Last Name">
+            </div>
+         </div>
+      </div>
+      <div class="control-group">
+           <label class="control-label">Email</label>
+         <div class="controls">
+             <div class="input-prepend">
+            <span class="add-on"><i class="icon-envelope"></i></span>
+               <input type="text" class="input-xlarge" id="email" name="email" placeholder="Email">
+            </div>
+         </div>
+      </div>
+      <div class="control-group">
+           <label class="control-label">Gender</label>
+         <div class="controls">
+          <div class="btn-group" data-toggle-name="is_private" data-toggle="buttons-radio" >
+            <button type="button" value="0" class="btn" data-toggle="button">Public</button>
+            <button type="button" value="1" class="btn" data-toggle="button">Private</button>
+          </div>
+          <input type="hidden" name="is_private" value="1" />
+
+         </div>
+      </div>
+      <div class="control-group">
+           <label class="control-label">List</label>
+         <div class="controls">
+          <div class="btn-group" data-toggle-name="list" data-toggle="buttons-radio" >
+          <select name="cars">
+            <option value="0">Volvo</option>
+            <option value="1">Saab</option>
+            <option value="2">Fiat</option>
+            <option value="3">Audi</option>
+          </select>
+          </div>
+          <input type="hidden" name="list" value="0" />
+
+         </div>
+      </div>
+      <div class="control-group">
+           <label class="control-label">Password</label>
+         <div class="controls">
+             <div class="input-prepend">
+            <span class="add-on"><i class="icon-lock"></i></span>
+               <input type="Password" id="passwd" class="input-xlarge" name="passwd" placeholder="Password">
+            </div>
+         </div>
+      </div>
+      <div class="control-group">
+           <label class="control-label">Confirm Password</label>
+         <div class="controls">
+             <div class="input-prepend">
+            <span class="add-on"><i class="icon-lock"></i></span>
+               <input type="Password" id="conpasswd" class="input-xlarge" name="conpasswd" placeholder="Re-enter Password">
+            </div>
+         </div>
+      </div>
+
+      <div class="control-group">
+      <label class="control-label"></label>
+         <div class="controls">
+          <button type="submit" class="btn btn-success" >Create My Account</button>
+
+         </div>
+
+   </div>
+
+     </form>
+
+   </div>
+</div>
+
  </div><!-- .container -->
      
  </body>

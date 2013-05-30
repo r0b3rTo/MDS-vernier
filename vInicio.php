@@ -30,7 +30,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseOne">
-                            <p class="text-center">Gesti&oacute;n Organizaci&oacute;n</p>
+                            <p class="text-center">Gestionar Organizaci&oacute;n</p>
                         </a>
                     </div>
                     <div id="collapseOne" class="accordion-body collapse">
@@ -45,7 +45,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseTwo">
-                            <p class="text-center">Gesti&oacute;n Cargo</p>
+                            <p class="text-center">Gestionar Cargo</p>
                         </a>
                     </div>
                     <div id="collapseTwo" class="accordion-body collapse">
@@ -60,7 +60,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseThree">
-                            <p class="text-center">Gesti&oacute;n Rol</p>
+                            <p class="text-center">Gestionar Rol</p>
                         </a>
                     </div>
                     <div id="collapseThree" class="accordion-body collapse">
@@ -75,7 +75,7 @@
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseFour">
-                            <p class="text-center">Gesti&oacute;n Personas</p>
+                            <p class="text-center">Personas Gestionar</p>
                         </a>
                     </div>
                     <div id="collapseFour" class="accordion-body collapse">

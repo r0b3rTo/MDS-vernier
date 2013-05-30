@@ -26,18 +26,17 @@
             },
             rules:{
                 name:"required",
-                sup: "required",
-                cod: "required",
-                desc: "required",
-                obs: "required",
-                clave: "required"                
+                ced: "required",
+                tel: "required",
+                dir: "required",
+                email: "required"                
             },
             messages: {
                 name:"Campo Requerido.",
-                sup: "Campo Requerido.",
-                cod: "Campo Requerido.",
-                desc: "Campo Requerido.",
-                obs: "Campo Requerido."
+                ced: "Campo Requerido.",
+                tel: "Campo Requerido.",
+                dir: "Campo Requerido.",
+                email: "Campo Requerido."
             },
 
             errorClass: "help-inline"
@@ -97,39 +96,57 @@ $(function() {
                 </div>
             </div>
             <div class="control-group ">
-                <label class="control-label">C&oacute;digo</label>
+                <label class="control-label">C&eacute;dula</label>
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-th-list"></i></span>
-                        <input type="text" class="input-xlarge" id="cod" name="cod" value="<? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['codigo']['0'];?>" placeholder="C&oacute;digo" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <input type="text" class="input-xlarge" id="ced" name="ced" value="<? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['codigo']['0'];?>" placeholder="C&eacute;dula" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                     </div>
                 </div>
             </div>
             <div class="control-group ">
-                <label class="control-label">Clave</label>
+                <label class="control-label">G&eacute;nero</label>
                 <div class="controls">
-                        <div class="btn-group" data-toggle-name="clav" data-toggle="buttons-radio" >
-                            <button type="button" value="t" class="btn <? if (isset($_GET['view'])) echo 'disabled' ?>" data-toggle="button">Si</button>
-                            <button type="button" value="f" class="btn <? if (isset($_GET['view'])) echo 'disabled' ?>" data-toggle="button">No</button>
+                        <div class="btn-group" data-toggle-name="sex" data-toggle="buttons-radio" >
+                            <button type="button" value="M" class="btn <? if (isset($_GET['view'])) echo 'disabled' ?>" data-toggle="button">Mujer</button>
+                            <button type="button" value="H" class="btn <? if (isset($_GET['view'])) echo 'disabled' ?>" data-toggle="button">Hombre</button>
                         </div>
-                        <input type="hidden" id="clav" name="clav" value="<? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['clav']['0']; else echo "f"?>" />
+                        <input type="hidden" id="sex" name="sex" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['sexo']['0']; else echo "M"?>" />
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Descripci&oacute;n</label>
+                <label class="control-label">Fecha Nacimiento</label>
+                <div class="controls">
+                    <div class="input-append date" id="dpYears" data-date="12-02-2012" data-date-format="dd-mm-yyyy" data-date-viewmode="years">
+                    <input class="span2" size="16" type="text" value="<? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['codigo']['0']; else echo date("d-m-Y")?>" <? if (isset($_GET['view'])) echo 'disabled' ?> readonly="">
+                <span class=""><i class="icon-calendar"></i></span>
+              </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Email</label>
                 <div class="controls">
                     <div class="input-prepend">
-                        <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="desc" name="desc" placeholder="Descripci&oacute;n" <? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['descripcion']['0'];?></textarea>
+                        <span class="add-on"><i class="icon-envelope"></i></span>
+                        <input type="text" class="input-xlarge" id="email" name="email" value="<? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['codigo']['0'];?>" placeholder="Direcci&oacute;n de Correo" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                     </div>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Funci&oacute;n</label>
+                <label class="control-label">Tel&eacute;fono</label>
+                <div class="controls">
+                    <div class="input-prepend">
+                        <span class="add-on"><i class="icon-comment"></i></span>
+                        <input type="text" class="input-xlarge" id="tel" name="tel" value="<? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['codigo']['0'];?>" placeholder="Direcci&oacute;n de Correo" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                    </div>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">Direcci&oacute;n</label>
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Funciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['funciones']['0'];?></textarea>
+                        <textarea class="input-xlarge" rows="3" id="dir" name="dir" placeholder="Direcci&oacute;n"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($_GET['id'])) echo $LISTA_ROL['Rol']['funciones']['0'];?></textarea>
                     </div>
                 </div>
             </div>
@@ -139,7 +156,7 @@ $(function() {
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarRol.php">Listar Roles</a>
+                    <a class="btn btn-info" href="vListarRol.php">Listar Personas</a>
                     <?  if (isset($_GET['view'])) 
                             echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         else 

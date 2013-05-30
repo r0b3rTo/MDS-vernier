@@ -10,7 +10,7 @@
     $_SUCCESS = array();
 
     $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
-    $FAM_ID = obtenerFam($conexion, "FAMILIA_CARGO");
+    $FAM_ID = obtenerIds($conexion, "FAMILIA_CARGO");
 
     $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
 

@@ -1,5 +1,5 @@
-<?php
-    require "cAutorizacion.php";
+<?
+    require "lib/cAutorizacion.php";
     extract($_GET);
     extract($_POST);
     //include "cMail.php";
@@ -26,5 +26,4 @@
 
     cerrarConexion($conexion);
 //    include_once("cEnviarCorreo.php");
-    
 ?>

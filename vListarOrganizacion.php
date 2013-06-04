@@ -1,6 +1,6 @@
 <?php
     session_start();
-    include "lib/cAutorizacion.php";
+    include "lib/cVerOrganizacion.php";
     include "vHeader.php";
     $all = true;
 ?>   
@@ -23,8 +23,6 @@
 
 <!-- Codigo importante -->
 <?php
-
-  include "lib/cVerOrganizacion.php";
 
 	if ($LISTA_ORG['max_res']==0){
             if(!isAdmin())

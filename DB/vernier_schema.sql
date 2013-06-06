@@ -51,9 +51,10 @@ CREATE TABLE ROL(
 CREATE TABLE PERSONA(
     id              SERIAL      PRIMARY KEY,
     nombre          VARCHAR(50) NOT NULL,
+    apellido        VARCHAR(50) NOT NULL,
     cedula          VARCHAR(50) NOT NULL,
     sexo            CHAR(1),
-    fecha_nac       DATE,
+    fecha_nac       VARCHAR(10),
     direccion       TEXT,
     telefono        VARCHAR(15),
     email           VARCHAR(50)

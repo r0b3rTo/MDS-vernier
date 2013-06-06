@@ -1,11 +1,9 @@
 <?php
     session_start();
-    require "lib/cAutorizacion.php";
+    include "lib/cVerOrganizacion.php";
     include "vHeader.php";
     extract($_GET);
     extract($_POST);
-
-    include "lib/cVerOrganizacion.php";
     date_default_timezone_set('America/Caracas');
 ?>  
 <script type="text/javascript">
@@ -43,7 +41,7 @@
 
         });
         <? if (isset($_GET['id']))
-            echo "$('.org-sel').selectpicker('val', '".$LISTA_ORG['Org']['idsup']['0']."');";
+            echo "$('.org-sel').select2('val', '".$LISTA_ORG['Org']['idsup']['0']."');";
         ?>
     });
 </script>
@@ -77,18 +75,16 @@
             <div class="control-group">
                 <label class="control-label">Entidad Superior</label>
                 <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-align-left"></i></span>
-                        <select id="org" name="org" class="selectpicker show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <select style="width:200px" id="org" name="org" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                             <?
                                 while (list($key, $val) = each($ORG_ID)){
                                     echo "<option value=".$key.">".$val."</option>";
                                 }
                             ?>
                         </select>
-                    </div>
                 </div>
             </div>
+
             <div class="control-group ">
                 <label class="control-label">C&oacute;digo</label>
                 <div class="controls">

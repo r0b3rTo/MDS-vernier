@@ -1,5 +1,5 @@
 <?php
-    //require "cAutorizacion.php";
+    require "cAutorizacion.php";
     extract($_GET);
     extract($_POST);
     //include "cMail.php";
@@ -12,7 +12,7 @@
     $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
     $FAM_ID = obtenerIds($conexion, "FAMILIA_ROL");
 
-    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "descripcion", "funciones" );
+    $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "clave" ,"descripcion", "funciones" );
 
     $sql ="SELECT * ";
     $sql.="FROM ROL ";

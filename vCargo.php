@@ -44,8 +44,8 @@
 
         });
         <? if (isset($_GET['id'])){
-            echo "$('.org-sel').selectpicker('val', '".$LISTA_CARG['Carg']['id_org']['0']."');";
-            echo "$('.fam-sel').selectpicker('val', '".$LISTA_CARG['Carg']['id_fam']['0']."');";
+            echo "$('.org-sel').select2('val', '".$LISTA_CARG['Carg']['id_org']['0']."');";
+            echo "$('.fam-sel').select2('val', '".$LISTA_CARG['Carg']['id_fam']['0']."');";
         }
         ?>
     });
@@ -99,31 +99,26 @@ $(function() {
             <div class="control-group">
                 <label class="control-label">Organizaci&oacute;n</label>
                 <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-align-left"></i></span>
-                        <select id="org" name="org" class="selectpicker show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
-                            <?
-                                while (list($key, $val) = each($ORG_ID)){
-                                    echo "<option value=".$key.">".$val."</option>";
-                                }
-                            ?>
-                        </select>
-                    </div>
+                    <select style="width:200px" id="org" name="org" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <?
+                            while (list($key, $val) = each($ORG_ID)){
+                                echo "<option value=".$key.">".$val."</option>";
+                            }
+                        ?>
+                    </select>
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Familia del Cargo</label>
+                <label class="control-label">Familia de Cargo</label>
                 <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-align-left"></i></span>
-                        <select id="fam" name="fam" class="selectpicker fam-sel show-tick" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
-                            <?
-                                while (list($key, $val) = each($FAM_ID)){
-                                    echo "<option value=".$key.">".$val."</option>";
-                                }
-                            ?>
-                        </select>
-                    </div>
+                    <select style="width:200px" id="fam" name="fam" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <?
+                            while (list($key, $val) = each($FAM_ID)){
+                                echo "<option value=".$key.">".$val."</option>";
+                            }
+                        ?>
+                    </select>
+
                 </div>
             </div>
             <div class="control-group ">
@@ -139,10 +134,10 @@ $(function() {
                 <label class="control-label">Clave</label>
                 <div class="controls">
                         <div class="btn-group" data-toggle-name="clav" data-toggle="buttons-radio" >
-                            <button type="button" value="t" class="btn <? if (isset($_GET['view'])) echo 'disabled' ?>" data-toggle="button">Si</button>
-                            <button type="button" value="f" class="btn <? if (isset($_GET['view'])) echo 'disabled' ?>" data-toggle="button">No</button>
+                            <button type="button" value="t" class="btn <? if (isset($_GET['view']) & ($LISTA_CARG['Carg']['clave']['0']=='f')) echo 'disabled' ?>" data-toggle="button">Si</button>
+                            <button type="button" value="f" class="btn <? if (isset($_GET['view']) & ($LISTA_CARG['Carg']['clave']['0']=='t')) echo 'disabled' ?>" data-toggle="button">No</button>
                         </div>
-                        <input type="hidden" id="clav" name="clav" value="<? if(isset($_GET['id'])) echo $LISTA_CARG['Carg']['clav']['0']; else echo "f"?>" />
+                        <input type="hidden" id="clav" name="clav" value="<? if(isset($_GET['id'])) echo $LISTA_CARG['Carg']['clave']['0']; else echo "f"?>" />
                 </div>
             </div>
             <div class="control-group">

@@ -9269,7 +9269,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Buscar:",
+			"sSearch": "<span class='add-on'><i class='icon-search'></i></span>",
 		
 		
 			/**

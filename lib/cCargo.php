@@ -1,4 +1,6 @@
 <?php
+try {
+
     session_start();
     require "cAutorizacion.php";
     extract($_GET);
@@ -15,6 +17,7 @@
 //	    $_ERRORES[] = 'Todos los campos son obligatorios';
 //    }
 
+
     if (isset($_GET['action'])){
 
         switch ($_GET['action']) {
@@ -28,7 +31,7 @@
                 "'$_POST[desc]', ". //descripcion
                 "'$_POST[obs]' ".   //funciones
                 ")";
-                echo $sql;
+                //echo $sql;
                 break;
 
             case 'delete':
@@ -55,13 +58,38 @@
 
         switch ($_GET['action']) {
             case 'delete':
+                $_SESSION['MSJ'] = "Los datos fueron eliminados";
                 header("Location: ../vListarCargo.php?success"); 
                 break;
             
             default:
-                header("Location: ../vCargo.php?success"); 
+                $_SESSION['MSJ'] = "Los datos fueron registrados";
+                header("Location: ../vListarCargo.php?success"); 
                 break;
         }
 
     }
+
+}catch (ErrorException $e) {
+    $error = $e->getMessage();
+    $resultado=ejecutarConsulta($sql, $conexion);
+
+    cerrarConexion($conexion);
+
+    if (isset($_GET['action'])){
+
+        switch ($_GET['action']) {
+            case 'delete':
+                $_SESSION['MSJ'] = "No se pudo eliminar el cargo, revise la bitacora";
+                header("Location: ../vListarCargo.php?error"); 
+                break;
+            
+            default:
+                $_SESSION['MSJ'] = "No se pudo registrar el cargo, revise la bitacora";
+                header("Location: ../vCargo.php?error"); 
+                break;
+        }
+
+    }
+}
 ?>

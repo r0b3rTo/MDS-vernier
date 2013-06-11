@@ -1,4 +1,6 @@
 <?
+    session_start();
+    require "cAutorizacion.php";
     use  SimpleExcel\SimpleExcel;
     session_start();
     require "cAutorizacion.php";
@@ -22,15 +24,79 @@
 
     if (in_array($_FILES['file']['type'], $csv_mimetypes)) {
 
+            if (file_exists("../files/" . $_FILES["file"]["name"])){
+              echo $_FILES["file"]["name"] . " already exists. ";
+            }
+            else{
+              move_uploaded_file($_FILES["file"]["tmp_name"],
+              "../files/" . $_FILES["file"]["name"]);
+              //echo "<br>Stored in: " . "../files/" . $_FILES["file"]["name"];
+            }
+
+              $file = "../files/" . $_FILES["file"]["name"];
+
+              $excel = new SimpleExcel('CSV');
+              $excel->parser->loadFile($file);  // Load CSV file
+
         switch ($_POST['BD']) {
           case 'Per':
             $BD = "PERSONA";
+
+            if ($tam = sizeof($excel->parser->getRow(1)) > 1){
+              $i = 2;
+              $columna = sizeof($excel->parser->getColumn(1));
+              while ($i <= $columna){
+                $fila = $excel->parser->getRow($i);        
+
+                $direccion = $fila[40]." , ".$fila[41]." , ".$fila[42]." , ".$fila[43]." , ".$fila[44]." , ".$fila[45];
+
+                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, direccion, telefono, email) VALUES(".
+                "'$fila[9]', ".  //id organizacion              
+                "'$fila[8]', ".  //id familia de cargo
+                "'$fila[7]', ".  //codigo cargo
+                "'$fila[10]', ". //nombre cargo
+                "'$fila[19]', ". //nombre cargo
+                "'$direccion', ". //nombre cargo
+                "'', ". //clave para la organizacion                
+                "'' ". //descripcion
+                ")";
+
+                $i++;
+                $resultado=ejecutarConsulta($sql, $conexion);
+              }
+            }
+
+            //echo $sql;
             break;
           case 'Org':
             $BD = "ORGANIZACION";
             break;
           case 'Car':
-            $BD = "CARGO";
+            $BD = "CARGO";              
+            if ($tam = sizeof($excel->parser->getRow(1)) > 1){
+              $i = 2;
+              $columna = sizeof($excel->parser->getColumn(1));
+              while ($i <= $columna){
+                $fila = $excel->parser->getRow($i);
+
+                $sql="INSERT INTO CARGO (id_org, id_fam, codigo, codtno, codgra, nombre, clave, descripcion, funciones) VALUES(".
+                "'0', ".  //id organizacion              
+                "'0', ".  //id familia de cargo
+                "'$fila[1]', ".  //codigo cargo
+                "'$fila[3]', ". //nombre cargo
+                "'$fila[0]', ". //nombre cargo
+                "'$fila[2]', ". //nombre cargo
+                "'f', ". //clave para la organizacion                
+                "'', ". //descripcion
+                "'' ".   //funciones
+                ")";
+
+                $i++;
+                $resultado=ejecutarConsulta($sql, $conexion);
+              }
+
+            }
+
             break;
           case 'Rol':
             $BD = "ROL";
@@ -39,35 +105,16 @@
             header("Location: ../SubirArchivo.php?error"); 
             break;
         }
-
-        echo "BASE DE DATOS ".$BD."<br>";
-
-      	echo "Upload: " . $_FILES["file"]["name"] . "<br>";
-      	echo "Type: " . $_FILES["file"]["type"] . "<br>";
-      	echo "Size: " . ($_FILES["file"]["size"] / 1024) . " kB<br>";
-      	echo "Stored in: " . $_FILES["file"]["tmp_name"];
-
-    if (file_exists("../files/" . $_FILES["file"]["name"]))
-      {
-      echo $_FILES["file"]["name"] . " already exists. ";
-      }
-    else
-      {
-      move_uploaded_file($_FILES["file"]["tmp_name"],
-      "../files/" . $_FILES["file"]["name"]);
-      echo "<br>Stored in: " . "../files/" . $_FILES["file"]["name"];
-      }
-
-      $file = "../files/" . $_FILES["file"]["name"];
-
-      $excel = new SimpleExcel('CSV');
-      $excel->parser->loadFile($file);  // Load CSV file
-
-      echo $excel->parser->getRow(2)[0];
-
-      unlink($file);
+        cerrarConexion($conexion);
+        unlink($file);
+        echo "<br>BASE DE DATOS ".$BD."<br>";
 
     }else{
-      //header("Location: ../SubirArchivo.php?error"); 
+      $_SESSION['MSJ'] = "Tipo de archivo incorrecto";
+      header("Location: ../SubirArchivo.php?error"); 
     }
+
+    $_SESSION['MSJ'] = "Los datos fueron registrados";
+    header("Location: ../SubirArchivo.php?success"); 
+
 ?>

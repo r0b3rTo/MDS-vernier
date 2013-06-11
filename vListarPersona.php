@@ -1,5 +1,7 @@
 <?php
     session_start();
+    $all = true;
+    $Legend = "Persona";
     include "lib/cVerPersona.php";
     include "vHeader.php";
     $all = true;
@@ -57,23 +59,14 @@
       
   }else{
   ?>
-  <legend>Persona</legend>  
-  <?   
-    if (isset($_GET['success'])){
-      echo "  <div class='alert alert-success'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>Registro Exitoso!</strong> Los datos de la persona se borraron con &eacute;xito.
-            </div>";
-    }
-  ?>
-  <div class="well span9 offset1" align="center">
+  <div class="well span11" align="center">
     <?
       if (!isAdmin())
         echo "<a href='vPersona.php' class='btn btn-info'>Registrar Nueva</a><br><br>";
     ?>
     <div class="row">
-      <div class="span9">
-        <p class="text-center"><strong style="color:#06F">Sugerencia:</strong> <small>Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
+      <div class="span11">
+        <p class="text-center muted lsmallT"><small><strong style="color:#06F">Sugerencia:</strong> Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
             sobre las columnas de su preferencia para organizar las entidades en forma ascendente o descendente. Si desea ordenarlo en 
             funci&oacute;n a m&aacute;s de un campo, debe presionar la tecla "SHIFT" y darle a la(s) columnas.</small>
         </p>
@@ -85,20 +78,22 @@
 <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example" width="100%">
   <thead>
     <tr>
-      <th>C&eacute;dula</th>
-      <th>Nombre</th>
-      <th>Tel&eacute;fono</th>
-      <th>Email</th>
-      <th>Acci&oacute;n</th>
+      <th class="lsmallT"><small>C&eacute;dula</small></th>
+      <th class="lsmallT"><small>Nombre</small></th>
+      <th class="lsmallT"><small>Fecha de Nacimiento</small></th>
+      <th class="lsmallT"><small>Tel&eacute;fono</small></th>
+      <th class="lsmallT"><small>Email</small></th>
+      <th class="lsmallT"><small>Acci&oacute;n</small></th>
     </tr>
   </thead>
   <tfoot>
     <tr>
-      <th>C&eacute;dula</th>
-      <th>Nombre</th>
-      <th>Tel&eacute;fono</th>
-      <th>Email</th>
-      <th>Acci&oacute;n</th>
+      <th class="lsmallT"><small>C&eacute;dula</small></th>
+      <th class="lsmallT"><small>Nombre</small></th>
+      <th class="lsmallT"><small>Fecha de Nacimiento</small></th>
+      <th class="lsmallT"><small>Tel&eacute;fono</small></th>
+      <th class="lsmallT"><small>Email</small></th>
+      <th class="lsmallT"><small>Acci&oacute;n</small></th>
     </tr>
   </tfoot>
           <tbody role="alert" aria-live="polite" aria-relevant="all">
@@ -106,11 +101,12 @@
             for ($i=0;$i<$LISTA_PER['max_res'];$i++){
           ?>
           <tr class="<?php echo $color_tabla; ?>" >
-          <td class="center" nowrap><?php echo $LISTA_PER['Per']['cedula'][$i]?></td>
-          <td class="center"><a <? echo "href='vPersona.php?view&id=".$LISTA_PER['Per']['id'][$i]."'" ?>><? echo $LISTA_PER['Per']['nombre'][$i]." ".$LISTA_PER['Per']['apellido'][$i]?></a></td>
-          <td class="center"><? echo $LISTA_PER['Per']['telefono'][$i]?></td>
-          <td class="center"><? echo $LISTA_PER['Per']['email'][$i]?></td>
-          <td class="center" nowrap>
+          <td class="center lsmallT" nowrap><small><?php echo $LISTA_PER['Per']['cedula'][$i]?></small></td>
+          <td class="center lsmallT"><small><a <? echo "href='vPersona.php?view&id=".$LISTA_PER['Per']['id'][$i]."'" ?>><? echo $LISTA_PER['Per']['nombre'][$i]." ".$LISTA_PER['Per']['apellido'][$i]?></a></small></td>
+          <td class="center lsmallT"><small><? echo $LISTA_PER['Per']['fecha_nac'][$i]?></small></td>
+          <td class="center lsmallT"><small><? echo $LISTA_PER['Per']['telefono'][$i]?></small></td>
+          <td class="center lsmallT"><small><? echo $LISTA_PER['Per']['email'][$i]?></small></td>
+          <td class="center lsmallT" nowrap>
             <?
                 echo "<a href='vPersona.php?action=edit&id=";
                 echo $LISTA_PER['Per']['id'][$i]."' rel='tooltip' title='Editar'><img src='img/iconos/edit.gif' width='20' height='20' border=0 /></a> &nbsp;&nbsp;&nbsp;"; 

@@ -9,8 +9,8 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
-    $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
-    $FAM_ID = obtenerIds($conexion, "FAMILIA_ROL");
+    $ORG_ID = obtenerIds($conexion, "ORGANIZACION", false);
+    $FAM_ID = obtenerIds($conexion, "FAMILIA_ROL", false);
 
     $atts = array("id", "id_org", "id_fam", "codigo", "nombre", "clave" ,"descripcion", "funciones" );
 
@@ -20,6 +20,7 @@
     if (isset($_GET['id'])) {
         $sql.="WHERE id='".$_GET['id']."'";
     }else{
+        $sql.="WHERE id!='0'";
         $sql.="ORDER BY id ";
     }
 

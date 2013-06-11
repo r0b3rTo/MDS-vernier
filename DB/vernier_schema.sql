@@ -12,7 +12,7 @@ CREATE TABLE ORGANIZACION(
     observacion     TEXT
 );
 
-INSERT INTO ORGANIZACION VALUES ('0','0','Universidad Simon Bolivar','0','','');
+INSERT INTO ORGANIZACION VALUES ('0','0','No se ha asignado','0','','');
 
 CREATE TABLE FAMILIA_CARGO(
     id              SERIAL      PRIMARY KEY,
@@ -20,22 +20,30 @@ CREATE TABLE FAMILIA_CARGO(
     descripcion     TEXT
 );
 
+INSERT INTO FAMILIA_CARGO VALUES ('0', 'No se ha asignado', '');
+
 CREATE TABLE CARGO(
     id              SERIAL      PRIMARY KEY,
     id_org          INTEGER     REFERENCES ORGANIZACION ON DELETE CASCADE,
     id_fam          INTEGER     REFERENCES FAMILIA_CARGO ON DELETE CASCADE,
     codigo          VARCHAR(50) NOT NULL,
+    codtno          VARCHAR(50) ,
+    codgra          VARCHAR(50) ,
     nombre          VARCHAR(50) NOT NULL,
     clave           BOOLEAN,
     descripcion     TEXT,
     funciones       TEXT
 );
 
+INSERT INTO CARGO VALUES ('0', '0', '0' , '', '', '', 'No se ha asignado', '0', '', '');
+
 CREATE TABLE FAMILIA_ROL(
     id              SERIAL      PRIMARY KEY,
     nombre          VARCHAR(50) NOT NULL,
     descripcion     TEXT
 );
+
+INSERT INTO FAMILIA_ROL VALUES ('0', 'No se ha asignado', '');
 
 CREATE TABLE ROL(
     id              SERIAL      PRIMARY KEY,
@@ -47,6 +55,8 @@ CREATE TABLE ROL(
     descripcion     TEXT,
     funciones       TEXT
 );
+
+INSERT INTO ROL VALUES ('0', '0', '0' , '', 'No se ha asignado', '0', '', '');
 
 CREATE TABLE PERSONA(
     id              SERIAL      PRIMARY KEY,
@@ -60,6 +70,8 @@ CREATE TABLE PERSONA(
     email           VARCHAR(50)
 );
 
+INSERT INTO PERSONA VALUES ('0', 'No se ha asignado', '' , '' , '' , '' , '' , '' );
+
 CREATE TABLE USUARIO(
     id              SERIAL      PRIMARY KEY,
     username        VARCHAR(50) NOT NULL
@@ -68,18 +80,21 @@ CREATE TABLE USUARIO(
 CREATE TABLE PERSONA_CARGO(
     id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
     id_car          INTEGER     REFERENCES CARGO ON DELETE CASCADE,
-    fecha           DATE
+    fecha           VARCHAR(10),
+    observacion     TEXT
 );
 
 CREATE TABLE PERSONA_ROL(
     id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
     id_rol          INTEGER     REFERENCES ROL ON DELETE CASCADE,
-    fecha           DATE
+    fecha           VARCHAR(10),
+    observacion     TEXT
 );
 
 CREATE TABLE EVALUADOR(
     id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
-    id_eva          INTEGER     REFERENCES PERSONA ON DELETE CASCADE      
+    id_eva          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,      
+    observacion     TEXT
 );
 
 CREATE TABLE JEFE(
@@ -89,12 +104,18 @@ CREATE TABLE JEFE(
 
 CREATE TABLE SUPERVISOR(
     id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
-    id_sup          INTEGER     REFERENCES PERSONA ON DELETE CASCADE     
+    id_sup          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,     
+    observacion     TEXT
 );
 
 CREATE TABLE CORREO(
     id_per          INTEGER      REFERENCES PERSONA ON DELETE CASCADE,
     destino         VARCHAR(50)  NOT NULL,
     asunto          VARCHAR(200) NOT NULL,
+    mensaje         TEXT         NOT NULL
+);
+
+CREATE TABLE ERROR(
+    id_error        SERIAL      PRIMARY KEY,
     mensaje         TEXT         NOT NULL
 );

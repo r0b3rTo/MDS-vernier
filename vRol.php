@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $Legend = "Rol";
     include "lib/cVerRol.php";
     include "vHeader.php";
     extract($_GET);
@@ -67,17 +68,6 @@ $(function() {
     });
 });
    </script>
-
-  
-    <legend>Nuevo Rol</legend>
-<?   
-    if (isset($_GET['success'])){
-    echo "  <div class='alert alert-success'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>Registro Exitoso!</strong> Los datos del cargo se guardaron con &eacute;xito.
-            </div>";
-    }
-?>
     <div class="well" align="center">
         <form id="newOrg" class="form-horizontal" method="post" 
             <?  if (isset($_GET['action']) && $_GET['action']=='edit') echo 'action="lib/cRol.php?action=edit&id='.$_GET['id'].'"'; 

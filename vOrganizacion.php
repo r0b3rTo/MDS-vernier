@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $Legend = "Organización";
     include "lib/cVerOrganizacion.php";
     include "vHeader.php";
     extract($_GET);
@@ -46,16 +47,6 @@
     });
 </script>
 
-  
-    <legend>Nueva Organizaci&oacute;n</legend>
-<?   
-    if (isset($_GET['success'])){
-    echo "  <div class='alert alert-success'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>Registro Exitoso!</strong> Los datos de la organizaci&oacute;n se guardaron con &eacute;xito.
-            </div>";
-    }
-?>
     <div class="well" align="center">
         <form id="newOrg" class="form-horizontal" method="post" 
             <?  if (isset($_GET['action']) && $_GET['action']=='edit') echo 'action="lib/cOrganizacion.php?action=edit&id='.$_GET['id'].'"'; 

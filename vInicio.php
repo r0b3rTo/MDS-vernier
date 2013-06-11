@@ -21,11 +21,10 @@
 
         header("Location: vInicio.php");  
     }
+    $Legend = "Inicio";
     include_once("vHeader.php");
 ?>
-
             <p class="text-center"> Selecciona una de las opciones</p>
-
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">

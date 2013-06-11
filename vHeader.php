@@ -14,6 +14,7 @@
         <link href="js/BootstrapHelpers/css/bootstrap-formhelpers.css" rel="stylesheet">
         <link rel="stylesheet" href="js/select2/select2.css">
         <link href="assets/css/bootstrap-formhelpers.css" rel="stylesheet">
+        <link href="css/user.css" rel="stylesheet">
         <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
         <!--[if lt IE 9]>
           <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
@@ -108,9 +109,13 @@
           </li>
         </ul>
         <ul class="nav pull-right" id="main-menu-right">
-          <li><a rel="tooltip" target="_blank">Arturo Murillo</a></li>
-          <li><a rel="tooltip" target="_blank" href="#" title="Showcase of Bootstrap sites &amp; apps" onclick="_gaq.push(['_trackEvent', 'click', 'outbound', 'builtwithbootstrap']);">LiveSurveys <i class="icon-share-alt"></i></a></li>
-          <li><a rel="tooltip" target="_blank" href="#" title="Marketplace for premium Bootstrap templates" onclick="_gaq.push(['_trackEvent', 'click', 'outbound', 'wrapbootstrap']);">Salir <i class="icon-off"></i></a></li>
+          <li><a class="dropdown-toggle" data-toggle="dropdown" href="#">Nombre Usuario <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a rel="tooltip" target="_blank" href="#" title="Ir a LiveSurveys" onclick="_gaq.push(['_trackEvent', 'click', 'outbound', 'builtwithbootstrap']);">LiveSurveys <i class="icon-share-alt"></i></a></li>
+              <li class="divider"></li>
+              <li><a rel="tooltip" href="#" title="Cerrar Sesi&oacute;n">Salir <i class="icon-off"></i></a></li>
+            </ul>
+          </li>
         </ul>
        </div>
      </div>
@@ -127,3 +132,20 @@
                 <h1 class="text-center">Sistema Vernier</h1>
             </div>
         </header>
+
+    <?   
+    if (isset($_GET['success'])){
+    echo "  <div class='alert alert-success'>
+                <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                <strong>¡Operación realizada con Exito!</strong> ".$_SESSION['MSJ'].".
+            </div>";
+    }else if (isset($_GET['error'])) {
+            echo "  <div class='alert alert-error'>
+                <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                <strong>¡Parece que algo salió mal!</strong> ".$_SESSION['MSJ'].".
+            </div>";
+    }
+
+    ?>
+    <legend><? echo $Legend ?></legend>
+  

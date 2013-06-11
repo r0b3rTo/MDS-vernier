@@ -1,5 +1,6 @@
 <?php
     session_start();
+    $Legend = "Cargar CSV";
     if(isset($_GET['id']))
         include "lib/cVerPersona.php";
     else
@@ -28,7 +29,7 @@
             rules:{
                 name:"required",
                 lname:"required",
-                ced: "required",
+                file: "required",
                 tel: "required",
                 dir: "required",
                 email:{
@@ -39,7 +40,7 @@
             messages: {
                 name:"Campo Requerido.",
                 lname:"Campo Requerido.",
-                ced: "Campo Requerido.",
+                file: "Campo Requerido.",
                 tel: "Campo Requerido.",
                 dir: "Campo Requerido.",
                 email:{
@@ -48,7 +49,7 @@
                 },   
             },
 
-            errorClass: "help-inline"
+            //errorClass: "help-inline"
 
         });
         <? if (isset($_GET['id'])){
@@ -78,23 +79,28 @@ $(function() {
 });
    </script>
 
-  
-    <legend>Cargar datos</legend>
-<?   
-    if (isset($_GET['success'])){
-    echo "  <div class='alert alert-success'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>Registro Exitoso!</strong> Los datos se guardaron con &eacute;xito.
-            </div>";
-    }else if (isset($_GET['error'])) {
-            echo "  <div class='alert alert-error'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>Hubo una falla en el Registro!</strong> Verifique que el archivo es correcto.
-            </div>";
-    }
-?>
+<script>
+$(document).ready(function() {
+   $(":radio[name='BD']").click(function(){
+       $("#hideCategory1, #hideCategory2, #hideCategory3, #hideCategory4").hide(); //Show all paragraphs first.
+       switch($(this).attr("id")){
+          case "Radio1": $("#hideCategory1").show(); break;
+          case "Radio2": $("#hideCategory2").show(); break;
+          case "Radio3": $("#hideCategory3").show(); break;        
+          case "Radio4": $("#hideCategory4").show(); break;        
+       }
+   });
+});
+</script>
     <div class="well" align="center">
         <form method="post" enctype="multipart/form-data" id="newOrg" class="form-horizontal" action="lib/subir.php">
+            <p class="muted">Según la tabla, el archivo debe contar con las siguientes columnas:</p>
+
+            <p class="muted" id="hideCategory1"><small>Primera Fila del Archivo: "Cédula" , "Nombre" , "Teléfono" , "Email"</small></p>
+            <p class="muted" id="hideCategory2" hidden><small>Primera Fila del Archivo: "codigo" , "idsup" , "Nombre" (Opcionales: , "Descripción" , "Observaciones")</small></p>
+            <p class="muted" id="hideCategory3" hidden><small>Primera Fila del Archivo: "codtno" , "codigo" , "nombre" , "codgra" , "familia" (Opcionales: "clave" , "Descripción" , "funciones")</small></p>
+            <p class="muted" id="hideCategory4" hidden><small>Primera Fila del Archivo: "codtno" , "codigo" , "nombre" , "codgra" , "familia" (Opcionales: "clave" , "Descripción" , "funciones")</small></p>
+
             <div class="row">
             <div class="span2"></div>
             <div class="span4">
@@ -104,22 +110,33 @@ $(function() {
                 <div class="controls">
                     
                 <label class="radio">
-                    <input type="radio" name="BD" id="optionsRadios1" value="Per" checked>
+                    <input type="radio" name="BD" id="Radio1" value="Per" checked>
                         Persona
                 </label>
                 <label class="radio">
-                    <input type="radio" name="BD" id="optionsRadios2" value="Org">
+                    <input type="radio" name="BD" id="Radio2" value="Org">
                         Organizaci&oacute;n
                 </label>
                 <label class="radio">
-                    <input type="radio" name="BD" id="optionsRadios2" value="Car">
+                    <input type="radio" name="BD" id="Radio3" value="Car">
                         Cargo
                 </label>
                 <label class="radio">
-                    <input type="radio" name="BD" id="optionsRadios2" value="Rol">
+                    <input type="radio" name="BD" id="Radio4" value="Rol">
                         Rol
                 </label>
 
+                </div>
+            </div>
+
+            <div class="control-group ">
+                <label class="control-label">Eliminar Cabecera</label>
+                <div class="controls">
+                        <div class="btn-group" data-toggle-name="clav" data-toggle="buttons-radio" >
+                            <button type="button" value="true" class="btn <? if (isset($_GET['view']) & ($LISTA_CARG['Carg']['clave']['0']=='false')) echo 'disabled' ?>" data-toggle="button">Si</button>
+                            <button type="button" value="false" class="btn <? if (isset($_GET['view']) & ($LISTA_CARG['Carg']['clave']['0']=='true')) echo 'disabled' ?>" data-toggle="button">No</button>
+                        </div>
+                        <input type="hidden" id="clav" name="clav" value="<? if(isset($_GET['id'])) echo $LISTA_CARG['Carg']['clave']['0']; else echo "false"?>" />
                 </div>
             </div>
 

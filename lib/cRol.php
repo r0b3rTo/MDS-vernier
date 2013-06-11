@@ -1,4 +1,5 @@
 <?php
+try{
     session_start();
     require "cAutorizacion.php";
     extract($_GET);
@@ -55,13 +56,39 @@
 
         switch ($_GET['action']) {
             case 'delete':
+                $_SESSION['MSJ'] = "Los datos fueron eliminados";
                 header("Location: ../vListarRol.php?success"); 
                 break;
             
             default:
-                header("Location: ../vRol.php?success"); 
+                $_SESSION['MSJ'] = "Los datos fueron registrados";
+                header("Location: ../vListarRol.php?success"); 
                 break;
         }
 
     }
+
+
+}catch (ErrorException $e) {
+    $error = $e->getMessage();
+    $resultado=ejecutarConsulta($sql, $conexion);
+
+    cerrarConexion($conexion);
+
+    if (isset($_GET['action'])){
+
+        switch ($_GET['action']) {
+            case 'delete':
+                $_SESSION['MSJ'] = "No se pudo eliminar el rol";
+                header("Location: ../vListarCargo.php?error"); 
+                break;
+            
+            default:
+                $_SESSION['MSJ'] = "No se pudo registrar el rol";
+                header("Location: ../vCargo.php?error"); 
+                break;
+        }
+
+    }
+}
 ?>

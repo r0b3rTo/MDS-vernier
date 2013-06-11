@@ -1,4 +1,4 @@
-<?php
+<?
 if (MANEJADOR_BD == "mysql") {
 
     function crearConexion($servidor, $usuario, $contrasena) {
@@ -326,7 +326,7 @@ function obtenerDatos($sql, $conexion, $atts, $tabla){
     return $LISTA;
 }
 
-function obtenerIds($conexion, $tabla){
+function obtenerIds($conexion, $tabla, $persona){
 
     $sql ="SELECT * ";
     $sql.="FROM ".$tabla;
@@ -335,17 +335,41 @@ function obtenerIds($conexion, $tabla){
 
     $modo_depuracion=FALSE;
         
+
     if ($modo_depuracion) 
         echo "$sql<br>";
     else{
         $resultado=ejecutarConsulta($sql, $conexion);
         $i=0;
         while ($fila=obtenerResultados($resultado)){
-            $FAM_ID[$fila['id']] = $fila['nombre'];
+                if ($persona) {
+                    $FAM_ID[$fila['id']] = $fila['nombre'].' '.$fila['apellido'];
+                }else
+                    $FAM_ID[$fila['id']]  = $fila['nombre'];
         }
         $i++;   
     }
     return $FAM_ID;
 }
 
-?>
+function MostrarLegenda($text){
+
+    echo "<legend>".$text."</legend>";
+
+}
+
+/*
+function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
+{
+    // error was suppressed with the @-operator
+    if (0 === error_reporting()) {
+        return false;
+    }
+
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+
+set_error_handler('handleError');
+*/
+?> 
+

@@ -9,7 +9,7 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
-    $ORG_ID = obtenerIds($conexion, "ORGANIZACION");
+    $ORG_ID = obtenerIds($conexion, "ORGANIZACION", false);
 
     $atts = array("id", "idsup", "nombre", "codigo", "descripcion", "observacion" );
 
@@ -19,6 +19,7 @@
     if (isset($_GET['id'])) {
         $sql.="WHERE id='".$_GET['id']."'";
     }else{
+        $sql.="WHERE id!='0'";
         $sql.="ORDER BY id ";
     }
 

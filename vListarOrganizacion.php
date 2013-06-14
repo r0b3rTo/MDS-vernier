@@ -58,10 +58,10 @@
       
   }else{
   ?>
-  <div class="well span9 offset1" align="center">
+  <div class="well span9 offset1">
     <?
       if (!isAdmin())
-        echo "<a href='vOrganizacion.php' class='btn btn-info'>Registrar Nueva</a><br><br>";
+        echo "<div  align='center'><a href='vOrganizacion.php' class='btn btn-info'>Registrar Nueva</a></div>";
     ?>
     <div class="row">
       <div class="span9">

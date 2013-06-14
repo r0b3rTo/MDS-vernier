@@ -59,14 +59,14 @@
       
   }else{
   ?>
-  <div class="well span11" align="center">
+  <div class="well span11">
     <?
       if (!isAdmin())
-        echo "<a href='vPersona.php' class='btn btn-info'>Registrar Nueva</a><br><br>";
+        echo "<div align='center'><a href='vPersona.php' class='btn btn-info'>Registrar Nueva</a></div>";
     ?>
     <div class="row">
       <div class="span11">
-        <p class="text-center muted lsmallT"><small><strong style="color:#06F">Sugerencia:</strong> Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
+        <p class="text-center muted lsmall"><strong style="color:#06F">Sugerencia:</strong> <small>Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
             sobre las columnas de su preferencia para organizar las entidades en forma ascendente o descendente. Si desea ordenarlo en 
             funci&oacute;n a m&aacute;s de un campo, debe presionar la tecla "SHIFT" y darle a la(s) columnas.</small>
         </p>

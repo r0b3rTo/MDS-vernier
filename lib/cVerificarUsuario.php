@@ -19,13 +19,13 @@ if ($_SESSION['tipo'] == "empleados") {
 */
 
 
-$sql = "SELECT * FROM Usuario WHERE usbid='$login'";
-$resultado = ejecutarConsulta($sql, $conexion);
+//$sql = "SELECT * FROM Usuario WHERE usbid='$login'";
+//$resultado = ejecutarConsulta($sql, $conexion);
 
 //Se verifica que el USBID est� almacenado en la BD local al Sistema, si no est�, se incluyen los datos b�sicos
-if (numResultados($resultado) == 0) {
-    $resultado=insertarUsuario($login,$email,$tipo,$conexion);
-}
+//if (numResultados($resultado) == 0) {
+//    $resultado=insertarUsuario($login,$email,$tipo,$conexion);
+//}
 cerrarConexion($conexion);
 
 header("Location: ../vInicio.php");

@@ -47,6 +47,8 @@
     </script>
         
 
+
+
 <!-- Codigo importante -->
 <?php
 
@@ -58,12 +60,13 @@
       
   }else{
   ?> 
-<div class="well span11">
+
+<div class="well span7" align="center"> 
     <?
       if (!isAdmin())
-        echo "<div align='center'><a href='vRol.php' class='btn btn-info'>Registrar Nuevo</a></div>";
+        echo "<a href='vRol.php' class='btn btn-info'>Registrar Nuevo</a><br><br>";
     ?>
-    <div class="row">
+    <div class="row-fluid">
       <div class="span11">
         <p class="text-center muted lsmallT"><strong style="color:#06F">Sugerencia:</strong> <small> Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
             sobre las columnas de su preferencia para organizar las entidades en forma ascendente o descendente. Si desea ordenarlo en 
@@ -73,7 +76,7 @@
 
     </div>
        
-          <div id="demo">
+          <div>
 <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example" width="100%">
   <thead>
     <tr>

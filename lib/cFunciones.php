@@ -270,26 +270,15 @@ function mostrarDatosUsuario(){
         }
 
 	?>
-	<div class="parrafo" align="right">
-	<strong style="font-size:12px"><?php echo "$_SESSION[USBID]"; if (isAdmin()) echo "<i> - Administrador</i>"; ?></strong><br />
-    <i> <?php
-    	if ($_SESSION['tipo']=="pregrado" or $_SESSION['tipo']=="postgrado") echo "Estudiante ";
-		if ($_SESSION['tipo']=="profesores") echo "Miembro USB - Profesor";
-		if ($_SESSION['tipo']=="empleados") echo "Miembro USB - Empleado";
-		if ($_SESSION['tipo']=="administrativos") echo "Miembro USB - Instituci&oacute;n";
-		if ($_SESSION['tipo']=="organizaciones") echo "Organizaci&oacute;n Estudiantil"; ?> </i>
+	<strong style="font-size:12px"><?php echo "$_SESSION[USBID]"; if (isAdmin()) echo " |<i> Administrador</i>"; ?></strong>
+    <i> <?
+    	if ($_SESSION['tipo']=="pregrado" or $_SESSION['tipo']=="postgrado") echo " | Estudiante ";
+		if ($_SESSION['tipo']=="profesores") echo " | Miembro USB - Profesor";
+		if ($_SESSION['tipo']=="empleados") echo " | Miembro USB - Empleado";
+		if ($_SESSION['tipo']=="administrativos") echo " | Miembro USB - Instituci&oacute;n";
+		if ($_SESSION['tipo']=="organizaciones") echo " | Organizaci&oacute;n Estudiantil"; ?> </i>
 
-      	<p>
-&nbsp;&nbsp;
-&nbsp;&nbsp;
-
-          
-        </p>
-      </div>
-    <div align="center">
-
-    </div>
-	  <?php
+	  <?
 	}
 }
 

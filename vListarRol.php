@@ -51,11 +51,10 @@
 <?php
 
   if ($LISTA_ROL['max_res']==0){
-            if(!isAdmin())
-                echo "<br><br><br><br><br><br><br><br><div align='center' >Hasta el momento no has realizado ninguna solicitud.</div><br><br><br><br><br><br><br><br>";
-            else
-                echo "<br><br><br><br><br><br><br><br><div align='center' >Hasta el momento no han realizado ninguna solicitud.</div><br><br><br><br><br><br><br><br>";
-      
+      if(!isAdmin())
+        echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay Rol registrado.</p><br><br><br><br><br><br>";
+      else
+        echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay Rol registrado.</p><br><br><br><br><br><br>";
   }else{
   ?> 
 <div class="well span11">
@@ -101,7 +100,12 @@
           <td class="center lsmallT" nowrap><small><?php echo $LISTA_ROL['Rol']['codigo'][$i]?></small></td>
           <td class="center lsmallT"><small><a <? echo "href='vRol.php?view&id=".$LISTA_ROL['Rol']['id'][$i]."'" ?>><? echo $LISTA_ROL['Rol']['nombre'][$i]?></a></small></td>
           <td class="center lsmallT"><small><a <? echo "href='vOrganizacion.php?view&id=".$LISTA_ROL['Rol']['id_org'][$i]."'" ?>><? echo $ORG_ID[$LISTA_ROL['Rol']['id_org'][$i]]?></a></small></td>
-          <td class="center lsmallT"><small><a <? echo "href='vFamiliaRol.php?view&id=".$LISTA_ROL['Rol']['id_fam'][$i]."'" ?>><? echo $FAM_ID[$LISTA_ROL['Rol']['id_fam'][$i]]?></a></small></td>
+          <? if ($LISTA_ROL['Rol']['id_fam'][$i] == 0) {
+            echo "<td class='center lsmallT'><small> ".$FAM_ID[$LISTA_ROL['Rol']['id_fam'][$i]]."</small></td>";
+          }else {
+            echo "<td class='center lsmallT'><small><a href='vFamiliaRol.php?view&id=".$LISTA_ROL['Rol']['id_fam'][$i]."' >".$FAM_ID[$LISTA_ROL['Rol']['id_fam'][$i]]."</a></small></td>";
+          }
+          ?>
           <td class="center lsmallT" nowrap>
             <?
                 echo "<a href='vRol.php?action=edit&id=";

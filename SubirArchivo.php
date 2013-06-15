@@ -152,7 +152,7 @@ $(document).ready(function() {
                 <div class="span5"></div>
                 <div class="span6">
  
-                <button type="submit" id="confirmButton" class="btn btn-success" >Subir</button>
+                <button type="submit" id="confirmButton" class="btn btn-success" >Cargar</button>
 
                 </div>
                 </div>

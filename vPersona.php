@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $Legend = "Persona";
+    $Legend = "Datos de persona";
     include "lib/cVerPersona.php";
     include "vHeader.php";
     extract($_GET);
@@ -132,15 +132,15 @@
 
         });
 
-        <?  if (isset($_GET['id']) & isset($LISTA_PER_CAR)){
+        <?  if (isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0){
                 echo "$('.car-sel').select2('val', '".$LISTA_PER_CAR['Per_Car']['id_car']['0']."');";
             }
 
-            if (isset($_GET['id']) & isset($LISTA_PER_EVA)){
+            if (isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0){
                 echo "$('.eva-sel').select2('val', '".$LISTA_PER_EVA['Per_Eva']['id_eva']['0']."');";
             }
 
-            if (isset($_GET['id']) & isset($LISTA_PER_SUP)){
+            if (isset($LISTA_PER_SUP) && $LISTA_PER_SUP['max_res']>0){
                 echo "$('.sup-sel').select2('val', '".$LISTA_PER_SUP['Per_Sup']['id_sup']['0']."');";
             }
 
@@ -168,7 +168,7 @@ $(function() {
 </script>
 <div class="tabbable"> <!-- Only required for left/right tabs -->
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#tab1" data-toggle="tab">Crear Persona</a></li>
+    <li class="active"><a href="#tab1" data-toggle="tab">Persona</a></li>
     <li><a href="#tab2" data-toggle="tab">Cargo</a></li>
     <li><a href="#tab3" data-toggle="tab">Evaluador</a></li>
     <li><a href="#tab4" data-toggle="tab">Supervisor</a></li>
@@ -294,7 +294,7 @@ $(function() {
             <div class="control-group">
                 <label class="control-label">Cargo</label>
                 <div class="controls">
-                        <select style="width:200px" id="car" name="car" class="select2 show-tick car-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <select style="width:200px" id="car" name="car" class="select2  car-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                             <?
                                 while (list($key, $val) = each($CAR_ID)){
                                     echo "<option value=".$key.">".$val."</option>";
@@ -318,7 +318,7 @@ $(function() {
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_ORG)) echo $LISTA_ORG['Org']['observacion']['0'];?></textarea>
+                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0) echo $LISTA_PER_CAR['Per_Car']['observacion']['0'];?></textarea>
                     </div>
                 </div>
             </div>
@@ -356,7 +356,7 @@ $(function() {
 
         <!-- Formulario tercera pestaña, Asociar Evaluador a Persona-->
    <div class="well" align="center">
-        <form id="newSup" class="form-horizontal" method="post" action="lib/cPersona.php?action=add_eval" >
+        <form id="newEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=add_eval" >
             <input type="hidden" id="id" name="id" value="<? if (isset($_GET['id'])) echo $_GET['id']; ?>"/>
             <div class="row">
             <div class="span2"></div>
@@ -364,9 +364,9 @@ $(function() {
             <div class="control-group">
                 <label class="control-label">Evaluador</label>
                 <div class="controls">
-                        <select style="width:200px" id="eval" name="eval" class="select2 show-tick eva-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <select style="width:200px" id="eval" name="eval" class="select2  eva-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                             <?
-                                while (list($key, $val) = each($PER_ID)){
+                                while (list($key, $val) = each($EVA_ID)){
                                     echo "<option value=".$key.">".$val."</option>";
                                 }
                             ?>
@@ -378,7 +378,7 @@ $(function() {
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0) echo $LISTA_PER_EVA['Per_Eva']['id_eva']['0'];?></textarea>
+                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0) echo $LISTA_PER_EVA['Per_Eva']['observacion']['0'];?></textarea>
                     </div>
                 </div>
             </div>
@@ -425,9 +425,9 @@ $(function() {
                 <div class="control-group">
                     <label class="control-label">Supervisor</label>
                     <div class="controls">
-                            <select style="width:200px" id="sup" name="sup" class="select2 show-tick sup-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                            <select style="width:200px" id="sup" name="sup" class="select2  sup-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                                 <?
-                                    while (list($key, $val) = each($EVAL_ID)){
+                                    while (list($key, $val) = each($SUP_ID)){
                                         echo "<option value=".$key.">".$val."</option>";
                                     }
                                 ?>
@@ -439,7 +439,7 @@ $(function() {
                     <div class="controls">
                         <div class="input-prepend">
                             <span class="add-on"><i class="icon-edit"></i></span>
-                            <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_SUP) && $LISTA_PER_SUP['max_res']>0) echo $LISTA_PER_SUP['Per_Sup']['id_sup']['0'];?></textarea>
+                            <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_SUP) && $LISTA_PER_SUP['max_res']>0) echo $LISTA_PER_SUP['Per_Sup']['observacion']['0'];?></textarea>
                         </div>
                     </div>
                 </div>

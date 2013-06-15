@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $Legend = "Cargo";    
+    $Legend = "Datos de cargo";    
     require "lib/cAutorizacion.php";
     include "vHeader.php";
     extract($_GET);
@@ -101,7 +101,7 @@ $(function() {
             <div class="control-group">
                 <label class="control-label">Familia de Cargo</label>
                 <div class="controls">
-                    <select style="width:200px" id="fam" name="fam" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                    <select style="width:200px" id="fam" name="fam" class="select2 show-tick fam-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                         <?
                             while (list($key, $val) = each($FAM_ID)){
                                 echo "<option value=".$key.">".$val."</option>";

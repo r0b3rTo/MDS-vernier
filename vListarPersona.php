@@ -52,11 +52,10 @@
 <?php
 
   if ($LISTA_PER['max_res']==0){
-            if(!isAdmin())
-                echo "<br><br><br><br><br><br><br><br><div align='center' >Hasta el momento no has realizado ninguna solicitud.</div><br><br><br><br><br><br><br><br>";
-            else
-                echo "<br><br><br><br><br><br><br><br><div align='center' >Hasta el momento no han realizado ninguna solicitud.</div><br><br><br><br><br><br><br><br>";
-      
+      if(!isAdmin())
+        echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay persona registrada.</p><br><br><br><br><br><br>";
+      else
+        echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay persona registrada.</p><br><br><br><br><br><br>";
   }else{
   ?>
   <div class="well span11">

@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $Legend = "Organización";
+    $Legend = "Datos de organización";
     include "lib/cVerOrganizacion.php";
     include "vHeader.php";
     extract($_GET);

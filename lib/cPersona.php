@@ -32,7 +32,7 @@
                 break;
 
             case 'add_car':
-                $atts = array("id_per", "id_car", "fecha");
+                $atts = array("id_per");
 
                 $sql1 ="SELECT * ";
                 $sql1.="FROM PERSONA_CARGO ";
@@ -42,20 +42,21 @@
                 $LISTA_PER_CAR = obtenerDatos($sql1, $conexion, $atts, "Per_Car");        
 
                 if ($LISTA_PER_CAR['max_res']==0) {
-                    $sql="INSERT INTO PERSONA_CARGO (id_per, id_car, fecha) VALUES(".
+                    $sql="INSERT INTO PERSONA_CARGO (id_per, id_car, fecha, observacion) VALUES(".
                     "'$_POST[id]', ".  //id organizacion              
                     "'$_POST[car]', ".  //id organizacion              
-                    "'$_POST[fech]' ".  //id familia de cargo
+                    "'$_POST[fech]', ".  //id familia de cargo
+                    "'$_POST[obs]' ".  //observacion
                     //observacion
                     ")";
                 }else{
-                    $sql = "UPDATE PERSONA_CARGO SET id_per='$_POST[id]', id_car='$_POST[car]', fecha='$_POST[fech]' WHERE id_per='$_POST[id]'";
+                    $sql = "UPDATE PERSONA_CARGO SET id_per='$_POST[id]', id_car='$_POST[car]', fecha='$_POST[fech]', observacion='$_POST[obs]' WHERE id_per='$_POST[id]'";
                 }
                 break;    
 
             case 'add_sup':
 
-                $atts = array("id_per", "id_sup");
+                $atts = array("id_per");
 
                 $sql1 ="SELECT * ";
                 $sql1.="FROM SUPERVISOR ";
@@ -65,19 +66,20 @@
                 $LISTA_PER_SUP = obtenerDatos($sql1, $conexion, $atts, "Per_Sup"); 
 
                 if ($LISTA_PER_SUP['max_res']==0) {
-                    $sql="INSERT INTO SUPERVISOR (id_per, id_sup) VALUES(".
+                    $sql="INSERT INTO SUPERVISOR (id_per, id_sup, observacion) VALUES(".
                     "'$_POST[id]', ".  //id organizacion              
-                    "'$_POST[sup]' ".  //id organizacion              
+                    "'$_POST[sup]', ".  //id organizacion              
+                    "'$_POST[observacion]' ".  //id organizacion              
                     //observacion
                     ")";
                 }else{
-                    $sql = "UPDATE SUPERVISOR SET id_sup='$_POST[sup]' WHERE id_per='$_POST[id]';";
+                    $sql = "UPDATE SUPERVISOR SET id_sup='$_POST[sup]', observacion='$_POST[obs]' WHERE id_per='$_POST[id]';";
                 }
                 break;
 
             case 'add_eval':
 
-                $atts = array("id_per", "id_eva");
+                $atts = array("id_per");
 
                 $sql1 ="SELECT * ";
                 $sql1.="FROM EVALUADOR ";
@@ -87,13 +89,14 @@
                 $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
 
                 if ($LISTA_PER_EVA['max_res']==0) {
-                    $sql="INSERT INTO EVALUADOR (id_per, id_eva) VALUES(".
+                    $sql="INSERT INTO EVALUADOR (id_per, id_eva, observacion) VALUES(".
                     "'$_POST[id]', ".  //id organizacion              
-                    "'$_POST[eval]' ".  //id organizacion              
+                    "'$_POST[eval]', ".  //id organizacion              
+                    "'$_POST[observacion]' ".  //id organizacion              
                     //observacion
                     ")";
                 }else{
-                    $sql = "UPDATE EVALUADOR SET id_eva='$_POST[eval]' WHERE id_per='$_POST[id]';";
+                    $sql = "UPDATE EVALUADOR SET id_eva='$_POST[eval]', observacion='$_POST[obs]' WHERE id_per='$_POST[id]';";
                 }
                 break;
 

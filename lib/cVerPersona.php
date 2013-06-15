@@ -9,8 +9,8 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
-    $PER_ID = obtenerIds($conexion, "PERSONA", true);
-    $EVAL_ID = obtenerIds($conexion, "PERSONA", true);
+    $SUP_ID = obtenerIds($conexion, "PERSONA", true);
+    $EVA_ID = obtenerIds($conexion, "PERSONA", true);
     $CAR_ID = obtenerIds($conexion, "CARGO", false);
 
     if (isset($_GET['id'])) {
@@ -24,7 +24,7 @@
 
         $LISTA_PER = obtenerDatos($sql, $conexion, $atts, "Per");
 
-        $atts = array("id_per", "id_car", "fecha");
+        $atts = array("id_per", "id_car", "fecha", "observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_CARGO ";
@@ -33,7 +33,7 @@
 
         $LISTA_PER_CAR = obtenerDatos($sql, $conexion, $atts, "Per_Car");        
 
-        $atts = array("id_per", "id_sup");
+        $atts = array("id_per", "id_sup", "observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM SUPERVISOR ";
@@ -42,7 +42,7 @@
 
         $LISTA_PER_SUP = obtenerDatos($sql, $conexion, $atts, "Per_Sup"); 
 
-                $atts = array("id_per", "id_eva");
+        $atts = array("id_per", "id_eva", "observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM EVALUADOR ";

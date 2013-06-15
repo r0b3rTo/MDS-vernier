@@ -12,7 +12,7 @@ CREATE TABLE ORGANIZACION(
     observacion     TEXT
 );
 
-INSERT INTO ORGANIZACION VALUES ('0','0','No se ha asignado','0','','');
+INSERT INTO ORGANIZACION VALUES ('0','0','Sin asignar','0','','');
 
 CREATE TABLE FAMILIA_CARGO(
     id              SERIAL      PRIMARY KEY,
@@ -20,7 +20,12 @@ CREATE TABLE FAMILIA_CARGO(
     descripcion     TEXT
 );
 
-INSERT INTO FAMILIA_CARGO VALUES ('0', 'No se ha asignado', '');
+INSERT INTO FAMILIA_CARGO VALUES ('0', 'Sin asignar', '');
+INSERT INTO FAMILIA_CARGO VALUES ('1', 'GERENCIAL', '');
+INSERT INTO FAMILIA_CARGO VALUES ('2', 'SUPERVISORIO', '');
+INSERT INTO FAMILIA_CARGO VALUES ('3', 'ADMINISTRATIVO PROFESIONAL', '');
+INSERT INTO FAMILIA_CARGO VALUES ('4', 'ADMINISTRATIVO NO PROFESIONAL', '');
+INSERT INTO FAMILIA_CARGO VALUES ('5', 'OBREROS', '');
 
 CREATE TABLE CARGO(
     id              SERIAL      PRIMARY KEY,
@@ -35,7 +40,7 @@ CREATE TABLE CARGO(
     funciones       TEXT
 );
 
-INSERT INTO CARGO VALUES ('0', '0', '0' , '', '', '', 'No se ha asignado', '0', '', '');
+INSERT INTO CARGO VALUES ('0', '0', '0' , '', '', '', 'Sin asignar', '0', '', '');
 
 CREATE TABLE FAMILIA_ROL(
     id              SERIAL      PRIMARY KEY,
@@ -43,7 +48,7 @@ CREATE TABLE FAMILIA_ROL(
     descripcion     TEXT
 );
 
-INSERT INTO FAMILIA_ROL VALUES ('0', 'No se ha asignado', '');
+INSERT INTO FAMILIA_ROL VALUES ('0', 'Sin asignar', '');
 
 CREATE TABLE ROL(
     id              SERIAL      PRIMARY KEY,
@@ -56,7 +61,7 @@ CREATE TABLE ROL(
     funciones       TEXT
 );
 
-INSERT INTO ROL VALUES ('0', '0', '0' , '', 'No se ha asignado', '0', '', '');
+INSERT INTO ROL VALUES ('0', '0', '0' , '', 'Sin asignar', '0', '', '');
 
 CREATE TABLE PERSONA(
     id              SERIAL      PRIMARY KEY,
@@ -70,7 +75,7 @@ CREATE TABLE PERSONA(
     email           VARCHAR(50)
 );
 
-INSERT INTO PERSONA VALUES ('0', 'No se ha asignado', '' , '' , '' , '' , '' , '' );
+INSERT INTO PERSONA VALUES ('0', 'Sin asignar', '' , '' , '' , '' , '' , '' );
 
 CREATE TABLE USUARIO(
     id              SERIAL      PRIMARY KEY,

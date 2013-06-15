@@ -51,11 +51,10 @@
 <?php
 
   if ($LISTA_ORG['max_res']==0){
-            if(!isAdmin())
-                echo "<br><br><br><br><br><br><br><br><div align='center' >Hasta el momento no has realizado ninguna solicitud.</div><br><br><br><br><br><br><br><br>";
-            else
-                echo "<br><br><br><br><br><br><br><br><div align='center' >Hasta el momento no han realizado ninguna solicitud.</div><br><br><br><br><br><br><br><br>";
-      
+      if(!isAdmin())
+        echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay Organización registrada.</p><br><br><br><br><br><br>";
+      else
+        echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay Organización registrada.</p><br><br><br><br><br><br>";
   }else{
   ?>
   <div class="well span9 offset1">
@@ -98,7 +97,12 @@
           <tr class="<?php echo $color_tabla; ?>" >
           <td class="center lsmallT" nowrap><small><?php echo $LISTA_ORG['Org']['codigo'][$i]?></small></td>
           <td class="center lsmallT"><small><a <? echo "href='vOrganizacion.php?view&id=".$LISTA_ORG['Org']['id'][$i]."'" ?>><? echo $LISTA_ORG['Org']['nombre'][$i]?></a></small></td>
-          <td class="center lsmallT"><small><a <? echo "href='vOrganizacion.php?view&id=".$LISTA_ORG['Org']['idsup'][$i]."'" ?>><? echo $ORG_ID[$LISTA_ORG['Org']['idsup'][$i]]?></a></small></td>
+          <? if ($LISTA_ORG['Org']['idsup'][$i] == 0) {
+            echo "<td class='center lsmallT'><small>".$ORG_ID[$LISTA_ORG['Org']['idsup'][$i]]."</small></td>";
+          }else {
+            echo "<td class='center lsmallT'><small><a href='vOrganizacion.php?view&id=".$LISTA_ORG['Org']['idsup'][$i]."' > ".$ORG_ID[$LISTA_ORG['Org']['idsup'][$i]]." </a></small></td>";
+          }
+          ?>
           <td class="center lsmallT" nowrap>
             <?
                 echo "<a href='vOrganizacion.php?action=edit&id=";

@@ -100,8 +100,14 @@
               <li><a href="vCargo.php">Crear Cargo</a></li>
               <li><a href="vListarCargo.php">Listar Cargo</a></li>
               <li class="divider"></li>
+              <li><a href="vFamiliaC.php">Crear Familia Cargo</a></li>
+              <li><a href="vListarFamiliaC.php">Listar Familia Cargo</a></li>
+              <li class="divider"></li>
               <li><a href="vRol.php">Crear Rol</a></li>
               <li><a href="vListarRol.php">Listar Rol</a></li>
+              <li class="divider"></li>
+              <li><a href="vFamiliaR.php">Crear Familia Rol</a></li>
+              <li><a href="vListarFamiliaR.php">Listar Familia Rol</a></li>
             </ul>
           </li>
           <li>
@@ -124,14 +130,9 @@
 
 
     <div class="container">  
-        <header class="page-header">
-            <div class="text-center">
-                <img src="img/header.png" class="img-rounded">
-            </div>
             <div >
-                <h1 class="text-center">Sistema Vernier</h1>
+                <br><br><h1 class="text-center">Sistema Vernier</h1>
             </div>
-        </header>
 
     <?   
     if (isset($_GET['success'])){

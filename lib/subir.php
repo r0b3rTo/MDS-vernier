@@ -79,9 +79,23 @@
               while ($i <= $columna){
                 $fila = $excel->parser->getRow($i);
 
+                if ($fila[4] == "x") {
+                  $familia = "1";
+                }else if ($fila[5] == "x") {
+                  $familia = "2";
+                }else if ($fila[6] == "x") {
+                  $familia = "3";
+                }else if ($fila[7] == "x") {
+                  $familia = "4";
+                }else if ($fila[8] == "x") {
+                  $familia = "5";
+                }else {
+                  $familia = "0";
+                }
+
                 $sql="INSERT INTO CARGO (id_org, id_fam, codigo, codtno, codgra, nombre, clave, descripcion, funciones) VALUES(".
                 "'0', ".  //id organizacion              
-                "'0', ".  //id familia de cargo
+                "$familia, ".  //id familia de cargo
                 "'$fila[1]', ".  //codigo cargo
                 "'$fila[3]', ". //nombre cargo
                 "'$fila[0]', ". //nombre cargo

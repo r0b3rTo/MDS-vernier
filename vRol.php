@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $Legend = "Rol";
+    $Legend = "Datos de rol";
     include "lib/cVerRol.php";
     include "vHeader.php";
     extract($_GET);
@@ -99,7 +99,7 @@ $(function() {
             <div class="control-group">
                 <label class="control-label">Familia de Rol</label>
                 <div class="controls">
-                    <select style="width:200px" id="fam" name="fam" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                    <select style="width:200px" id="fam" name="fam" class="select2 show-tick fam-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                         <?
                             while (list($key, $val) = each($FAM_ID)){
                                 echo "<option value=".$key.">".$val."</option>";

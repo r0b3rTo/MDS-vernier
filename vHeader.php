@@ -68,58 +68,55 @@
     });
  
     </script>
-    
-    <div class="navbar navbar-fixed-top ">
-    <div class="navbar-inner">
-      <div class="container">
-        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+
+<?
+  if (isset($_SESSION['USBID'])){
+    echo "
+    <div class='navbar navbar-fixed-top '>
+    <div class='navbar-inner'>
+      <div class='container'>
+        <a class='btn btn-navbar' data-toggle='collapse' data-target='.nav-collapse'>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
+          <span class='icon-bar'></span>
         </a>
-       <a class="brand" href="vInicio.php">"Vernier"</a>
-       <div class="nav-collapse collapse" id="main-menu">
-        <ul class="nav" id="main-menu-left">
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Persona <b class="caret"></b></a>
-            <ul class="dropdown-menu" id="swatch-menu">
-              <li><a href="vPersona.php">Crear Persona</a></li>
-              <li><a href="vListarPersona.php">Listar Persona</a></li>
+       <a class='brand' href='index.php'>'Vernier'</a>
+       <div class='nav-collapse collapse' id='main-menu'>
+        <ul class='nav' id='main-menu-left'>
+          <li class='dropdown'>
+            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Persona <b class='caret'></b></a>
+            <ul class='dropdown-menu' id='swatch-menu'>
+              <li><a href='vPersona.php'>Crear Persona</a></li>
+              <li><a href='vListarPersona.php'>Listar Persona</a></li>
             </ul>
           </li>
-          <li class="dropdown" id="preview-menu">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Organizaci&oacute;n <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="vOrganizacion.php">Crear Organizaci&oacute;n</a></li>
-              <li><a href="vListarOrganizacion.php">Listar Organizaci&oacute;n</a></li>
+          <li class='dropdown' id='preview-menu'>
+            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Organizaci&oacute;n <b class='caret'></b></a>
+            <ul class='dropdown-menu'>
+              <li><a href='vOrganizacion.php'>Crear Organizaci&oacute;n</a></li>
+              <li><a href='vListarOrganizacion.php'>Listar Organizaci&oacute;n</a></li>
             </ul>
           </li>
-          <li class="dropdown" id="preview-menu">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Cargo/Rol<b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a href="vCargo.php">Crear Cargo</a></li>
-              <li><a href="vListarCargo.php">Listar Cargo</a></li>
-              <li class="divider"></li>
-              <li><a href="vFamiliaC.php">Crear Familia Cargo</a></li>
-              <li><a href="vListarFamiliaC.php">Listar Familia Cargo</a></li>
-              <li class="divider"></li>
-              <li><a href="vRol.php">Crear Rol</a></li>
-              <li><a href="vListarRol.php">Listar Rol</a></li>
-              <li class="divider"></li>
-              <li><a href="vFamiliaR.php">Crear Familia Rol</a></li>
-              <li><a href="vListarFamiliaR.php">Listar Familia Rol</a></li>
+          <li class='dropdown' id='preview-menu'>
+            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Cargo<b class='caret'></b></a>
+            <ul class='dropdown-menu'>
+              <li><a href='vCargo.php'>Crear Cargo</a></li>
+              <li><a href='vListarCargo.php'>Listar Cargo</a></li>
+              <li class='divider'></li>
+              <li><a href='vFamiliaC.php'>Crear Familia Cargo</a></li>
+              <li><a href='vListarFamiliaC.php'>Listar Familia Cargo</a></li>
             </ul>
           </li>
           <li>
-            <a href="SubirArchivo.php">Cargar CSV</a>
+            <a href='SubirArchivo.php'>Cargar CSV</a>
           </li>
         </ul>
-        <ul class="nav pull-right" id="main-menu-right">
-          <li><a class="dropdown-toggle" data-toggle="dropdown" href="#"><? mostrarDatosUsuario();?> <b class="caret"></b></a>
-            <ul class="dropdown-menu">
-              <li><a rel="tooltip" target="_blank" href="#" title="Ir a LiveSurveys" onclick="_gaq.push(['_trackEvent', 'click', 'outbound', 'builtwithbootstrap']);">LiveSurveys <i class="icon-share-alt"></i></a></li>
-              <li class="divider"></li>
-              <li><a rel="tooltip" href="salir.php" title="Cerrar Sesi&oacute;n">Salir <i class="icon-off"></i></a></li>
+        <ul class='nav pull-right' id='main-menu-right'>
+          <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'>";mostrarDatosUsuario(); echo "<b class='caret'></b></a>
+            <ul class='dropdown-menu'>
+              <li><a rel='tooltip' target='_blank' href='#' title='Ir a LiveSurveys' onclick='_gaq.push(['_trackEvent', 'click', 'outbound', 'builtwithbootstrap']);'>LiveSurveys <i class='icon-share-alt'></i></a></li>
+              <li class='divider'></li>
+              <li><a rel='tooltip' href='salir.php' title='Cerrar Sesi&oacute;n'>Salir <i class='icon-off'></i></a></li>
             </ul>
           </li>
         </ul>
@@ -127,26 +124,32 @@
      </div>
    </div>
  </div>
-
+ ";
+}
+?>
 
     <div class="container">  
-            <div >
-                <br><br><h1 class="text-center">Sistema Vernier</h1>
-            </div>
+      <div class="text-center">
+        <p>
+        <br><br><img src="img/header.png" width="800">
+        </p>
+        <h1>Sistema Vernier</h1>
+      </div>
 
-    <?   
-    if (isset($_GET['success'])){
-    echo "  <div class='alert alert-success'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>¡Operación realizada con Exito!</strong> ".$_SESSION['MSJ'].".
-            </div>";
-    }else if (isset($_GET['error'])) {
-            echo "  <div class='alert alert-error'>
-                <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                <strong>¡Parece que algo salió mal!</strong> ".$_SESSION['MSJ'].".
-            </div>";
-    }
+      <div class="span12">
+        <?   
+        if (isset($_GET['success'])){
+        echo "  <div class='alert alert-success'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                    <strong>¡Operación realizada con Exito!</strong> ".$_SESSION['MSJ'].".
+                </div>";
+        }else if (isset($_GET['error'])) {
+                echo "  <div class='alert alert-error'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                    <strong>¡Parece que algo salió mal!</strong> ".$_SESSION['MSJ'].".
+                </div>";
+        }
 
-    ?>
-    <legend><? echo $Legend ?></legend>
+        ?>
+        <legend><? echo $Legend ?></legend>
   

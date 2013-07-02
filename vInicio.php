@@ -1,7 +1,6 @@
 <?
     session_start();
     include("lib/cAutorizacion.php");
-    $_SESSION['USBID'] = "08-10790";
     if (isset($_REQUEST['dace-info'])) {
         include_once("lib/scriptcas-daceinfo.php");
 

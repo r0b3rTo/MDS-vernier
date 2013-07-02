@@ -48,14 +48,16 @@
               while ($i <= $columna){
                 $fila = $excel->parser->getRow($i);        
 
-                $direccion = $fila[40]." , ".$fila[41]." , ".$fila[42]." , ".$fila[43]." , ".$fila[44]." , ".$fila[45];
+                $direccion = $fila[43]." , ".$fila[44]." , ".$fila[45]." , ".$fila[46];
+                $unidad = $fila[2]." , ".$fila[3]." , ".$fila[4];
 
-                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, direccion, telefono, email) VALUES(".
+                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, unidad, direccion, telefono, email) VALUES(".
                 "'$fila[9]', ".  //id organizacion              
                 "'$fila[8]', ".  //id familia de cargo
                 "'$fila[7]', ".  //codigo cargo
                 "'$fila[10]', ". //nombre cargo
                 "'$fila[19]', ". //nombre cargo
+                "'$unidad', ". //nombre cargo
                 "'$direccion', ". //nombre cargo
                 "'', ". //clave para la organizacion                
                 "'' ". //descripcion
@@ -69,7 +71,29 @@
             //echo $sql;
             break;
           case 'Org':
-            $BD = "ORGANIZACION";
+            $BD = "ORGANIZACION";         
+            if ($tam = sizeof($excel->parser->getRow(1)) > 1){
+              $i = 2;
+              $columna = sizeof($excel->parser->getColumn(1));
+              while ($i <= $columna){
+                $fila = $excel->parser->getRow($i);
+
+                $codigo = $fila[0].".".$fila[1].".".$fila[2];
+
+                $sql="INSERT INTO ORGANIZACION (idsup, nombre, codigo, descripcion, observacion) VALUES(".
+                "'0', ".  //id organizacion              
+                "'$fila[3]', ".  //nombre de la organizacion
+                "'$codigo', ".  //codigo de la organizacion
+                "'', ".  //descripcion de la organizacion
+                "'' ".  //observacion de la organizacion
+                ")";
+
+                $i++;
+                $resultado=ejecutarConsulta($sql, $conexion);
+              }
+
+            }
+
             break;
           case 'Car':
             $BD = "CARGO";              

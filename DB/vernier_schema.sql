@@ -6,7 +6,7 @@
 CREATE TABLE ORGANIZACION(
     id              SERIAL      PRIMARY KEY,
     idsup           INTEGER     REFERENCES ORGANIZACION ON DELETE CASCADE,
-    nombre          VARCHAR(50) NOT NULL,
+    nombre          VARCHAR(500) NOT NULL,
     codigo          VARCHAR(50),
     descripcion     TEXT,
     observacion     TEXT
@@ -70,12 +70,13 @@ CREATE TABLE PERSONA(
     cedula          VARCHAR(50) NOT NULL,
     sexo            CHAR(1),
     fecha_nac       VARCHAR(10),
+    unidad          TEXT,
     direccion       TEXT,
     telefono        VARCHAR(15),
     email           VARCHAR(50)
 );
 
-INSERT INTO PERSONA VALUES ('0', 'Sin asignar', '' , '' , '' , '' , '' , '' );
+INSERT INTO PERSONA VALUES ('0', 'Sin asignar', '' , '', '' , '' , '' , '' , '' );
 
 CREATE TABLE USUARIO(
     id              SERIAL      PRIMARY KEY,
@@ -85,7 +86,9 @@ CREATE TABLE USUARIO(
 CREATE TABLE PERSONA_CARGO(
     id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
     id_car          INTEGER     REFERENCES CARGO ON DELETE CASCADE,
-    fecha           VARCHAR(10),
+    actual          BOOLEAN,
+    fecha_ini       VARCHAR(10),
+    fecha_fin       VARCHAR(10),
     observacion     TEXT
 );
 

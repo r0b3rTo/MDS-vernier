@@ -14,22 +14,19 @@
     $CAR_ID = obtenerIds($conexion, "CARGO", false);
 
     if (isset($_GET['id'])) {
-        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "direccion", "telefono", "email" );
+        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "unidad", "direccion", "telefono", "email" );
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA ";
-
         $sql.="WHERE id='".$_GET['id']."'";
-        $sql.="ORDER BY id ";
 
         $LISTA_PER = obtenerDatos($sql, $conexion, $atts, "Per");
 
-        $atts = array("id_per", "id_car", "fecha", "observacion");
+        $atts = array("id_per", "id_car", "fecha_ini", "observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_CARGO ";
-        $sql.="WHERE id_per='".$_GET['id']."'";
-        $sql.="ORDER BY id_per ";
+        $sql.="WHERE id_per='".$_GET['id']."' AND actual='t' ";
 
         $LISTA_PER_CAR = obtenerDatos($sql, $conexion, $atts, "Per_Car");        
 
@@ -38,7 +35,6 @@
         $sql ="SELECT * ";
         $sql.="FROM SUPERVISOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
-        $sql.="ORDER BY id_per ";
 
         $LISTA_PER_SUP = obtenerDatos($sql, $conexion, $atts, "Per_Sup"); 
 
@@ -47,12 +43,11 @@
         $sql ="SELECT * ";
         $sql.="FROM EVALUADOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
-        $sql.="ORDER BY id_per ";
 
         $LISTA_PER_EVA = obtenerDatos($sql, $conexion, $atts, "Per_Eva"); 
 
     }else if (isset($all)){
-        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "direccion", "telefono", "email" );
+        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "unidad", "direccion", "telefono", "email" );
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA ";

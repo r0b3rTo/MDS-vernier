@@ -37,21 +37,22 @@
                 $sql1 ="SELECT * ";
                 $sql1.="FROM PERSONA_CARGO ";
                 $sql1.="WHERE id_per='".$_POST['id']."'";
-                $sql1.="ORDER BY id_per ";
 
                 $LISTA_PER_CAR = obtenerDatos($sql1, $conexion, $atts, "Per_Car");        
 
-                if ($LISTA_PER_CAR['max_res']==0) {
-                    $sql="INSERT INTO PERSONA_CARGO (id_per, id_car, fecha, observacion) VALUES(".
+                if ($LISTA_PER_CAR['max_res']!==0) {
+                    $sql = "UPDATE PERSONA_CARGO SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
+                    $resultado=ejecutarConsulta($sql, $conexion);
+                }
+
+                    $sql="INSERT INTO PERSONA_CARGO (id_per, id_car, actual, fecha_ini, observacion) VALUES(".
                     "'$_POST[id]', ".  //id organizacion              
                     "'$_POST[car]', ".  //id organizacion              
+                    "'t', ".  //id organizacion              
                     "'$_POST[fech]', ".  //id familia de cargo
                     "'$_POST[obs]' ".  //observacion
                     //observacion
                     ")";
-                }else{
-                    $sql = "UPDATE PERSONA_CARGO SET id_per='$_POST[id]', id_car='$_POST[car]', fecha='$_POST[fech]', observacion='$_POST[obs]' WHERE id_per='$_POST[id]'";
-                }
                 break;    
 
             case 'add_sup':
@@ -106,7 +107,7 @@
 
             case 'edit':
                 $sql = "UPDATE PERSONA SET nombre='$_POST[name]', apellido='$_POST[lname]' , cedula='$_POST[ced]', sexo='$_POST[sex]', fecha_nac='$_POST[fnac]', 
-                        direccion='$_POST[dir]',telefono='$_POST[tel]', email='$_POST[email]' WHERE id='$_GET[id]'";
+                        unidad='$_POST[dir]',telefono='$_POST[tel]', email='$_POST[email]' WHERE id='$_GET[id]'";
                 break;  
 
             default:

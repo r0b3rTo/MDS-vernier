@@ -171,7 +171,7 @@ $(function() {
     <li class="active"><a href="#tab1" data-toggle="tab">Persona</a></li>
     <li><a href="#tab2" data-toggle="tab">Cargo</a></li>
     <li><a href="#tab3" data-toggle="tab">Evaluador</a></li>
-    <li><a href="#tab4" data-toggle="tab">Supervisor</a></li>
+    <li><a href="#tab4" data-toggle="tab">Supervisor Jerárquico</a></li>
   </ul>
   <div class="tab-content">
     <div class="tab-pane active" id="tab1">
@@ -221,15 +221,20 @@ $(function() {
                         <input type="hidden" id="sex" name="sex" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['sexo']['0']; else echo "F"?>" />
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label">Fecha Nacimiento</label>
-                <div class="controls">
-                    <div class="input-prepend date datepicker" data-date="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['fecha_nac']['0']; else echo date("d-m-Y")?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
-                        <span class="add-on"><i class="icon-calendar"></i></span>
-                        <input size="12" id="fnac" name="fnac" class="input-xlarge" type="text" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['fecha_nac']['0']; else echo date("d-m-Y")?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+            <? if (!isset($_GET['action']) || $_GET['action'] !== 'edit'){
+                echo "
+                    <div class='control-group'>
+                        <label class='control-label'>Fecha Nacimiento</label>
+                        <div class='controls'>
+                            <div class='input-prepend date datepicker' data-date='"; if(isset($_GET['id'])) echo $LISTA_PER['Per']['fecha_nac']['0']; else echo date('d-m-Y'); echo "' data-date-language='es' data-date-today-Btn='true' data-date-start-View='2' data-date-today-Highlight='true' data-date-autoclose='true' data-date-format='dd-mm-yyyy'>
+                                <span class='add-on'><i class='icon-calendar'></i></span>
+                                <input size='12' id='fnac' name='fnac' class='input-xlarge' type='text' value='"; if(isset($_GET['id'])) echo $LISTA_PER['Per']['fecha_nac']['0']; else echo date('d-m-Y'); echo "'"; echo "disabled readonly>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
+                    ";
+                }
+            ?>
             <div class="control-group">
                 <label class="control-label">Email</label>
                 <div class="controls">
@@ -240,24 +245,43 @@ $(function() {
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Tel&eacute;fono</label>
+                <label class="control-label">Extensi&oacute;n</label>
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-comment"></i></span>
-                        <input id="tel" name="tel" type="text" class="input-xlarge bfh-phone" data-format="(dddd) ddd-dddd" data-number="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['telefono']['0'];?>" placeholder="(0212) 123-4567" <? if (isset($_GET['view'])) echo 'disabled'; ?>>
+                        <input id="tel" name="tel" type="text" class="input-xlarge bfh-phone" data-format="(0212) 906-dddd" data-number="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['telefono']['0'];?>" placeholder="(0212) 906-0000" <? if (isset($_GET['view'])) echo 'disabled'; ?>>
                     </div>
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label">Direcci&oacute;n</label>
-                <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="dir" name="dir" placeholder="Direcci&oacute;n"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($_GET['id'])) echo $LISTA_PER['Per']['direccion']['0'];?></textarea>
-                    </div>
-                </div>
-            </div>
+            <?
+            if (!isset($_GET['action']) && !isset($_GET['view'])){
+                echo "
 
+                    <div class='control-group'>
+                    <label class='control-label'>Direcci&oacute;n</label>
+                    <div class='controls'>
+                        <div class='input-prepend'>
+                            <span class='add-on'><i class='icon-edit'></i></span>
+                            <textarea class='input-xlarge' rows='3' id='dir' name='dir' placeholder='Direcci&oacute;n'></textarea>
+                        </div>
+                    </div>
+                    </div>
+                ";
+            } else {
+                echo "
+
+                    <div class='control-group'>
+                    <label class='control-label'>Unidad de Adscripción</label>
+                    <div class='controls'>
+                        <div class='input-prepend'>
+                            <span class='add-on'><i class='icon-edit'></i></span>
+                            <textarea class='input-xlarge' rows='3' id='dir' name='dir' placeholder='Unidad de adscripción'"; if (isset($_GET['view'])) echo "disabled"; echo ">"; if(isset($_GET['id'])) echo $LISTA_PER['Per']['unidad']['0']; echo "</textarea>
+                        </div>
+                    </div>
+                    </div>
+                ";
+            } 
+            ?>
             <div class="control-group">
                     <div class="row">
                     <div class="span5"></div>
@@ -291,8 +315,31 @@ $(function() {
             <div class="row">
             <div class="span2"></div>
             <div class="span4">
+
+            <?
+
+            if (isset($_GET['action']) && $_GET['action'] == "edit"){
+
+                if(isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0 && $LISTA_PER_CAR['Per_Car']['id_car']['0']!=0){
+                    echo "
+            <p class='lsmall muted'>Al cambiar el cargo es necesario guardar la fecha fin del cargo anterior, nombre y fecha del nuevo cargo. Por defecto aparece la fecha actual.</p>
+            <div class='control-group'>
+                <label class='control-label'>Fecha Fin viejo cargo</label>
+                <div class='controls'>
+                    <div class='input-prepend date datepicker'".date('d-m-Y')."' data-date-language='es' data-date-today-Btn='true' data-date-start-View='2' data-date-today-Highlight='true' data-date-autoclose='true' data-date-format='dd-mm-yyyy'>
+                        <span class='add-on'><i class='icon-calendar'></i></span>
+                        <input size='12' id='fin' name='fin' class='input-xlarge' type='text' value='".date('d-m-Y')."' readonly>
+                    </div>
+                </div>
+            </div>
+                    ";
+                }
+
+            }
+            ?>
+
             <div class="control-group">
-                <label class="control-label">Cargo</label>
+                <label class="control-label">Nuevo cargo</label>
                 <div class="controls">
                         <select style="width:200px" id="car" name="car" class="select2  car-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                             <?
@@ -305,14 +352,15 @@ $(function() {
             </div>
 
             <div class="control-group">
-                <label class="control-label">Fecha Ocupaci&oacute;n</label>
+                <label class="control-label">Fecha Inicio nuevo cargo</label>
                 <div class="controls">
-                    <div class="input-prepend date datepicker" data-date="<? if(isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0) echo $LISTA_PER_CAR['Per_Car']['fecha']['0']; else echo date("d-m-Y")?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+                    <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
                         <span class="add-on"><i class="icon-calendar"></i></span>
-                        <input size="12" id="fech" name="fech" class="input-xlarge" type="text" value="<? if(isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0) echo $LISTA_PER_CAR['Per_Car']['fecha']['0']; else echo date("d-m-Y")?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+                        <input size="12" id="fech" name="fech" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
                     </div>
                 </div>
             </div>
+
             <div class="control-group">
                 <label class="control-label">Observaci&oacute;n</label>
                 <div class="controls">
@@ -328,13 +376,15 @@ $(function() {
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarOrganizacion.php">Listar Organizaciones</a>
                     <?                         
                         if (isset($_GET['id']) & !isset($_GET['view'])) {
-                            echo '<input class="btn" type="reset" value="Borrar">
+                    
+                            echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico de Cargos</a>
+                                  <input class="btn" type="reset" value="Borrar">
                                   <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                         }else if (isset($_GET['id']) & isset($_GET['view'])){
-                            echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
+                            echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico de Cargos</a>
+                                    <a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         } else{
                             echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
                             echo ' Debe registrar una Persona';
@@ -388,7 +438,7 @@ $(function() {
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarOrganizacion.php">Listar Organizaciones</a>
+                    <a class="btn btn-info" href="vListarPersona.php">Listar Personas</a>
                     <?                         
                         if (isset($_GET['id']) & !isset($_GET['view'])) {
                             echo '<input class="btn" type="reset" value="Borrar">
@@ -423,7 +473,7 @@ $(function() {
             <div class="span2"></div>
             <div class="span4">
                 <div class="control-group">
-                    <label class="control-label">Supervisor</label>
+                    <label class="control-label">Supervisor Jerárquico</label>
                     <div class="controls">
                             <select style="width:200px" id="sup" name="sup" class="select2  sup-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                                 <?
@@ -449,7 +499,7 @@ $(function() {
                         <div class="span5"></div>
                         <div class="span6">
                         <p>
-                        <a class="btn btn-info" href="vListarOrganizacion.php">Listar Organizaciones</a>
+                        <a class="btn btn-info" href="vListarPersona.php">Listar Personas</a>
                         <?                         
                             if (isset($_GET['id']) & !isset($_GET['view'])) {
                                 echo '<input class="btn" type="reset" value="Borrar">

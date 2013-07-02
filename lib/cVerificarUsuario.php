@@ -28,6 +28,6 @@ if ($_SESSION['tipo'] == "empleados") {
 //}
 cerrarConexion($conexion);
 
-header("Location: ../vInicio.php");
+header("Location: ../");
 ?>
 

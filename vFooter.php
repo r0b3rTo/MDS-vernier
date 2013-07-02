@@ -1,3 +1,4 @@
+        </div>
         <footer class="page-footer"><br>
             <div class="span12">
                     <div class="row">

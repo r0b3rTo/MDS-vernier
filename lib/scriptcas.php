@@ -137,7 +137,7 @@ if ($_SESSION['usuario_validado']==-2){
 	<?
 }
 if ($_SESSION['usuario_validado']==1){*/
-	header("Location: lib/cVerificarUsuario.php?tok=$_SESSION[csrf]");
+	header("Location: cVerificarUsuario.php?tok=$_SESSION[csrf]");
 //}
 	
 ?>

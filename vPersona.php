@@ -221,7 +221,7 @@ $(function() {
                         <input type="hidden" id="sex" name="sex" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['sexo']['0']; else echo "F"?>" />
                 </div>
             </div>
-            <? if (!isset($_GET['action']) || $_GET['action'] !== 'edit'){
+            <?/*  if (!isset($_GET['action']) || $_GET['action'] !== 'edit'){
                 echo "
                     <div class='control-group'>
                         <label class='control-label'>Fecha Nacimiento</label>
@@ -233,7 +233,7 @@ $(function() {
                         </div>
                     </div>
                     ";
-                }
+                }*/
             ?>
             <div class="control-group">
                 <label class="control-label">Email</label>

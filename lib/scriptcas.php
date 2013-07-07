@@ -11,7 +11,7 @@
 
 /*** Aqui comienza la autenticacion con el CAS  ***/
 // import phpCAS lib
-include_once('/usr/share/php/CAS.php');
+include_once('CAS.php');
 
 phpCAS::setDebug();
 

@@ -20,7 +20,7 @@
     </p><br><br>
 
     <p>
-        Si eres parte de la Dirección de Gestión de Capital Humano (DGCH) <a href='lib/scriptcas.php' disabled>inicia sesión</a> administrar 
+        Si eres parte de la Dirección de Gestión de Capital Humano (DGCH) <a href='lib/scriptcas.php' disabled>inicia sesión</a> para administrar 
         los datos y encuestas.
     </p><br><br>
 
@@ -35,7 +35,7 @@
         </p><br><br>
 
         <p>
-            Como administrador del sistema puedes habilitar las diferentes encuestas que completaran los empleados y evaludaroes
+            Como administrador del sistema puedes habilitar las diferentes encuestas que completar&aacute;n los empleados y evaluadores
             que laboran en la Universidad Simón Bolívar.
         </p><br><br>
 

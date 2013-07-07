@@ -246,7 +246,7 @@ function verFechadDia($d, $s, $conexion){
 }
 function mostrarDatosUsuario(){
 	if (isset($_SESSION['USBID'])){
-        include_once('/usr/share/php/CAS.php');
+        include_once('CAS.php');
 /*
         phpCAS::setDebug();
 

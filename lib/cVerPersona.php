@@ -9,18 +9,40 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
+    $ORG_ID = obtenerIds($conexion, "ORGANIZACION", false);
     $SUP_ID = obtenerIds($conexion, "PERSONA", true);
     $EVA_ID = obtenerIds($conexion, "PERSONA", true);
     $CAR_ID = obtenerIds($conexion, "CARGO", false);
 
     if (isset($_GET['id'])) {
-        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "unidad", "direccion", "telefono", "email" );
+        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "unidad", "email" );
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA ";
         $sql.="WHERE id='".$_GET['id']."'";
 
         $LISTA_PER = obtenerDatos($sql, $conexion, $atts, "Per");
+
+        if (intval($LISTA_PER['Per']['unidad']['0']) > 8000) {
+            $sede = "Litoral";
+        } else {
+            $sede = "Sartenejas";
+        }
+
+        switch ($LISTA_PER['Per']['unidad']['0'][1]) {
+            case '1':
+                $tipo = "Académico";
+                break;
+            case '2':
+                $tipo = "Administrativo";
+                break;
+            case '3':
+                $tipo = "Obrero";
+                break;
+            default:
+                $tipo = "--";
+                break;
+        }
 
         $atts = array("id_per", "id_car", "fecha_ini", "observacion");
 

@@ -66,7 +66,7 @@
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarFamiliaR.php">Listar Familia de Cargos</a>
+                    <a class="btn btn-info" href="vListarFamiliasR.php">Listar Familia de Cargos</a>
                     <?  if (isset($_GET['view'])) 
                             echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         else 

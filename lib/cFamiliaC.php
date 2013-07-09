@@ -51,12 +51,12 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarFamiliaC.php?success"); 
+                header("Location: ../vListarFamiliasC.php?success"); 
                 break;
             
             default:
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
-                header("Location: ../vListarFamiliaC.php?success"); 
+                header("Location: ../vListarFamiliasC.php?success"); 
                 break;
         }
 
@@ -73,7 +73,7 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "No se pudo eliminar la familia de cargos";
-                header("Location: ../vListarFamiliaC.php?error"); 
+                header("Location: ../vListarFamiliasC.php?error"); 
                 break;
             
             default:

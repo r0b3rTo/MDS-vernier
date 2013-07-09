@@ -19,14 +19,13 @@
 
         switch ($_GET['action']) {
             case 'add':
-                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, direccion, telefono, email) VALUES(".
+                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, unidad, email) VALUES(".
                 "'$_POST[name]', ".  //id organizacion              
                 "'$_POST[lname]', ".  //id organizacion              
                 "'$_POST[ced]', ".  //id familia de cargo
                 "'$_POST[sex]', ".  //codigo cargo
                 "'$_POST[fnac]', ". //nombre cargo
-                "'$_POST[dir]', ". //clave para la organizacion                
-                "'$_POST[tel]', ". //descripcion
+                "'$_POST[org]', ". //clave para la organizacion                
                 "'$_POST[email]' ".   //funciones
                 ")";
                 break;
@@ -107,7 +106,7 @@
 
             case 'edit':
                 $sql = "UPDATE PERSONA SET nombre='$_POST[name]', apellido='$_POST[lname]' , cedula='$_POST[ced]', sexo='$_POST[sex]', fecha_nac='$_POST[fnac]', 
-                        unidad='$_POST[dir]',telefono='$_POST[tel]', email='$_POST[email]' WHERE id='$_GET[id]'";
+                        unidad='$_POST[org]', email='$_POST[email]' WHERE id='$_GET[id]'";
                 break;  
 
             default:
@@ -126,12 +125,12 @@
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarPersona.php?success"); 
+                header("Location: ../vListarPersonas.php?success"); 
                 break;
 
             case 'add':
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
-                header("Location: ../vListarPersona.php?success");
+                header("Location: ../vListarPersonas.php?success");
                 break;
             
             default:

@@ -82,7 +82,7 @@
                         <div class="accordion-inner">
                             <ul class="text-center" >
                                 <li><a href="vPersona.php">Nuevo</a>
-                                <li><a href="vListarPersona.php">Listar</a>
+                                <li><a href="vListarPersonas.php">Listar</a>
                             </ul>
                         </div>
                     </div>

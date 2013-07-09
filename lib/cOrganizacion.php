@@ -55,12 +55,12 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarOrganizacion.php?success"); 
+                header("Location: ../vListarUnidades.php?success"); 
                 break;
             
             default:
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
-                header("Location: ../vListarOrganizacion.php?success"); 
+                header("Location: ../vListarUnidades.php?success"); 
                 break;
         }
 
@@ -77,7 +77,7 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "No se pudo eliminar la organizacion";
-                header("Location: ../vListarCargo.php?error"); 
+                header("Location: ../vListarCargos.php?error"); 
                 break;
             
             default:

@@ -51,12 +51,12 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarFamiliaR.php?success"); 
+                header("Location: ../vListarFamiliasR.php?success"); 
                 break;
             
             default:
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
-                header("Location: ../vListarFamiliaR.php?success"); 
+                header("Location: ../vListarFamiliasR.php?success"); 
                 break;
         }
 
@@ -73,7 +73,7 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "No se pudo eliminar la familia de rol";
-                header("Location: ../vListarFamiliaR.php?error"); 
+                header("Location: ../vListarFamiliasR.php?error"); 
                 break;
             
             default:

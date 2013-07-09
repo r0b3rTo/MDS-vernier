@@ -93,7 +93,7 @@ $(document).ready(function() {
 });
 </script>
     <div class="well" align="center">
-        <form method="post" enctype="multipart/form-data" id="newOrg" class="form-horizontal" action="lib/subir.php">
+        <form method="post" enctype="multipart/form-data" id="newOrg" class="form-horizontal" action="lib/cImportarDatos.php">
             <p class="muted">Según la tabla, el archivo debe contar con las siguientes columnas:</p>
 
             <p class="muted" id="hideCategory1"><small>Primera Fila del Archivo: "Cédula" , "Nombre" , "Teléfono" , "Email"</small></p>
@@ -115,7 +115,7 @@ $(document).ready(function() {
                 </label>
                 <label class="radio">
                     <input type="radio" name="BD" id="Radio2" value="Org">
-                        Organizaci&oacute;n
+                        Unidad
                 </label>
                 <label class="radio">
                     <input type="radio" name="BD" id="Radio3" value="Car">

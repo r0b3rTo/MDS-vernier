@@ -20,8 +20,7 @@ try{
 
         switch ($_GET['action']) {
             case 'add':
-                $sql="INSERT INTO ROL (id_org, id_fam, codigo, nombre, clave, descripcion, funciones) VALUES(".
-                "'$_POST[org]', ".  //id organizacion              
+                $sql="INSERT INTO ROL (id_fam, codigo, nombre, clave, descripcion, funciones) VALUES(".
                 "'$_POST[fam]', ".  //id familia de cargo
                 "'$_POST[cod]', ".  //codigo cargo
                 "'$_POST[name]', ". //nombre cargo
@@ -57,12 +56,12 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarRol.php?success"); 
+                header("Location: ../vListarRoles.php?success"); 
                 break;
             
             default:
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
-                header("Location: ../vListarRol.php?success"); 
+                header("Location: ../vListarRoles.php?success"); 
                 break;
         }
 
@@ -80,12 +79,12 @@ try{
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "No se pudo eliminar el rol";
-                header("Location: ../vListarCargo.php?error"); 
+                header("Location: ../vListarRoles.php?error"); 
                 break;
             
             default:
                 $_SESSION['MSJ'] = "No se pudo registrar el rol";
-                header("Location: ../vCargo.php?error"); 
+                header("Location: ../vRol.php?error"); 
                 break;
         }
 

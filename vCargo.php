@@ -86,8 +86,9 @@ $(function() {
                     </div>
                 </div>
             </div>
+            <? /*
             <div class="control-group">
-                <label class="control-label">Organizaci&oacute;n</label>
+                <label class="control-label">Unidad</label>
                 <div class="controls">
                     <select style="width:200px" id="org" name="org" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                         <?
@@ -98,6 +99,8 @@ $(function() {
                     </select>
                 </div>
             </div>
+            */
+           ?>
             <div class="control-group">
                 <label class="control-label">Familia de Cargo</label>
                 <div class="controls">
@@ -154,7 +157,7 @@ $(function() {
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarCargo.php">Listar Cargos</a>
+                    <a class="btn btn-info" href="vListarCargos.php">Listar Cargos</a>
                     <?  if (isset($_GET['view'])) 
                             echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         else 

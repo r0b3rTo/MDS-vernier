@@ -22,8 +22,7 @@ try {
 
         switch ($_GET['action']) {
             case 'add':
-                $sql="INSERT INTO CARGO (id_org, id_fam, codigo, nombre, clave, descripcion, funciones) VALUES(".
-                "'$_POST[org]', ".  //id organizacion              
+                $sql="INSERT INTO CARGO (id_fam, codigo, nombre, clave, descripcion, funciones) VALUES(".
                 "'$_POST[fam]', ".  //id familia de cargo
                 "'$_POST[cod]', ".  //codigo cargo
                 "'$_POST[name]', ". //nombre cargo
@@ -59,12 +58,12 @@ try {
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarCargo.php?success"); 
+                header("Location: ../vListarCargos.php?success"); 
                 break;
             
             default:
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
-                header("Location: ../vListarCargo.php?success"); 
+                header("Location: ../vListarCargos.php?success"); 
                 break;
         }
 
@@ -81,7 +80,7 @@ try {
         switch ($_GET['action']) {
             case 'delete':
                 $_SESSION['MSJ'] = "No se pudo eliminar el cargo, revise la bitacora";
-                header("Location: ../vListarCargo.php?error"); 
+                header("Location: ../vListarCargos.php?error"); 
                 break;
             
             default:

@@ -1,6 +1,6 @@
 <?php
     session_start();
-    $Legend = "Datos de organización";
+    $Legend = "Datos de la Unidad";
     include "lib/cVerOrganizacion.php";
     include "vHeader.php";
     extract($_GET);
@@ -55,11 +55,11 @@
             <div class="span2"></div>
             <div class="span4">
             <div class="control-group">
-                <label class="control-label">Nombre Organizaci&oacute;n</label>
+                <label class="control-label">Nombre Unidad</label>
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-briefcase"></i></span>
-                        <input type="text" class="input-xlarge" id="oname" name="oname" value="<? if(isset($_GET['id'])) echo $LISTA_ORG['Org']['nombre']['0'];?>" placeholder="Organizac&oacute;n" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <input type="text" class="input-xlarge" id="oname" name="oname" value="<? if(isset($_GET['id'])) echo $LISTA_ORG['Org']['nombre']['0'];?>" placeholder="Unidad" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                     </div>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarOrganizacion.php">Listar Organizaciones</a>
+                    <a class="btn btn-info" href="vListarUnidades.php">Listar Unidades</a>
                     <?  if (isset($_GET['view'])) 
                             echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         else 

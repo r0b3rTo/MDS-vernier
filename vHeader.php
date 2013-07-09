@@ -63,7 +63,7 @@
                         }]);
         });
         $('.selectpicker').selectpicker();
-        $('.select2').select2();
+        $('.select2').select2({ width: '310px' });
         $('.datepicker').datepicker()
     });
  
@@ -87,24 +87,24 @@
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Persona <b class='caret'></b></a>
             <ul class='dropdown-menu' id='swatch-menu'>
               <li><a href='vPersona.php'>Crear Persona</a></li>
-              <li><a href='vListarPersona.php'>Listar Persona</a></li>
+              <li><a href='vListarPersonas.php'>Listar Persona</a></li>
             </ul>
           </li>
           <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Organizaci&oacute;n <b class='caret'></b></a>
+            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Unidad <b class='caret'></b></a>
             <ul class='dropdown-menu'>
-              <li><a href='vOrganizacion.php'>Crear Organizaci&oacute;n</a></li>
-              <li><a href='vListarOrganizacion.php'>Listar Organizaci&oacute;n</a></li>
+              <li><a href='vUnidad.php'>Crear Unidad</a></li>
+              <li><a href='vListarUnidades.php'>Listar Unidad</a></li>
             </ul>
           </li>
           <li class='dropdown' id='preview-menu'>
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Cargo<b class='caret'></b></a>
             <ul class='dropdown-menu'>
               <li><a href='vCargo.php'>Crear Cargo</a></li>
-              <li><a href='vListarCargo.php'>Listar Cargo</a></li>
+              <li><a href='vListarCargos.php'>Listar Cargo</a></li>
               <li class='divider'></li>
               <li><a href='vFamiliaC.php'>Crear Familia Cargo</a></li>
-              <li><a href='vListarFamiliaC.php'>Listar Familia Cargo</a></li>
+              <li><a href='vListarFamiliasC.php'>Listar Familia Cargo</a></li>
             </ul>
           </li>
           <li>

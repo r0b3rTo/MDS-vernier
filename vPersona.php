@@ -132,7 +132,11 @@
 
         });
 
-        <?  if (isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0){
+        <?  if (isset($_GET['id'])){
+                echo "$('.org-sel').select2('val', '".$LISTA_PER['Per']['unidad']['0']."');";
+            }
+
+            if (isset($LISTA_PER_CAR) && $LISTA_PER_CAR['max_res']>0){
                 echo "$('.car-sel').select2('val', '".$LISTA_PER_CAR['Per_Car']['id_car']['0']."');";
             }
 
@@ -187,10 +191,11 @@ $(function() {
             <div class="control-group">
                 <label class="control-label">Nombre</label>
                 <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-user"></i></span>
-                        <input required type="text" class="input-xlarge" id="name" name="name" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['nombre']['0'];?>" placeholder="Nombre" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                    <div class='input-prepend'>
+                        <span class='add-on'><i class='icon-user's></i></span>
+                        <input required type="text" class="input-xlarge" id="name" name="name" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['nombre']['0']; ?>" placeholder="Nombre" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                     </div>
+                
                 </div>
             </div>
             <div class="control-group">
@@ -245,49 +250,48 @@ $(function() {
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Extensi&oacute;n</label>
+                <label class="control-label">Unidad adscrita</label>
                 <div class="controls">
-                    <div class="input-prepend">
-                        <span class="add-on"><i class="icon-comment"></i></span>
-                        <input id="tel" name="tel" type="text" class="input-xlarge bfh-phone" data-format="(0212) 906-dddd" data-number="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['telefono']['0'];?>" placeholder="(0212) 906-0000" <? if (isset($_GET['view'])) echo 'disabled'; ?>>
-                    </div>
+                    <select style="width:200px" id="org" name="org" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <?
+                            while (list($key, $val) = each($ORG_ID)){
+                                echo "<option value=".$key.">".$val."</option>";
+                            }
+                        ?>
+                    </select>
                 </div>
             </div>
             <?
-            if (!isset($_GET['action']) && !isset($_GET['view'])){
-                echo "
+                if (isset($_GET['id'])) {
+                    echo "
+            <div class='control-group'>
+                <label class='control-label'>Tipo de personal</label>
+                <div class='controls'>
+                    <div class='input-prepend'>
+                        <span class='add-on'><i class='icon-comment'></i></span>
+                        <input type='text' class='input-xlarge' value='".$tipo."' disabled>
+                    </div>
+                </div>
+            </div>
 
-                    <div class='control-group'>
-                    <label class='control-label'>Direcci&oacute;n</label>
-                    <div class='controls'>
-                        <div class='input-prepend'>
-                            <span class='add-on'><i class='icon-edit'></i></span>
-                            <textarea class='input-xlarge' rows='3' id='dir' name='dir' placeholder='Direcci&oacute;n'></textarea>
-                        </div>
+            <div class='control-group'>
+                <label class='control-label'>Sede</label>
+                <div class='controls'>
+                    <div class='input-prepend'>
+                        <span class='add-on'><i class='icon-comment'></i></span>
+                        <input  type='text' class='input-xlarge' value='".$sede."' disabled>
                     </div>
-                    </div>
-                ";
-            } else {
-                echo "
-
-                    <div class='control-group'>
-                    <label class='control-label'>Unidad de Adscripción</label>
-                    <div class='controls'>
-                        <div class='input-prepend'>
-                            <span class='add-on'><i class='icon-edit'></i></span>
-                            <textarea class='input-xlarge' rows='3' id='dir' name='dir' placeholder='Unidad de adscripción'"; if (isset($_GET['view'])) echo "disabled"; echo ">"; if(isset($_GET['id'])) echo $LISTA_PER['Per']['unidad']['0']; echo "</textarea>
-                        </div>
-                    </div>
-                    </div>
-                ";
-            } 
+                </div>
+            </div>
+                        ";
+                }
             ?>
             <div class="control-group">
                     <div class="row">
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarPersona.php">Listar Personas</a>
+                    <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                     <?  if (isset($_GET['view'])) 
                             echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         else 
@@ -438,7 +442,7 @@ $(function() {
                     <div class="span5"></div>
                     <div class="span6">
                     <p>
-                    <a class="btn btn-info" href="vListarPersona.php">Listar Personas</a>
+                    <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                     <?                         
                         if (isset($_GET['id']) & !isset($_GET['view'])) {
                             echo '<input class="btn" type="reset" value="Borrar">
@@ -499,7 +503,7 @@ $(function() {
                         <div class="span5"></div>
                         <div class="span6">
                         <p>
-                        <a class="btn btn-info" href="vListarPersona.php">Listar Personas</a>
+                        <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                         <?                         
                             if (isset($_GET['id']) & !isset($_GET['view'])) {
                                 echo '<input class="btn" type="reset" value="Borrar">

@@ -85,7 +85,7 @@ $(function() {
                 </div>
             </div>
             <div class="control-group">
-                <label class="control-label">Organizaci&oacute;n</label>
+                <label class="control-label">Rol</label>
                 <div class="controls">
                     <select style="width:200px" id="org" name="org" class="select2 show-tick org-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                         <?

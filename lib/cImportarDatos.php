@@ -128,8 +128,7 @@
                   $familia = "0";
                 }
 
-                $sql="INSERT INTO CARGO (id_org, id_fam, codigo, codtno, codgra, nombre, clave, descripcion, funciones) VALUES(".
-                "'0', ".  //id organizacion              
+                $sql="INSERT INTO CARGO (id_fam, codigo, codtno, codgra, nombre, clave, descripcion, funciones) VALUES(".
                 "$familia, ".  //id familia de cargo
                 "'$fila[1]', ".  //codigo cargo
                 "'$fila[3]', ". //nombre cargo

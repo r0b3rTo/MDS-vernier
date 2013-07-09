@@ -39,7 +39,7 @@ CREATE TABLE CARGO(
     funciones       TEXT
 );
 
-INSERT INTO CARGO VALUES ('0', '0', '0' , '', '', '', 'Sin asignar', '0', '', '');
+INSERT INTO CARGO VALUES ('0', '0' , '', '', '', 'Sin asignar', '0', '', '');
 
 CREATE TABLE FAMILIA_ROL(
     id              SERIAL      PRIMARY KEY,
@@ -59,7 +59,7 @@ CREATE TABLE ROL(
     funciones       TEXT
 );
 
-INSERT INTO ROL VALUES ('0', '0', '0' , '', 'Sin asignar', '0', '', '');
+INSERT INTO ROL VALUES ('0', '0' , '', 'Sin asignar', '0', '', '');
 
 CREATE TABLE PERSONA(
     id              SERIAL      PRIMARY KEY,

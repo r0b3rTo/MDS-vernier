@@ -12,7 +12,7 @@
     $ORG_ID = obtenerIds($conexion, "ORGANIZACION", false);
     $FAM_ID = obtenerIds($conexion, "FAMILIA_CARGO", false);
 
-    $atts = array("id", "id_org", "id_fam", "codigo", "codtno" ,"codgra", "nombre", "clave","descripcion", "funciones" );
+    $atts = array("id", "id_fam", "codigo", "codtno" ,"codgra", "nombre", "clave","descripcion", "funciones" );
 
     $sql ="SELECT * ";
     $sql.="FROM CARGO ";

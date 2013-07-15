@@ -15,7 +15,7 @@
     $CAR_ID = obtenerIds($conexion, "CARGO", false);
 
     if (isset($_GET['id'])) {
-        $atts = array("id", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "unidad", "email" );
+        $atts = array("id", "tipo", "nombre", "apellido", "cedula", "sexo", "fecha_nac", "unidad", "email" );
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA ";
@@ -29,7 +29,7 @@
             $sede = "Sartenejas";
         }
 
-        switch ($LISTA_PER['Per']['unidad']['0'][1]) {
+        switch ($LISTA_PER['Per']['tipo']['0']) {
             case '1':
                 $tipo = "Académico";
                 break;
@@ -40,7 +40,7 @@
                 $tipo = "Obrero";
                 break;
             default:
-                $tipo = "--";
+                $tipo = "Otro";
                 break;
         }
 

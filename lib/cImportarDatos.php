@@ -38,12 +38,22 @@
               $excel = new SimpleExcel('CSV');
               $excel->parser->loadFile($file);  // Load CSV file
 
+              echo "Eliminar la cabecera del archivo ".$_POST['cab'];
+              if ($_POST['cab'] == 't') {
+                $i = 2;
+              echo "SIIII";
+
+              }else {
+                $i = 1;  
+              echo "NOOO ";
+
+              }
+
         switch ($_POST['BD']) {
           case 'Per':
             $BD = "PERSONA";
 
             if ($tam = sizeof($excel->parser->getRow(1)) > 1){
-              $i = 2;
               $columna = sizeof($excel->parser->getColumn(1));
               while ($i <= $columna){
                 $fila = $excel->parser->getRow($i);        
@@ -53,15 +63,16 @@
 
                 $email = $fila[7]."@cedula.usb.ve";
 
-                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, unidad, direccion, email) VALUES(".
-                "'$fila[9]', ".  //id organizacion              
-                "'$fila[8]', ".  //id familia de cargo
-                "'$fila[7]', ".  //codigo cargo
-                "'$fila[10]', ". //nombre cargo
-                "'$fila[19]', ". //nombre cargo
-                "'$unidad', ". //nombre cargo
-                "'$direccion', ". //nombre cargo
-                "'$email' ". //descripcion
+                $sql="INSERT INTO PERSONA (tipo, nombre, apellido, cedula, sexo, fecha_nac, unidad, direccion, email) VALUES(".
+                "'$fila[0]', ".  //tipo personal              
+                "'$fila[9]', ".  //nombre persona              
+                "'$fila[8]', ".  //apellido persona
+                "'$fila[7]', ".  //cedula
+                "'$fila[10]', ". //sexo
+                "'$fila[19]', ". //fecha nacimiento
+                "'$unidad', ". // unidad 
+                "'$direccion', ". //direccion
+                "'$email' ". //email
                 ")";
 
                 $i++;
@@ -74,7 +85,6 @@
           case 'Org':
             $BD = "ORGANIZACION";         
             if ($tam = sizeof($excel->parser->getRow(1)) > 1){
-              $i = 2;
               $columna = sizeof($excel->parser->getColumn(1));
               while ($i <= $columna){
                 $fila = $excel->parser->getRow($i);
@@ -109,7 +119,6 @@
           case 'Car':
             $BD = "CARGO";              
             if ($tam = sizeof($excel->parser->getRow(1)) > 1){
-              $i = 2;
               $columna = sizeof($excel->parser->getColumn(1));
               while ($i <= $columna){
                 $fila = $excel->parser->getRow($i);

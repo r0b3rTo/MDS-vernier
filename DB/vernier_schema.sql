@@ -63,6 +63,7 @@ INSERT INTO ROL VALUES ('0', '0' , '', 'Sin asignar', '0', '', '');
 
 CREATE TABLE PERSONA(
     id              SERIAL      PRIMARY KEY,
+    tipo            INTEGER,
     nombre          VARCHAR(50) NOT NULL,
     apellido        VARCHAR(50) NOT NULL,
     cedula          VARCHAR(50) NOT NULL,
@@ -74,7 +75,7 @@ CREATE TABLE PERSONA(
     email           VARCHAR(50)
 );
 
-INSERT INTO PERSONA VALUES ('0', 'Sin asignar', '' , '', '' , '' , '' , '' , '' );
+INSERT INTO PERSONA VALUES ('0', '0', 'Sin asignar', '' , '', '' , '' , '' , '' , '' );
 
 CREATE TABLE USUARIO(
     id              SERIAL      PRIMARY KEY,

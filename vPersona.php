@@ -220,8 +220,30 @@ $(function() {
                 <label class="control-label">G&eacute;nero</label>
                 <div class="controls">
                         <div class="btn-group" data-toggle-name="sex" data-toggle="buttons-radio" >
-                            <button type="button" value="F" class="btn <? if (isset($_GET['view']) & ($LISTA_PER['Per']['sexo']['0']=='M')) echo 'disabled' ?>" data-toggle="button">Femenino</button>
-                            <button type="button" value="M" class="btn <? if (isset($_GET['view']) & ($LISTA_PER['Per']['sexo']['0']=='F')) echo 'disabled' ?>" data-toggle="button">Masculino</button>
+                            <?
+                            if (isset($_GET['view'])) {
+                                switch ($LISTA_PER['Per']['sexo']['0']) {
+                                    case 'F':
+                                        echo "
+                                <button type='button' value='F' disabled class='btn data-toggle='button'>Femenino</button>
+                                            ";
+                                        break;
+                                    case 'M':
+                                        echo "
+                                <button type='button' value='M' disabled class='btn data-toggle='button'>Masculino</button>
+                                            ";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            } else {
+                            echo "
+                                <button type='button' value='F' class='btn data-toggle='button'>Femenino</button>
+                                <button type='button' value='M' class='btn data-toggle='button'>Masculino</button>
+                            ";
+                            }
+                            ?>
                         </div>
                         <input type="hidden" id="sex" name="sex" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['sexo']['0']; else echo "F"?>" />
                 </div>
@@ -265,16 +287,6 @@ $(function() {
                 if (isset($_GET['id'])) {
                     echo "
             <div class='control-group'>
-                <label class='control-label'>Tipo de personal</label>
-                <div class='controls'>
-                    <div class='input-prepend'>
-                        <span class='add-on'><i class='icon-comment'></i></span>
-                        <input type='text' class='input-xlarge' value='".$tipo."' disabled>
-                    </div>
-                </div>
-            </div>
-
-            <div class='control-group'>
                 <label class='control-label'>Sede</label>
                 <div class='controls'>
                     <div class='input-prepend'>
@@ -286,6 +298,50 @@ $(function() {
                         ";
                 }
             ?>
+            <div class="control-group ">
+                <label class="control-label">Tipo personal</label>
+                <div class="controls">
+                        <div class="btn-group" data-toggle-name="tipo" data-toggle="buttons-radio" >
+                            <?
+                            if (isset($_GET['view'])) {
+                                switch ($LISTA_PER['Per']['tipo']['0']) {
+                                    case '1':
+                                        echo "
+                                <button type='button' value='1' disabled class='btn data-toggle='button'>Académico</button>
+                                            ";
+                                        break;
+                                    case '2':
+                                        echo "
+                                <button type='button' value='2' disabled class='btn data-toggle='button'>Administrativo</button>
+                                            ";
+                                        break;
+                                    case '3':
+                                        echo "
+                                <button type='button' value='3' disabled class='btn data-toggle='button'>Obrero</button>
+                                            ";
+                                        break;
+                                    case '4':
+                                        echo "
+                                <button type='button' value='4' disabled class='btn data-toggle='button'>Otro</button>
+                                            ";
+                                        break;
+                                    default:
+                                        break;
+                                }
+
+                            } else {
+                            echo "
+                                <button type='button' value='1' class='btn data-toggle='button'>Académico</button>
+                                <button type='button' value='2' class='btn data-toggle='button'>Administrativo</button>
+                                <button type='button' value='3' class='btn data-toggle='button'>Obrero</button>
+                                <button type='button' value='4' class='btn data-toggle='button'>Otro</button>
+                            ";
+                            }
+                            ?>
+                        </div>
+                        <input type="hidden" id="tipo" name="tipo" value="<? if(isset($_GET['id'])) echo $LISTA_PER['Per']['tipo']['0']; else echo "1"?>" />
+                </div>
+            </div>
             <div class="control-group">
                     <div class="row">
                     <div class="span5"></div>

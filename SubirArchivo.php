@@ -121,10 +121,6 @@ $(document).ready(function() {
                     <input type="radio" name="BD" id="Radio3" value="Car">
                         Cargo
                 </label>
-                <label class="radio">
-                    <input type="radio" name="BD" id="Radio4" value="Rol">
-                        Rol
-                </label>
 
                 </div>
             </div>
@@ -132,11 +128,11 @@ $(document).ready(function() {
             <div class="control-group ">
                 <label class="control-label">Eliminar Cabecera</label>
                 <div class="controls">
-                        <div class="btn-group" data-toggle-name="clav" data-toggle="buttons-radio" >
-                            <button type="button" value="true" class="btn <? if (isset($_GET['view']) & ($LISTA_CARG['Carg']['clave']['0']=='false')) echo 'disabled' ?>" data-toggle="button">Si</button>
-                            <button type="button" value="false" class="btn <? if (isset($_GET['view']) & ($LISTA_CARG['Carg']['clave']['0']=='true')) echo 'disabled' ?>" data-toggle="button">No</button>
+                        <div class="btn-group" data-toggle-name="cab" data-toggle="buttons-radio" >
+                                <button type="button" value="t" class="btn" data-toggle="button">Si</button>
+                                <button type="button" value="f" class="btn" data-toggle="button">No</button>
                         </div>
-                        <input type="hidden" id="clav" name="clav" value="<? if(isset($_GET['id'])) echo $LISTA_CARG['Carg']['clave']['0']; else echo "false"?>" />
+                        <input type="hidden" id="cab" name="cab" value="f" />
                 </div>
             </div>
 

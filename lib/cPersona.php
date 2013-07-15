@@ -19,7 +19,8 @@
 
         switch ($_GET['action']) {
             case 'add':
-                $sql="INSERT INTO PERSONA (nombre, apellido, cedula, sexo, fecha_nac, unidad, email) VALUES(".
+                $sql="INSERT INTO PERSONA (tipo, nombre, apellido, cedula, sexo, fecha_nac, unidad, email) VALUES(".
+                "'$_POST[tipo]', ".  //id organizacion              
                 "'$_POST[name]', ".  //id organizacion              
                 "'$_POST[lname]', ".  //id organizacion              
                 "'$_POST[ced]', ".  //id familia de cargo
@@ -105,7 +106,7 @@
                 break;
 
             case 'edit':
-                $sql = "UPDATE PERSONA SET nombre='$_POST[name]', apellido='$_POST[lname]' , cedula='$_POST[ced]', sexo='$_POST[sex]', fecha_nac='$_POST[fnac]', 
+                $sql = "UPDATE PERSONA SET tipo='$_POST[tipo]', nombre='$_POST[name]', apellido='$_POST[lname]' , cedula='$_POST[ced]', sexo='$_POST[sex]', fecha_nac='$_POST[fnac]', 
                         unidad='$_POST[org]', email='$_POST[email]' WHERE id='$_GET[id]'";
                 break;  
 

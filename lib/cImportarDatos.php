@@ -99,6 +99,9 @@
                 $id++;
                 $i++;
               }
+              $sql = "ALTER SEQUENCE PERSONA_ID_SEQ RESTART WITH $id;";
+              $resultado=ejecutarConsulta($sql, $conexion);
+
             }
 
             //echo $sql;

@@ -61,8 +61,9 @@ CREATE TABLE ROL(
 
 INSERT INTO ROL VALUES ('0', '0' , '', 'Sin asignar', '0', '', '');
 
+CREATE SEQUENCE PERSONA_ID_SEQ;
 CREATE TABLE PERSONA(
-    id              SERIAL      PRIMARY KEY,
+    id              INTEGER NOT NULL    PRIMARY KEY DEFAULT nextval('PERSONA_ID_SEQ'),
     tipo            INTEGER,
     nombre          VARCHAR(50) NOT NULL,
     apellido        VARCHAR(50) NOT NULL,
@@ -74,6 +75,7 @@ CREATE TABLE PERSONA(
     telefono        VARCHAR(15),
     email           VARCHAR(50)
 );
+ALTER SEQUENCE PERSONA_ID_SEQ OWNED BY persona.id;
 
 INSERT INTO PERSONA VALUES ('0', '0', 'Sin asignar', '' , '', '' , '' , '' , '' , '' );
 

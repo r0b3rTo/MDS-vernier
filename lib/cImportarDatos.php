@@ -55,6 +55,7 @@
 
             if ($tam = sizeof($excel->parser->getRow(1)) > 1){
               $columna = sizeof($excel->parser->getColumn(1));
+              $id = 1;
               while ($i <= $columna){
                 $fila = $excel->parser->getRow($i);        
 
@@ -63,7 +64,8 @@
 
                 $email = $fila[7]."@cedula.usb.ve";
 
-                $sql="INSERT INTO PERSONA (tipo, nombre, apellido, cedula, sexo, fecha_nac, unidad, direccion, email) VALUES(".
+                $sql="INSERT INTO PERSONA (id, tipo, nombre, apellido, cedula, sexo, fecha_nac, unidad, direccion, email) VALUES(".
+                "'$id', ".  //id persona              
                 "'$fila[0]', ".  //tipo personal              
                 "'$fila[9]', ".  //nombre persona              
                 "'$fila[8]', ".  //apellido persona
@@ -74,9 +76,28 @@
                 "'$direccion', ". //direccion
                 "'$email' ". //email
                 ")";
-
-                $i++;
+                
                 $resultado=ejecutarConsulta($sql, $conexion);
+
+                $sql = "SELECT id FROM CARGO WHERE codigo = '$fila[16]';";
+
+                $resultado=ejecutarConsulta($sql, $conexion);
+
+                if ($rows = numResultados($resultado) > 0 ) {
+                  $fila=obtenerResultados($resultado);
+
+                  $sql="INSERT INTO PERSONA_CARGO (id_per, id_car, actual, fecha_ini, observacion) VALUES(".
+                  "'$id', ".  //id organizacion              
+                  "'$fila[id]', ".  //id organizacion              
+                  "'t', ".  //id organizacion              
+                  "'', ".  //id familia de cargo
+                  "'' ".  //observacion
+                  //observacion
+                  ")";
+                  $resultado=ejecutarConsulta($sql, $conexion);
+                }
+                $id++;
+                $i++;
               }
             }
 

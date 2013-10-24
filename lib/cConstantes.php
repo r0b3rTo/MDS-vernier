@@ -1,8 +1,8 @@
 <?
 define ("MANEJADOR_BD", "postgres");
 define ("NOMBRE_BD", "vernier"); //cambiar si cambia nombre Base de Datos
-define ("USER" , "arturo");
-define ("PASS" , "Dev!!");
+define ("USER" , "root");
+define ("PASS" , "SistemaVernier!!");
 
 require_once "cFunciones.php";
 

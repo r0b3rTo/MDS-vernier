@@ -63,7 +63,7 @@
         $atts = array("id_per", "id_eva", "observacion");
 
         $sql ="SELECT * ";
-        $sql.="FROM EVALUADOR ";
+        $sql.="FROM PERSONA_EVALUADOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
 
         $LISTA_PER_EVA = obtenerDatos($sql, $conexion, $atts, "Per_Eva"); 

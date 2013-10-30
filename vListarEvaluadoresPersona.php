@@ -91,7 +91,7 @@
             for ($i=0;$i<$LISTA_EVA['max_res'];$i++){
           ?>
           <tr class="<?php echo $color_tabla; ?>" >
-          <td class="center lsmallT" nowrap><small><a href='vPersona.php?view&id=<? echo $LISTA_EVA['Eva']['id_eva'][$i];?>'> <? echo $EVA_ID[$LISTA_CAR['Eva']['id_eva'][$i]];?></a> <? if ($LISTA_EVA['Eva']['actual'][$i] == 't') echo " (actual)"; ?></small></td>
+          <td class="center lsmallT" nowrap><small><a href='vPersona.php?view&id=<? echo $LISTA_EVA['Eva']['id_eva'][$i];?>'> <? echo $LISTA_EVA['Eva']['id_eva'][$i];?></a> <? if ($LISTA_EVA['Eva']['actual'][$i] == 't') echo " (actual)"; ?></small></td>
           <td class="center lsmallT"><small><? echo $LISTA_EVA['Eva']['fecha_ini'][$i];?></small></td>
           <td class='center lsmallT'><small><? echo $LISTA_EVA['Eva']['fecha_fin'][$i];?></small></td>
           <td class='center lsmallT'><small><? echo $LISTA_EVA['Eva']['observacion'][$i];?></small></td>

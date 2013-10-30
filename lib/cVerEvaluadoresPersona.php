@@ -9,7 +9,7 @@
     $_WARNING = array();
     $_SUCCESS = array();
 
-    $EVA_ID = obtenerIds($conexion, "EVALUADOR", false);
+    $EVA_ID = obtenerIds($conexion, "PERSONA_EVALUADOR", true);
 
     $atts = array("id_eva", "actual", "fecha_ini", "fecha_fin", "observacion" );
 

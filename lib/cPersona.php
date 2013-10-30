@@ -83,23 +83,27 @@
                 $atts = array("id_per");
 
                 $sql1 ="SELECT * ";
-                $sql1.="FROM EVALUADOR ";
+                $sql1.="FROM PERSONA_EVALUADOR ";
                 $sql1.="WHERE id_per='".$_POST['id']."'";
                 $sql1.="ORDER BY id_per ";
 
                 $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
 
-                if ($LISTA_PER_EVA['max_res']==0) {
-                    $sql="INSERT INTO EVALUADOR (id_per, id_eva, observacion) VALUES(".
-                    "'$_POST[id]', ".  //id organizacion              
-                    "'$_POST[eval]', ".  //id organizacion              
-                    "'$_POST[observacion]' ".  //id organizacion              
+                if ($LISTA_PER_EVA['max_res']!==0) {
+                    $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
+                    $resultado=ejecutarConsulta($sql, $conexion);
+                }
+
+                    $sql="INSERT INTO PERSONA_EVALUADOR (id_per, id_eva, actual, fecha_ini, observacion) VALUES(".
+                    "'$_POST[id]', ".  //id persona              
+                    "'$_POST[eval]', ".  //id evaluador            
+                    "'t', ".  // evaluador actual              
+                    "'$_POST[fech]', ".  //fecha
+                    "'$_POST[obs]' ".  //observacion
                     //observacion
                     ")";
-                }else{
-                    $sql = "UPDATE EVALUADOR SET id_eva='$_POST[eval]', observacion='$_POST[obs]' WHERE id_per='$_POST[id]';";
-                }
-                break;
+                break;   
+                
 
             case 'delete':
                 $sql="DELETE FROM PERSONA WHERE id='".$_GET['id']."'";

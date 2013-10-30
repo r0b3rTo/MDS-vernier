@@ -501,10 +501,12 @@ $(function() {
                     <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                     <?                         
                         if (isset($_GET['id']) & !isset($_GET['view'])) {
-                            echo '<input class="btn" type="reset" value="Borrar">
+                            echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico de Evaluadores</a>
+                                  <input class="btn" type="reset" value="Borrar">
                                   <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                         }else if (isset($_GET['id']) & isset($_GET['view'])){
-                            echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
+                            echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico de Evaluadores</a>
+                                  <a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                         } else{
                             echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
                             echo ' Debe registrar una Persona';
@@ -562,10 +564,12 @@ $(function() {
                         <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                         <?                         
                             if (isset($_GET['id']) & !isset($_GET['view'])) {
-                                echo '<input class="btn" type="reset" value="Borrar">
+                                echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico de Supervisores</a>
+                                      <input class="btn" type="reset" value="Borrar">
                                       <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                             }else if (isset($_GET['id']) & isset($_GET['view'])){
-                                echo '<a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
+                                echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico de Supervisores</a>
+                                      <a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
                             } else{
                                 echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
                                 echo ' Debe registrar una Persona';

@@ -476,18 +476,17 @@ $(function() {
             if (isset($_GET['action']) && $_GET['action'] == "edit"){
        
                 if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0 && $LISTA_PER_EVA['Per_Eva']['id_eva']['0']!=0){
-                    echo "
-            <p class='lsmall muted'>Al cambiar el evaluador es necesario guardar la fecha fin del evaluador anterior, nombre y fecha del nuevo evaluador. Por defecto aparece la fecha actual.</p>
-            <div class='control-group'>
-                <label class='control-label'>Fecha Fin antiguo Evaluador</label>
-                <div class='controls'>
-                    <div class='input-prepend date datepicker'".date('d-m-Y')."' data-date-language='es' data-date-today-Btn='true' data-date-start-View='2' data-date-today-Highlight='true' data-date-autoclose='true' data-date-format='dd-mm-yyyy'>
-                        <span class='add-on'><i class='icon-calendar'></i></span>
-                        <input size='12' id='fin' name='fin' class='input-xlarge' type='text' value='".date('d-m-Y')."' readonly>
-                    </div>
-                </div>
-            </div>
-                    ";
+                    echo "<p class='lsmall muted'>Al cambiar el evaluador es necesario guardar la fecha fin del evaluador anterior, nombre y fecha del nuevo evaluador. Por defecto aparece la fecha actual.</p>
+                          <div class='control-group'>
+                           <label class='control-label'>Fecha Fin antiguo Evaluador</label>
+                           <div class='controls'>
+                           <div class='input-prepend date datepicker'".date('d-m-Y')."' data-date-language='es' 
+                           data-date-today-Btn='true' data-date-start-View='2' data-date-today-Highlight='true' data-date-autoclose='true' data-date-format='dd-mm-yyyy'>
+                           <span class='add-on'><i class='icon-calendar'></i></span>
+                           <input size='12' id='fin' name='fin' class='input-xlarge' type='text' value='".date('d-m-Y')."' readonly>
+                           </div>
+                           </div>
+                          </div>";
                 }
 
             }
@@ -520,7 +519,11 @@ $(function() {
                 <div class="controls">
                     <div class="input-prepend">
                         <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0) echo $LISTA_PER_EVA['Per_Eva']['observacion']['0'];?></textarea>
+                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"
+                        <? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0) 
+                           echo $LISTA_PER_EVA['Per_Eva']['observacion']['0'];
+                        ?>
+                        </textarea>
                     </div>
                 </div>
             </div>

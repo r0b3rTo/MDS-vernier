@@ -57,6 +57,7 @@
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_SUPERVISOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
+        $sql.="ORDER BY fecha_fin DESC";
 
         $LISTA_PER_SUP = obtenerDatos($sql, $conexion, $atts, "Per_Sup"); 
 
@@ -65,6 +66,7 @@
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_EVALUADOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
+        $sql.="ORDER BY fecha_fin DESC";
 
         $LISTA_PER_EVA = obtenerDatos($sql, $conexion, $atts, "Per_Eva"); 
 

@@ -1,6 +1,6 @@
 /* 
     Creacion BD sistema Vernier
-    Ultima modificacion 31-10-13
+    Ultima modificacion 22-05-13
 */
 
 CREATE TABLE ORGANIZACION(
@@ -100,9 +100,21 @@ CREATE TABLE PERSONA_ROL(
     observacion     TEXT
 );
 
+CREATE TABLE EVALUADOR(
+    id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
+    id_eva          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,      
+    observacion     TEXT
+);
+
 CREATE TABLE JEFE(
     id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
     id_jef          INTEGER     REFERENCES PERSONA ON DELETE CASCADE      
+);
+
+CREATE TABLE SUPERVISOR(
+    id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
+    id_sup          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,     
+    observacion     TEXT
 );
 
 CREATE TABLE CORREO(
@@ -115,24 +127,4 @@ CREATE TABLE CORREO(
 CREATE TABLE ERROR(
     id_error        SERIAL      PRIMARY KEY,
     mensaje         TEXT         NOT NULL
-);
-
-/* Nuevas tablas. Revisar*/
-
-CREATE TABLE PERSONA_SUPERVISOR(
-    id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
-    id_sup          INTEGER	REFERENCES PERSONA,
-    actual          BOOLEAN,
-    fecha_ini       VARCHAR(10),
-    fecha_fin       VARCHAR(10),
-    observacion     TEXT
-);
-
-CREATE TABLE PERSONA_EVALUADOR(
-    id_per          INTEGER     REFERENCES PERSONA ON DELETE CASCADE,
-    id_eva          INTEGER	REFERENCES PERSONA,
-    actual          BOOLEAN,
-    fecha_ini       VARCHAR(10),
-    fecha_fin       VARCHAR(10),
-    observacion     TEXT
 );

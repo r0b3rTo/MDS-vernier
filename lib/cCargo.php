@@ -38,8 +38,8 @@ try {
                 break;
 
             case 'edit':
-                $sql = "UPDATE CARGO SET id_org='$_POST[org]', id_fam='$_POST[fam]', codigo='$_POST[cod]', nombre='$_POST[name]', 
-                        clave='$_POST[clav]', descripcion='$_POST[desc]', observacion='$_POST[obs]' WHERE id='$_GET[id]'";
+                $sql = "UPDATE CARGO SET id_fam='$_POST[fam]', codigo='$_POST[cod]', nombre='$_POST[name]', 
+                        clave='$_POST[clav]', descripcion='$_POST[desc]', funciones='$_POST[obs]' WHERE id='$_GET[id]'";
                 break;
             
             default:

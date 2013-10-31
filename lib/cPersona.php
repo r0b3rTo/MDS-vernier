@@ -54,30 +54,7 @@
                     //observacion
                     ")";
                 break;    
-
-            case 'add_sup':
-
-                $atts = array("id_per");
-
-                $sql1 ="SELECT * ";
-                $sql1.="FROM SUPERVISOR ";
-                $sql1.="WHERE id_per='".$_POST['id']."'";
-                $sql1.="ORDER BY id_per ";
-
-                $LISTA_PER_SUP = obtenerDatos($sql1, $conexion, $atts, "Per_Sup"); 
-
-                if ($LISTA_PER_SUP['max_res']==0) {
-                    $sql="INSERT INTO SUPERVISOR (id_per, id_sup, observacion) VALUES(".
-                    "'$_POST[id]', ".  //id organizacion              
-                    "'$_POST[sup]', ".  //id organizacion              
-                    "'$_POST[observacion]' ".  //id organizacion              
-                    //observacion
-                    ")";
-                }else{
-                    $sql = "UPDATE SUPERVISOR SET id_sup='$_POST[sup]', observacion='$_POST[obs]' WHERE id_per='$_POST[id]';";
-                }
-                break;
-
+  
             case 'add_eval':
 
                 $atts = array("id_per");
@@ -85,7 +62,7 @@
                 $sql1 ="SELECT * ";
                 $sql1.="FROM PERSONA_EVALUADOR ";
                 $sql1.="WHERE id_per='".$_POST['id']."'";
-                $sql1.="ORDER BY id_per ";
+                //$sql1.="ORDER BY id_per ";
 
                 $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
 
@@ -102,7 +79,32 @@
                     "'$_POST[obs]' ".  //observacion
                     //observacion
                     ")";
-                break;   
+                break;  
+                
+            case 'add_sup':
+
+                $atts = array("id_sup");
+
+                $sql1 ="SELECT * ";
+                $sql1.="FROM PERSONA_SUPERVISOR ";
+                $sql1.="WHERE id_per='".$_POST['id']."'";
+                //$sql1.="ORDER BY id_per ";
+
+                $LISTA_PER_SUP = obtenerDatos($sql1, $conexion, $atts, "Per_Sup"); 
+                if ($LISTA_PER_SUP['max_res']!==0) {
+                    $sql = "UPDATE PERSONA_SUPERVISOR SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
+                    $resultado=ejecutarConsulta($sql, $conexion);
+                }
+
+                    $sql="INSERT INTO PERSONA_SUPERVISOR (id_per, id_sup, actual, fecha_ini, observacion) VALUES(".
+                    "'$_POST[id]', ".  //id persona              
+                    "'$_POST[sup]', ".  //id supervisor           
+                    "'t', ".  // evaluador actual              
+                    "'$_POST[fech]', ".  //fecha
+                    "'$_POST[obs]' ".  //observacion
+                    //observacion
+                    ")";
+                break;
                 
 
             case 'delete':

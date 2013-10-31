@@ -55,7 +55,7 @@
         $atts = array("id_per", "id_sup", "observacion");
 
         $sql ="SELECT * ";
-        $sql.="FROM SUPERVISOR ";
+        $sql.="FROM PERSONA_SUPERVISOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
 
         $LISTA_PER_SUP = obtenerDatos($sql, $conexion, $atts, "Per_Sup"); 

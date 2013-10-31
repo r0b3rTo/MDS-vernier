@@ -290,7 +290,7 @@ function mostrarDatosUsuario(){
     $atts       - atributos a obtener
 */
 function obtenerDatos($sql, $conexion, $atts, $tabla){
-
+    
     $LISTA=array();
 
     $modo_depuracion=FALSE;
@@ -299,6 +299,7 @@ function obtenerDatos($sql, $conexion, $atts, $tabla){
         echo "$sql<br>";
     else{
         $resultado=ejecutarConsulta($sql, $conexion);
+        
         $i=0;
         while ($fila=obtenerResultados($resultado)){
             $n = count($atts);
@@ -312,6 +313,7 @@ function obtenerDatos($sql, $conexion, $atts, $tabla){
         }
         $LISTA['max_res']=$i;
     }
+    
     return $LISTA;
 }
 
@@ -319,7 +321,7 @@ function obtenerIds($conexion, $tabla, $persona){
 
     $sql ="SELECT * ";
     $sql.="FROM ".$tabla;
-    //echo "Este es el query $sql <br>";
+    
     $FAM_ID=array();
 
     $modo_depuracion=FALSE;
@@ -330,9 +332,9 @@ function obtenerIds($conexion, $tabla, $persona){
     else{
         $resultado=ejecutarConsulta($sql, $conexion);
         $i=0;
-        //echo "Este es el resultado del query obtenerConsulta $resultado <br>";
+        
         while ($fila=obtenerResultados($resultado)){
-        //echo "Este es el resultado del query obtenerResultados $fila[i] para iteracion $i \n";
+        
                 if ($persona) {
                     $FAM_ID[$fila['id']] = $fila['nombre'].' '.$fila['apellido'];
                 }else

@@ -20,7 +20,7 @@
       $(document).ready( function () {
         $('#example').dataTable( {
           "sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-          "oTableTools": {
+         "oTableTools": {
             "aButtons": [
               {
                 "sExtends": "copy",

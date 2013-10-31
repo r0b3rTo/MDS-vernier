@@ -17,7 +17,7 @@
                         },
                         {
                          'label':'Si',
-                         'class':'btn',
+                        'class':'btn',
                          'callback':function() {
                                 return form.submit();
                          }
@@ -168,6 +168,18 @@ $(function() {
             }
         });
     });
+});
+</script>
+
+<script>
+$(document).ready(function() {
+   var i=1;
+   $(".add-field").click(function(event) {   
+      var original = document.getElementById('bloque-supervisor' + i);
+      var clone = original.cloneNode(true); // "deep" clone
+      clone.id = "bloque-supervisor" + ++i; // there can only be one element with an ID
+      document.getElementById("area-nuevo-supervisor").appendChild(clone);
+   });
 });
 </script>
 <div class="tabbable"> <!-- Only required for left/right tabs -->
@@ -591,7 +603,7 @@ $(function() {
             }
             ?>
             
-            
+            <div id="bloque-supervisor1">
                 <div class="control-group">
                     <label class="control-label">Supervisor Jerárquico</label>
                     <div class="controls">
@@ -605,14 +617,14 @@ $(function() {
                     </div>
                 </div>
                 <div class="control-group">
-		  <label class="control-label">Fecha Inicio del Supervisor</label>
-		  <div class="controls">
-		      <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
-			  <span class="add-on"><i class="icon-calendar"></i></span>
-			  <input size="12" id="fech" name="fech" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
-		      </div>
-		  </div>
-		</div>
+                  <label class="control-label">Fecha Inicio del Supervisor</label>
+                  <div class="controls">
+                     <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+                     <span class="add-on"><i class="icon-calendar"></i></span>
+                     <input size="12" id="fech" name="fech" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+                     </div>
+                  </div>
+               </div>
                 <div class="control-group">
                     <label class="control-label">Observaci&oacute;n</label>
                     <div class="controls">
@@ -622,7 +634,16 @@ $(function() {
                         </div>
                     </div>
                 </div>
-
+            </div>
+            
+            <div id="area-nuevo-supervisor"></div>
+            
+               <div class="control-group">
+                  <? if (isset($_GET['action']) && $_GET['action'] == "edit"){
+                        echo"<input type='button' class='btn btn-info add-field' name='boton_agregar_supervisor' value='Agregar otro Supervisor'>";
+                     }
+                  ?>
+               </div>
                 <div class="control-group">
                         <div class="row">
                         <div class="span5"></div>

@@ -184,13 +184,13 @@ $(document).ready(function() {
 </script>
 <div class="tabbable"> <!-- Only required for left/right tabs -->
   <ul class="nav nav-tabs">
-    <li class="active"><a href="#tab1" data-toggle="tab">Persona</a></li>
-    <li><a href="#tab2" data-toggle="tab">Cargo</a></li>
-    <li><a href="#tab3" data-toggle="tab">Evaluador</a></li>
-    <li><a href="#tab4" data-toggle="tab">Supervisor Jerárquico</a></li>
+    <li class="<? if(!(isset($_GET['tab'])) || ($_GET['tab'])==1 ) echo'active'?>"><a href="#tab1" data-toggle="tab">Persona</a></li>
+    <li <? if(($_GET['tab'])==2 ) echo'class=active'?>><a href="#tab2" data-toggle="tab">Cargo</a></li>
+    <li <? if(($_GET['tab'])==3 ) echo'class=active'?>><a href="#tab3" data-toggle="tab">Evaluador</a></li>
+    <li <? if(($_GET['tab'])==4 ) echo'class=active'?>><a href="#tab4" data-toggle="tab">Supervisor Jerárquico</a></li>
   </ul>
   <div class="tab-content">
-    <div class="tab-pane active" id="tab1">
+    <div class="tab-pane <? if(!(isset($_GET['tab']))) echo'active'?>" id="tab1">
         <!-- Formulario primera pestaña, Crear Persona-->
       <div class="well" align="center">
         <form id="newPer" class="form-horizontal" method="post" 
@@ -378,7 +378,7 @@ $(document).ready(function() {
 
     </div>
     </div>
-    <div class="tab-pane" id="tab2">
+    <div class="tab-pane <? if(($_GET['tab'])==2 ) echo'active'?>" id="tab2">
 
     <!-- Formulario segunda pestaña, Asociar Persona Cargo-->
     <div class="well" align="center">
@@ -456,7 +456,7 @@ $(document).ready(function() {
                                   <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                         }else if (isset($_GET['id']) & isset($_GET['view'])){
                             echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico de Cargos</a>
-                                    <a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
+                                    <a href="?action=edit&id='.$_GET['id'].'&tab=2" class="btn btn-warning">Editar</a>' ;
                         } else{
                             echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
                             echo ' Debe registrar una Persona';
@@ -474,7 +474,7 @@ $(document).ready(function() {
 
     </div>
     </div>
-    <div class="tab-pane" id="tab3">
+   <div class="tab-pane <? if(($_GET['tab'])==3 ) echo'active'?>" id="tab3">
 
         <!-- Formulario tercera pestaña, Asociar Evaluador a Persona-->
    <div class="well" align="center">
@@ -553,7 +553,7 @@ $(document).ready(function() {
                                   <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                         }else if (isset($_GET['id']) & isset($_GET['view'])){
                             echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico de Evaluadores</a>
-                                  <a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
+                                  <a href="?action=edit&id='.$_GET['id'].'&tab=3" class="btn btn-warning">Editar</a>' ;
                         } else{
                             echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
                             echo ' Debe registrar una Persona';
@@ -572,7 +572,7 @@ $(document).ready(function() {
     </div>
     </div>
 
-    <div class="tab-pane" id="tab4">
+    <div class="tab-pane <? if(($_GET['tab'])==4 ) echo'active'?>" id="tab4">
 
         <!-- Formulario cuarta pestaña, Asociar Supervisor a Persona-->
     <div class="well" align="center">
@@ -657,7 +657,7 @@ $(document).ready(function() {
                                       <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                             }else if (isset($_GET['id']) & isset($_GET['view'])){
                                 echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico de Supervisores</a>
-                                      <a href="?action=edit&id='.$_GET['id'].'" class="btn btn-warning">Editar</a>' ;
+                                      <a href="?action=edit&id='.$_GET['id'].'&tab=4" class="btn btn-warning">Editar</a>' ;
                             } else{
                                 echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
                                 echo ' Debe registrar una Persona';

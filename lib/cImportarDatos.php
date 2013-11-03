@@ -189,13 +189,15 @@
         cerrarConexion($conexion);
         unlink($file);
         echo "<br>BASE DE DATOS ".$BD."<br>";
+        
+    $_SESSION['MSJ'] = "Los datos fueron registrados";
+    header("Location: ../SubirArchivo.php?success");
 
     }else{
       $_SESSION['MSJ'] = "Tipo de archivo incorrecto";
       header("Location: ../SubirArchivo.php?error"); 
     }
 
-    $_SESSION['MSJ'] = "Los datos fueron registrados";
-    header("Location: ../SubirArchivo.php?success"); 
+ 
 
 ?>

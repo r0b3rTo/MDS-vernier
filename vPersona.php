@@ -451,11 +451,11 @@ $(document).ready(function() {
                     <?                         
                         if (isset($_GET['id']) & !isset($_GET['view'])) {
                     
-                            echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico de Cargos</a>
+                            echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico</a>
                                   <input class="btn" type="reset" value="Borrar">
                                   <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                         }else if (isset($_GET['id']) & isset($_GET['view'])){
-                            echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico de Cargos</a>
+                            echo '<a class="btn btn-info" href="vListarCargosPersona.php?id='.$_GET["id"].'">Histórico</a>
                                     <a href="?action=edit&id='.$_GET['id'].'&tab=2" class="btn btn-warning">Editar</a>' ;
                         } else{
                             echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
@@ -548,11 +548,11 @@ $(document).ready(function() {
                     <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                     <?                         
                         if (isset($_GET['id']) & !isset($_GET['view'])) {
-                            echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico de Evaluadores</a>
+                            echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico</a>
                                   <input class="btn" type="reset" value="Borrar">
                                   <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                         }else if (isset($_GET['id']) & isset($_GET['view'])){
-                            echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico de Evaluadores</a>
+                            echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico</a>
                                   <a href="?action=edit&id='.$_GET['id'].'&tab=3" class="btn btn-warning">Editar</a>' ;
                         } else{
                             echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
@@ -652,11 +652,11 @@ $(document).ready(function() {
                         <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
                         <?                         
                             if (isset($_GET['id']) & !isset($_GET['view'])) {
-                                echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico de Supervisores</a>
+                                echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico</a>
                                       <input class="btn" type="reset" value="Borrar">
                                       <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                             }else if (isset($_GET['id']) & isset($_GET['view'])){
-                                echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico de Supervisores</a>
+                                echo '<a class="btn btn-info" href="vListarSupervisoresPersona.php?id='.$_GET["id"].'">Histórico</a>
                                       <a href="?action=edit&id='.$_GET['id'].'&tab=4" class="btn btn-warning">Editar</a>' ;
                             } else{
                                 echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';

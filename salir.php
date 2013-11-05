@@ -1,5 +1,5 @@
 <?
-	include_once('lib/scriptcas.php');
+	include_once('lib/scriptcas-estudiante.php');
         // Para cerrar la cesion
             $_SESSION=array();			
 	        session_unset();

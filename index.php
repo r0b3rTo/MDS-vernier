@@ -26,7 +26,7 @@
     <p>
         Si eres empleado o evaluador inicia sesión para ver las diferentes encuestas que debes realizar.
     </p><br><br><br>";
-    echo "<a href='lib/scriptcas.php' class='btn btn-info'>Iniciar sesión</a><br><br>";
+    echo "<a href='lib/scriptcas-estudiante.php' class='btn btn-info'>Iniciar sesión</a><br><br>";
 
     } else {
 

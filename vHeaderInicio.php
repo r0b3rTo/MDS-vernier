@@ -41,35 +41,9 @@
             $("a").tooltip()
         });                  
     </script>
-    <script>
-    $(document).ready(function() {
-        $('a[href=#confirm]').click(function(e) {
-          //var data = $(this).data('data');
-          //var data = $(this).data('data');
-          //alert(url+" "+data);
- 
-          //Link untuk menghapus
-          var url = $(this).data('url');
-          bootbox.dialog('Esta Seguro de continuar?', [{
-                         'label':'No',
-                         'class':'btn'
-                        },
-                        {
-                         'label':'Si',
-                         'class':'btn',
-                         'callback':function() {
-                                return location.href = url;
-                         }
-                        }]);
-        });
-        $('.selectpicker').selectpicker();
-        $('.select2').select2({ width: '310px' });
-        $('.datepicker').datepicker()
-    });
- 
-    </script>
-
-<?
+    
+    
+    <?
   if (isset($_SESSION['USBID'])){
     echo "
     <div class='navbar navbar-fixed-top '>
@@ -80,37 +54,8 @@
           <span class='icon-bar'></span>
           <span class='icon-bar'></span>
         </a>
-       <a class='brand' href='vernier.php'>'Vernier'</a>
+       <a class='brand' href='index.php'>Sistema de Evaluación</a>
        <div class='nav-collapse collapse' id='main-menu'>
-        <ul class='nav' id='main-menu-left'>
-          <li class='dropdown'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Persona <b class='caret'></b></a>
-            <ul class='dropdown-menu' id='swatch-menu'>
-              <li><a href='vPersona.php'>Crear Persona</a></li>
-              <li><a href='vListarPersonas.php'>Listar Persona</a></li>
-            </ul>
-          </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Unidad <b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vUnidad.php'>Crear Unidad</a></li>
-              <li><a href='vListarUnidades.php'>Listar Unidad</a></li>
-            </ul>
-          </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Cargo<b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vCargo.php'>Crear Cargo</a></li>
-              <li><a href='vListarCargos.php'>Listar Cargo</a></li>
-              <li class='divider'></li>
-              <li><a href='vFamiliaC.php'>Crear Familia Cargo</a></li>
-              <li><a href='vListarFamiliasC.php'>Listar Familia Cargo</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href='SubirArchivo.php'>Cargar CSV</a>
-          </li>
-        </ul>
         <ul class='nav pull-right' id='main-menu-right'>
           <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'>";mostrarDatosUsuario(); echo "<b class='caret'></b></a>
             <ul class='dropdown-menu'>
@@ -133,23 +78,7 @@
         <p>
         <br><br><img src="img/header.png" width="800">
         </p>
-        <h1>Sistema Vernier</h1>
+        <h1>Sistema de Evaluación</h1>
       </div>
-
-      <div class="span12">
-        <?   
-        if (isset($_GET['success'])){
-        echo "  <div class='alert alert-success'>
-                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                    <strong>¡Operación realizada con Exito!</strong> ".$_SESSION['MSJ'].".
-                </div>";
-        }else if (isset($_GET['error'])) {
-                echo "  <div class='alert alert-error'>
-                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
-                    <strong>¡Parece que algo salió mal!</strong> ".$_SESSION['MSJ'].".
-                </div>";
-        }
-
-        ?>
-        <legend><? echo $Legend ?></legend>
+    </div>
   

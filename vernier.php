@@ -6,10 +6,9 @@
     }
 
     $Legend = "Inicio";
-    include_once("vHeaderInicio.php");
+    include_once("vHeader.php");
 ?>
 <br><br><br>
-
 <div class="well text-center">
     <?
 
@@ -31,32 +30,19 @@
 
     } else {
 
-	echo "
-	<p>
-	<h4>
-      ¡Bienvenido!<br><br><br>
-	</h4>
-	<div class='container'>
-	   <div clas='row'>
-	   
-	    <div class='span5'>
-	      <a class='btn' href='vernier.php'>
-		<br>
-		Si deseas administrar los datos y encuestas<br><br><strong>Haz click aquí</strong><br>
-		<br>
-	      </a>
-	    </div>
-	    
-	    <div class='span5 offset1'>
-	      <a  class='btn' href='encuestas.php'>
-		<br>
-		Si deseas ver las diferentes encuestas que debes realizar<br><br><strong>Haz click aquí</strong><br>
-		<br>
-	     </a>
-	    </div>
-	   </div>
-	  
-	</div>";
+            echo "    
+        <p>
+            <h4>Mediante este sistema se puede hacer seguimiento de la evaluación de personal de la Universidad Simón Bolívar.</h4>
+        </p><br><br>
+
+        <p>
+            Como administrador del sistema puedes habilitar las diferentes encuestas que completar&aacute;n los empleados y evaluadores
+            que laboran en la Universidad Simón Bolívar.
+        </p><br><br>
+
+        <p>
+            También puedes agregar otros usuarios como administradores del sistema.
+        </p><br><br><br>";
 
     }
     ?>

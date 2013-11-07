@@ -66,13 +66,13 @@
 // 			   $apellidos = $apellido1." ".$apellido2;
 			   
 			   $_SESSION[usuario_validado]=1;
-			   $_SESSION[USBID]="03-36606";
+			   $_SESSION[USBID]="05-38242";
 			   //$_SESSION[USBID]="07-41336";
-			   $_SESSION[nombres]="Yenny";
-			   $_SESSION[apellidos]="Villalba"; 
-			   $_SESSION[cedula]="11";
+			   $_SESSION[nombres]="Usuario";
+			   $_SESSION[apellidos]="de Prueba"; 
+			   $_SESSION[cedula]="12345670";
 			   $_SESSION[carrera]="Ingenieria de Computacion";
-			   $_SESSION[carnet]="03-36606";
+			   $_SESSION[carnet]="05-38242";
                          
 /*
 			   $_SESSION[usuario_validado]=1;

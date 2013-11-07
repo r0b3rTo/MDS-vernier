@@ -5,7 +5,7 @@
         include("lib/cAutorizacion.php");
     }
 
-    $Legend = "Inicio";
+    $Legend = "Inicio/Vernier";
     include_once("vHeader.php");
 ?>
 <br><br><br>

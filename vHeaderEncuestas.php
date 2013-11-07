@@ -71,6 +71,7 @@
 
 <?
   if (isset($_SESSION['USBID'])){
+    $cedula= $_SESSION['cedula'];
     echo "
     <div class='navbar navbar-fixed-top '>
     <div class='navbar-inner'>
@@ -84,33 +85,12 @@
        <div class='nav-collapse collapse' id='main-menu'>
         <ul class='nav' id='main-menu-left'>
           <li class='dropdown'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Persona <b class='caret'></b></a>
+            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Encuestas <b class='caret'></b></a>
             <ul class='dropdown-menu' id='swatch-menu'>
-              <li><a href='vPersona.php'>Crear Persona</a></li>
-              <li><a href='vListarPersonas.php'>Listar Persona</a></li>
+              <li><a href='vListarEncuestas.php?view&id=$cedula'>Listar Encuestas</a></li>
+              <li><a href='vListarResultados.php'>Listar Resultados</a></li>
             </ul>
           </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Unidad <b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vUnidad.php'>Crear Unidad</a></li>
-              <li><a href='vListarUnidades.php'>Listar Unidad</a></li>
-            </ul>
-          </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Cargo<b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vCargo.php'>Crear Cargo</a></li>
-              <li><a href='vListarCargos.php'>Listar Cargo</a></li>
-              <li class='divider'></li>
-              <li><a href='vFamiliaC.php'>Crear Familia Cargo</a></li>
-              <li><a href='vListarFamiliasC.php'>Listar Familia Cargo</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href='SubirArchivo.php'>Cargar CSV</a>
-          </li>
-        </ul>
         <ul class='nav pull-right' id='main-menu-right'>
           <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'>";mostrarDatosUsuario(); echo "<b class='caret'></b></a>
             <ul class='dropdown-menu'>

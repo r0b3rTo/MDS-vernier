@@ -88,6 +88,7 @@
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Encuestas <b class='caret'></b></a>
             <ul class='dropdown-menu' id='swatch-menu'>
               <li><a href='vListarEncuestas.php?view&id=$cedula'>Listar Encuestas</a></li>
+              <li><a href='vEncuestas.php'>Administrar Encuestas</a></li>
               <li><a href='vListarResultados.php'>Listar Resultados</a></li>
             </ul>
           </li>

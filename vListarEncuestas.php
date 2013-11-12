@@ -22,7 +22,7 @@
 <!-- Codigo importante -->
 <?php
   
-  if ($ID_ENCUESTA['max_res']==0){
+  if ($LISTA_ENCUESTA['max_res']==0){
         echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay encuestas para el usuario.</p><br><br><br><br><br><br>";
   }else{
   ?>
@@ -46,42 +46,29 @@
     </tr>
   </tfoot>
           <tbody role="alert" aria-live="polite" aria-relevant="all">
-	  
-	  <!-- Encuesta de autoevaluación  -->
-	  <tr class="<?php echo $color_tabla; ?>">
-	    <td class="center lsmallT" nowrap><small>Encuesta de autoevaluación</small></td>     
-	    <td class="center lsmallT" nowrap><small><? echo $NOM_USUARIO;?></small></td>
-	    <td class="center lsmallT" nowrap><small><a href=<? echo $ID_ENCUESTA['Enc']['enlace'][0];echo"&id=";echo $_GET['id'];?>> Ir a la encuesta</a></small></td>
-	    <td class="center lsmallT" nowrap><small>Por realizar</small></td>
-          </tr>
-          
-	  <!-- Encuestas como supervisor -->
+
+	  <!-- Encuestas del usuario -->
           <?php
-	    if ($NOMBRE_SUP['max_res']>0){
-            for ($i=0;$i<$NOMBRE_SUP['max_res'];$i++){
+	    if ($LISTA_ENCUESTA['max_res']>0){
+            for ($i=0;$i<$LISTA_ENCUESTA['max_res'];$i++){
           ?>
           <tr class="<?php echo $color_tabla; ?>" >
-	    <td class="center lsmallT" nowrap><small>Encuesta de supervisor</small></td>     
-	    <td class="center lsmallT" nowrap><small><? echo $NOMBRE_SUP['Nom_Sup']['nombre'][$i];echo " ";echo $NOMBRE_SUP['Nom_Sup']['apellido'][$i];?></small></td>
-	    <td class="center lsmallT" nowrap><small><a href=<? echo $ENCUESTA_SUP['Enc_Sup']['enlace'][$i];echo"&id=";echo $_GET['id'];?>> Ir a la encuesta</a></small></td>
+	    <td class="center lsmallT" nowrap><small><? 
+	      if ($LISTA_ENCUESTA['Enc']['tipo'][$i]=="autoevaluacion") echo 'Encuesta de autoevaluación';
+	      if ($LISTA_ENCUESTA['Enc']['tipo'][$i]=="supervisor") echo 'Encuesta como supervisor';
+	      if ($LISTA_ENCUESTA['Enc']['tipo'][$i]=="evaluador") echo 'Encuesta como evaluador';
+	    ?></small></td>     
+	    <td class="center lsmallT" nowrap><small><? 
+	      echo $LISTA_ENCUESTA['Enc']['nombre'][$i];echo " ";echo $LISTA_ENCUESTA['Enc']['apellido'][$i];
+	    ?></small></td>
+	    <td class="center lsmallT" nowrap><small><a href=<? 
+	      echo"http://localhost/limesurvey/index.php?token=";echo  $LISTA_ENCUESTA['Enc']['token_ls'][$i]; echo "&sid=";echo $LISTA_ENCUESTA['Enc']['id_encuesta_ls'][$i];echo"&lang=es";?>> Ir a la encuesta</a></small></td>
 	    <td class="center lsmallT" nowrap><small>Por realizar</small></td>
           </tr>
           <? } //cierre del for
 	     } //cierre del if?>
 	     
-	  <!-- Encuestas como evaluador -->
-          <?php
-	    if ($NOMBRE_EVA['max_res']>0){
-            for ($i=0;$i<$NOMBRE_EVA['max_res'];$i++){
-          ?>
-          <tr class="<?php echo $color_tabla; ?>" >
-	    <td class="center lsmallT" nowrap><small>Encuesta de evaluador</small></td>     
-	    <td class="center lsmallT" nowrap><small><? echo $NOMBRE_EVA['Nom_Eva']['nombre'][$i];echo " ";echo $NOMBRE_EVA['Nom_Eva']['apellido'][$i];?></small></td>
-	    <td class="center lsmallT" nowrap><small><a href=<? echo $ENCUESTA_EVA['Enc_Eva']['enlace'][$i];echo"&id=";echo $_GET['id'];?>> Ir a la encuesta</a></small></td>
-	    <td class="center lsmallT" nowrap><small>Por realizar</small></td>
-          </tr>
-          <? } //cierre del for
-	     } //cierre del if?>
+
 	     
 	  </tbody>
 </table>

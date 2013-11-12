@@ -1,8 +1,9 @@
 <?
+
 if (MANEJADOR_BD == "mysql") {
 
     function crearConexion($servidor, $usuario, $contrasena) {
-        $conexion = mysql_connect($servidor, $usuario, $contrasena) or die("No se pudo conetar al servidor" . mysql_error());
+        $conexion = mysql_connect($servidor, $usuario, $contrasena) or die("No se pudo conectar al servidor" . mysql_error());
         return $conexion;
     }
 
@@ -47,7 +48,7 @@ if (MANEJADOR_BD == "mysql") {
 
 }else if (MANEJADOR_BD == "postgres"){
     function crearConexion($servidor, $bd, $user, $contrasena) {
-        $conexion = pg_connect("host=".$servidor." dbname=".$bd." user=".$user." password=".$contrasena) or die("No se pudo conetar al servidor" . pg_last_error());
+        $conexion = pg_connect("host=".$servidor." dbname=".$bd." user=".$user." password=".$contrasena) or die("No se pudo conectar al servidor" . pg_last_error());
         return $conexion;
     }
 
@@ -345,6 +346,7 @@ function obtenerIds($conexion, $tabla, $persona){
     return $FAM_ID;
 }
 
+//Otras funciones
 function MostrarLegenda($text){
 
     echo "<legend>".$text."</legend>";

@@ -63,7 +63,9 @@
 	    ?></small></td>
 	    <td class="center lsmallT" nowrap><small><a href=<? 
 	      echo"http://localhost/limesurvey/index.php?token=";echo  $LISTA_ENCUESTA['Enc']['token_ls'][$i]; echo "&sid=";echo $LISTA_ENCUESTA['Enc']['id_encuesta_ls'][$i];echo"&lang=es";?>> Ir a la encuesta</a></small></td>
-	    <td class="center lsmallT" nowrap><small>Por realizar</small></td>
+	    <td class="center lsmallT" nowrap><small><?
+	    echo $LISTA_ENCUESTA['Enc']['estado'][$i];
+	    ?></small></td>
           </tr>
           <? } //cierre del for
 	     } //cierre del if?>

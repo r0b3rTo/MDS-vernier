@@ -6,7 +6,8 @@
     extract($_GET);
     extract($_POST);
     date_default_timezone_set('America/Caracas');
-?>  
+?>
+
 <script type="text/javascript">
     $(document).ready(function(){
         $("#newPer").validate({
@@ -172,15 +173,29 @@ $(function() {
 </script>
 
 <script>
-$(document).ready(function() {
    var i=1;
-   $(".add-field").click(function(event) {   
+   function agregarSupervisor() {   
       var original = document.getElementById('bloque-supervisor' + i);
       var clone = original.cloneNode(true); // "deep" clone
       clone.id = "bloque-supervisor" + ++i; // there can only be one element with an ID
-      document.getElementById("area-nuevo-supervisor").appendChild(clone);
-   });
-});
+      document.getElementById("area-supervisores").appendChild(clone);
+      
+      var selects = document.getElementsByName("sup");
+      selects[i-1].id = "sup" + i;
+      
+      var fechas_inicio = document.getElementsByName("fecha_sup");
+      fechas_inicio[i-1].id = "fecha_sup" + i;
+      
+      var observaciones = document.getElementsByName("obs_sup");
+      observaciones[i-1].id = "obs_sup" + i;
+   };
+   
+   function eliminarSupervisor(object) {
+      var divActual = object.parentNode;
+      var bloqueId = divActual.parentNode.id;
+      var bloqueActual = document.getElementById(bloqueId);
+      document.getElementById("area-supervisores").removeChild(bloqueActual);
+   };
 </script>
 <div class="tabbable"> <!-- Only required for left/right tabs -->
   <ul class="nav nav-tabs">
@@ -603,11 +618,13 @@ $(document).ready(function() {
             }
             ?>
             
-            <div id="bloque-supervisor1">
+            
+            <div id="area-supervisores">
+               <div id="bloque-supervisor1">
                 <div class="control-group">
                     <label class="control-label">Supervisor Jerárquico</label>
                     <div class="controls">
-                            <select style="width:200px" id="sup" name="sup" class="select2  sup-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                            <select style="width:200px" id="sup" name="sup" class="select2 sup-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                                 <?
                                     while (list($key, $val) = each($SUP_ID)){
                                         echo "<option value=".$key.">".$val."</option>";
@@ -621,29 +638,29 @@ $(document).ready(function() {
                   <div class="controls">
                      <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
                      <span class="add-on"><i class="icon-calendar"></i></span>
-                     <input size="12" id="fech" name="fech" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+                     <input size="12" id="fecha_sup" name="fecha_sup" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
                      </div>
                   </div>
-               </div>
+                </div>
                 <div class="control-group">
                     <label class="control-label">Observaci&oacute;n</label>
                     <div class="controls">
                         <div class="input-prepend">
                             <span class="add-on"><i class="icon-edit"></i></span>
-                            <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_SUP) && $LISTA_PER_SUP['max_res']>0) echo $LISTA_PER_SUP['Per_Sup']['observacion']['0'];?></textarea>
+                            <textarea class="input-xlarge" rows="3" id="obs_sup" name="obs_sup" placeholder="Observaciones"<? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_SUP) && $LISTA_PER_SUP['max_res']>0) echo $LISTA_PER_SUP['Per_Sup']['observacion']['0'];?></textarea>
                         </div>
                     </div>
                 </div>
-            </div>
-            
-            <div id="area-nuevo-supervisor"></div>
-            
-               <div class="control-group">
+                <div class="control-group">
                   <? if (isset($_GET['action']) && $_GET['action'] == "edit"){
-                        echo"<input type='button' class='btn btn-info add-field' name='boton_agregar_supervisor' value='Agregar otro Supervisor'>";
+                        echo"<a class='btn btn-small add-button' onclick='agregarSupervisor();'><i class='icon-plus-sign'></i></a>";
+                        echo"<a class='btn btn-small remove-button' onclick='eliminarSupervisor(this);'><i class='icon-remove-sign'></i></a>";
                      }
                   ?>
+                </div>
                </div>
+            </div>
+            
                 <div class="control-group">
                         <div class="row">
                         <div class="span5"></div>

@@ -100,9 +100,8 @@
                     "'$_POST[id]', ".  //id persona              
                     "'$_POST[sup]', ".  //id supervisor           
                     "'t', ".  // evaluador actual              
-                    "'$_POST[fech]', ".  //fecha
-                    "'$_POST[obs]' ".  //observacion
-                    //observacion
+                    "'$_POST[fecha_sup]', ".  //fecha
+                    "'$_POST[obs_sup]' ".  //observacion
                     ")";
                 break;
                 

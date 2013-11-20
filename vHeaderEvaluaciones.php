@@ -71,6 +71,7 @@
 
 <?
   if (isset($_SESSION['USBID'])){
+    $cedula= $_SESSION['cedula'];
     echo "
     <div class='navbar navbar-fixed-top '>
     <div class='navbar-inner'>
@@ -84,37 +85,10 @@
        <div class='nav-collapse collapse' id='main-menu'>
         <ul class='nav' id='main-menu-left'>
           <li class='dropdown'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Persona <b class='caret'></b></a>
+            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones <b class='caret'></b></a>
             <ul class='dropdown-menu' id='swatch-menu'>
-              <li><a href='vPersona.php'>Crear Persona</a></li>
-              <li><a href='vListarPersonas.php'>Listar Persona</a></li>
-            </ul>
-          </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Unidad <b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vUnidad.php'>Crear Unidad</a></li>
-              <li><a href='vListarUnidades.php'>Listar Unidad</a></li>
-            </ul>
-          </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Cargo<b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vCargo.php'>Crear Cargo</a></li>
-              <li><a href='vListarCargos.php'>Listar Cargo</a></li>
-              <li class='divider'></li>
-              <li><a href='vFamiliaC.php'>Crear Familia Cargo</a></li>
-              <li><a href='vListarFamiliasC.php'>Listar Familia Cargo</a></li>
-            </ul>
-          </li>
-          <li>
-            <a href='SubirArchivo.php'>Cargar CSV</a>
-          </li>
-          <li class='dropdown' id='preview-menu'>
-            <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones<b class='caret'></b></a>
-            <ul class='dropdown-menu'>
-              <li><a href='vEvaluaciones.php'>Administrar Evaluaciones</a></li>
-              <li><a href=''>Ver Resultados</a></li>
+              <li><a href='vListarEvaluaciones.php?view&id=$cedula'>Listar Evaluaciones</a></li>
+              <li><a href='vListarResultados.php'>Ver Resultados</a></li>
             </ul>
           </li>
         </ul>
@@ -154,6 +128,11 @@
                 echo "  <div class='alert alert-error'>
                     <button type='button' class='close' data-dismiss='alert'>&times;</button>
                     <strong>¡Parece que algo salió mal!</strong> ".$_SESSION['MSJ'].".
+                </div>";
+        }else if (isset($_GET['warning'])) {
+                echo "  <div class='alert alert-warning'>
+                    <button type='button' class='close' data-dismiss='alert'>&times;</button>
+                    <strong>¡Atención!</strong> ".$_SESSION['MSJ'].".
                 </div>";
         }
 

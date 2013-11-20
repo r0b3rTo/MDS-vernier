@@ -353,6 +353,16 @@ function MostrarLegenda($text){
 
 }
 
+function obtenerDiferenciaDias ($fecha_1, $fecha_2){
+		  //Días de la primera fecha
+		  $aux=explode("-", $fecha_1);
+		  $fecha_1_dias=$aux[0]+($aux[1]*30)+($aux[2]*365);
+		  //Días de la segunda fecha
+		  $aux=explode("-", $fecha_2);
+		  $fecha_2_dias=$aux[0]+($aux[1]*30)+($aux[2]*365);
+		  return ($fecha_1_dias-$fecha_2_dias);
+}
+
 /*
 function handleError($errno, $errstr, $errfile, $errline, array $errcontext)
 {

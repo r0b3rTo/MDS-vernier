@@ -74,6 +74,10 @@ div.dataTables_scrollFoot table {
 	border-top: none;
 }
 
+.dataTables_wrapper{
+  font-size: 12px;
+}
+
 .center { 
 	float: none; 
 	margin-left: auto; 

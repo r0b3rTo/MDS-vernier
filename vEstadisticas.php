@@ -104,7 +104,7 @@
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['fecha'][$i];?></small></td>
 		<!--Dirección IP-->
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['ip'][$i];?></small></td>
-	      </tr>http://stackoverflow.com/questions/4982701/best-way-to-store-ip-in-database
+	      </tr>
 	    <? } //cierre del for
 	    ?>   
 	    </tbody>

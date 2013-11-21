@@ -1,1 +1,1 @@
-00 00 20 11 * wget -O -q -t 1 http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar
+00 00 21 11 * wget -O -q -t 1 http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar

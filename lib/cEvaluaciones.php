@@ -28,12 +28,6 @@
 	    $output=file_put_contents('../tmp/vernier_jobs.txt', '00 00 '.$aux[0].' '.$aux[1].' * wget -O -q -t 1 http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar'.PHP_EOL);
 	    $output=shell_exec('crontab ../tmp/vernier_jobs.txt');
 	    
-	    // Obtención de los procesos de evaluacion del sistema
-	    $sql ="SELECT * ";
-	    $sql.="FROM EVALUACION ORDER BY actual";        
-	    $atts = array("periodo", "fecha_ini", "fecha_fin");
-	    $LISTA_EVALUACION= obtenerDatos($sql, $conexion, $atts, "Proc");
-	    
 	    //Activación de las encuestas
 	    $sql = "UPDATE ENCUESTA SET estado= 't'";
 	    $resultado=ejecutarConsulta($sql, $conexion);
@@ -106,10 +100,12 @@
 		      $usuario=array("usuario"=> array("email"=>$email,"firstname"=>$nombre,"lastname"=>$apellido));
 		      $resultado= $client_ls->add_participants($session_key, $id_encuesta_ls, $usuario);//Agregar participante
 		      $token_ls=$resultado["usuario"]["token"];//Obtener token asignado al usuario por limesurvey
+		      $ip=$_SERVER['REMOTE_ADDR'];
+		      $fecha_intento=date("d/m/Y.H:i");
 		      //$resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
 		    
 		      //Se agrega encuesta de autoevaluación
-		      $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo) VALUES(";
+		      $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha) VALUES(";
 		      $sql.="'$id_per', ";  //id persona encuestada    
 		      $sql.="'$id_per', ";  //id persona evaluada             
 		      $sql.="'$id_car', ";  //id cargo actual          
@@ -118,7 +114,9 @@
 		      $sql.="'Pendiente', "; //estado de la encuesta
 		      $sql.="'$id_encuesta_ls', "; //id de la encuesta
 		      $sql.="'t', "; //proceso de evaluación actual
-		      $sql.="'$periodo')"; //proceso de evaluación correspondiente
+		      $sql.="'$periodo', "; //proceso de evaluación correspondiente
+		      $sql.="'$ip', ";//dirección ip del usuario
+		      $sql.="'$fecha_intento')";//fecha y hora de último intento
 		      $resultado=ejecutarConsulta($sql, $conexion); 
 		      
 		      //Se buscan los evaluadores del usuario
@@ -153,7 +151,7 @@
 			  //$resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
 			  
 			  //Se agrega encuesta de evaluador
-			  $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo) VALUES(";
+			  $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha) VALUES(";
 			  $sql.="'$id_eva', ";  //id persona encuestada    
 			  $sql.="'$id_per', ";  //id persona evaluada             
 			  $sql.="'$id_car', ";  //id cargo actual          
@@ -162,9 +160,10 @@
 			  $sql.="'Pendiente', "; //estado de la encuesta
 			  $sql.="'$id_encuesta_ls', "; //id de la encuesta
 			  $sql.="'t', "; //proceso de evaluación actual
-			  $sql.="'$periodo')"; //proceso de evaluación correspondiente
-			  $resultado=ejecutarConsulta($sql, $conexion);
-			  
+			  $sql.="'$periodo', "; //proceso de evaluación correspondiente
+			  $sql.="'$ip', ";//dirección ip del usuario
+			  $sql.="'$fecha_intento')";//fecha y hora de último intento
+			  $resultado=ejecutarConsulta($sql, $conexion); 
 			} //cierre if (tiempo como evaluador)
 		     } //cierre iteración sobre los evaluadores
 		     
@@ -191,7 +190,7 @@
     // Obtención de los procesos de evaluacion del sistema
     $sql ="SELECT * ";
     $sql.="FROM EVALUACION ORDER BY actual DESC";        
-    $atts = array("periodo", "fecha_ini", "fecha_fin", "actual", "total","pendiente", "en_proceso", "finalizada", "supervisada");
+    $atts = array("id","periodo", "fecha_ini", "fecha_fin", "actual", "total","pendiente", "en_proceso", "finalizada", "supervisada");
     $LISTA_EVALUACION= obtenerDatos($sql, $conexion, $atts, "Proc");
     
     for($i=0; $i<$LISTA_EVALUACION[max_res]; $i++){ 
@@ -211,7 +210,7 @@
       $LISTA_EVALUACION["Proc"]["pendiente"][$i]=$aux[max_res];
       //Obtención del número de evaluaciones en proceso
       $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
-      $sql.=$periodo."' AND estado='En Proceso'";
+      $sql.=$periodo."' AND estado='En proceso'";
       $atts= array("estado");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
       $LISTA_EVALUACION["Proc"]["en_proceso"][$i]=$aux[max_res];

@@ -5,6 +5,8 @@
     $_ERRORES = array();
     $_WARNING = array();
     $_SUCCESS = array();
+    date_default_timezone_set('America/Caracas');
+    
     require_once 'XML/RPC2/Client.php';
 
     // Obtención de datos del usuario
@@ -71,16 +73,18 @@
 	  $token_ls=$_GET['token_ls'];
 	  $completed= $client_ls->get_summary($session_key, $id_encuesta_ls, 'token_completed');//Determinar si completó la encuesta
 	  $resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
-
+	  $ip=$_SERVER['REMOTE_ADDR'];
+	  $fecha_intento=date("d/m/Y.H:i");
+	  
 	  if ($completed==1){
-	    $sql ="UPDATE PERSONA_ENCUESTA SET estado='Finalizada'";
+	    $sql ="UPDATE PERSONA_ENCUESTA SET estado='Finalizada', ip='".$ip."', fecha='".$fecha_intento."' ";
 	    $sql.="WHERE ";
 	    $sql.= "token_ls='".$token_ls."'";
 	    $resultado=ejecutarConsulta($sql, $conexion);
 	    $_SESSION['MSJ'] = "Sus respuestas han sido procesadas. Gracias por realizar la encuesta";
             header("Location: ./vListarEvaluaciones.php?success"); 
 	  } else {
-	    $sql ="UPDATE PERSONA_ENCUESTA SET estado='En proceso'";
+	    $sql ="UPDATE PERSONA_ENCUESTA SET estado='En proceso', ip='".$ip."', fecha='".$fecha_intento."' ";
 	    $sql.="WHERE ";
 	    $sql.= "token_ls='".$token_ls."'";
 	    $resultado=ejecutarConsulta($sql, $conexion);

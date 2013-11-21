@@ -148,25 +148,25 @@
 		<!--Evaluaciones pendientes-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["pendiente"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo (($LISTA_EVALUACION["Proc"]["pendiente"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100);?>%
+		    <? echo round((($LISTA_EVALUACION["Proc"]["pendiente"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
 		  </a></small>
 		</td>  
 		<!--Evaluaciones en proceso-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["en_proceso"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo (($LISTA_EVALUACION["Proc"]["en_proceso"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100);?>%
+		    <? echo round((($LISTA_EVALUACION["Proc"]["en_proceso"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
 		  </a></small>
 		</td> 
 		<!--Evaluaciones finalizadas-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["finalizada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo (($LISTA_EVALUACION["Proc"]["finalizada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100);?>%
+		    <? echo round ((($LISTA_EVALUACION["Proc"]["finalizada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
 		  </a></small>
 		</td> 
 		<!--Evaluaciones supervisadas-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["supervisada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo (($LISTA_EVALUACION["Proc"]["supervisada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100);?>%
+		    <? echo round((($LISTA_EVALUACION["Proc"]["supervisada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
 		  </a></small>
 		</td>    
 		<!--Estado del proceso de evaluación-->
@@ -177,7 +177,7 @@
 		<td class="center lsmallT" nowrap>
 		  <a href="?editar" title="Cambiar fecha fin" >
 		    <img src="./img/iconos/edit.png" style="width:20px; margin-left:5px;"></a>
-		  <a href="./vEstadisticas" title="Ver estadísticas" >
+		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Ver estadísticas" >
 		    <img src="./img/iconos/watch.png" style="width:20px; margin-left:5px;"></a>
 	      </td>
 	      </tr>

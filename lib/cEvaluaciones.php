@@ -11,7 +11,8 @@
     
     if (isset($_GET['action'])){
       switch ($_GET['action']) {
-	case 'activar':
+      
+	case 'add':
 
 	  if (isset($_POST[periodo]) & isset($_POST[ini]) & isset($_POST[fin])){
 	  
@@ -20,15 +21,56 @@
 	    $sql.="'$_POST[periodo]', ";  //periodo de evaluacion    
 	    $sql.="'$_POST[ini]', ";  //fecha_ini            
 	    $sql.="'$_POST[fin]', ";  //fecha_fin         
-	    $sql.="'t')";  //periodo actual            
-	    $resultado=ejecutarConsulta($sql, $conexion);
+	    $sql.="'f')";  //periodo actual            
+	    $resultado=ejecutarConsulta($sql, $conexion);  
 	    
 	    //Agregar cronjob para el día de expiración de la encuesta
 	    $aux= explode("-",$_POST[fin]);
-	    $output=file_put_contents('../tmp/vernier_jobs.txt', '00 00 '.$aux[0].' '.$aux[1].' * wget -O -q -t 1 http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar'.PHP_EOL);
+	    $output=file_put_contents('../tmp/vernier_jobs.txt', "00 00 ".$aux[0]." ".$aux[1]." * wget -O -q -t 1 'http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar&inicio=$_POST[ini]'".PHP_EOL, FILE_APPEND);
+	    //$output=file_put_contents('../tmp/vernier_jobs.txt', "07 00 25 11 * wget -O -q -t 1 'http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar&inicio=$_POST[ini]'".PHP_EOL, FILE_APPEND);
 	    $output=shell_exec('crontab ../tmp/vernier_jobs.txt');
 	    
-	    //Activación de las encuestas
+	    if ($_POST[ini]==date("d-m-Y")){
+	      //No breaks to case "activar"
+	    } else {
+	      //Agregar cronjob para el día de inicio de la encuesta
+	      $aux= explode("-",$_POST[ini]);
+	      $output=file_put_contents('../tmp/vernier_jobs.txt', "00 00 ".$aux[0]." ".$aux[1]." * wget -O -q -t 1 'http://localhost/vernier/lib/cEvaluaciones.php?action=activar&inicio=$_POST[ini]'".PHP_EOL, FILE_APPEND);
+	      //$output=file_put_contents('../tmp/vernier_jobs.txt', "06 00 25 11 * wget -O -q -t 1 'http://localhost/vernier/lib/cEvaluaciones.php?action=activar&inicio=$_POST[ini]'".PHP_EOL, FILE_APPEND);
+	      $output=shell_exec('crontab ../tmp/vernier_jobs.txt');
+	      break;
+	    }
+	  }//cierre del if
+	  
+	case 'activar':
+	
+	    //Activación de la evaluación
+	    if (isset($_POST[ini])) {
+	      $fecha_ini=$_POST[ini];
+	      $sql = "UPDATE EVALUACION SET actual= 't' WHERE fecha_ini='".$fecha_ini."'";
+	      $resultado=ejecutarConsulta($sql, $conexion);
+	    } else if (isset($_GET['inicio'])){
+	      $fecha_ini=$_GET['inicio'];
+	      $sql = "UPDATE EVALUACION SET actual= 't' WHERE fecha_ini='".$fecha_ini."'";
+	      $resultado=ejecutarConsulta($sql, $conexion);
+	      //Eliminar cronjob ejecutado
+	      $remove= '=activar&inicio='.$_GET['inicio'];
+	      $lines = file('../tmp/vernier_jobs.txt');
+	      foreach($lines as $key => $line)
+		if(stristr($line,$remove)) unset($lines[$key]);
+		  $data = array_values($lines);
+	      $aux=file_put_contents('../tmp/vernier_jobs.txt', $data);
+	      $output=shell_exec('crontab ../tmp/vernier_jobs.txt');  
+	    }
+	    
+	    //Buscar fecha de finalización del proceso
+	    $sql= "SELECT fecha_fin, periodo FROM EVALUACION WHERE fecha_ini='".$fecha_ini."'";
+	    $atts = array("fecha_fin", "periodo");
+	    $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	    $fecha_fin=$aux["Aux"]["fecha_fin"][0];
+	    $periodo=$aux["Aux"]["periodo"][0];
+	    
+	    //Actualización de las encuestas
 	    $sql = "UPDATE ENCUESTA SET estado= 't'";
 	    $resultado=ejecutarConsulta($sql, $conexion);
 	    //Reorganizar encuestas
@@ -50,20 +92,18 @@
 	    
 	      $id_encuesta_ls=intval($LISTA_ENCUESTA["Enc"]["id_encuesta_ls"][$i]);//Encuesta de i-ésima iteración
 	      $id_car=$LISTA_ENCUESTA["Enc"]["id_car"][$i];//Cargo para la encuesta de la i-ésima iteración
-	      $fecha_ini=date("Y-m-d", strtotime($_POST[ini])); //Fecha de inicio
-	      //echo"Esta es la fecha de inicio transformada: $fecha_ini<br>";
-	      $fecha_fin=date("Y-m-d", strtotime($_POST[fin])); //Fecha de finalización
-	      $periodo=$_POST[periodo];
+	      $fecha_ini_ls=date("Y-m-d", strtotime($fecha_ini)); //Fecha de inicio
+	      $fecha_fin_ls=date("Y-m-d", strtotime($fecha_fin)); //Fecha de finalización
+	      //$periodo=$_POST[periodo];
 	      
 	      //Activación de la encuesta en Limesurvey
 	      $resultado= $client_ls->activate_survey($session_key, $id_encuesta_ls);//Activar la encuesta
 	      
 	      //Actualizar la fecha de inicio y la fecha de finalizacion en Limesurvey
-	      $properties=array("startdate"=> $fecha_ini, "expires"=>$fecha_fin);
+	      $properties=array("startdate"=> $fecha_ini_ls, "expires"=>$fecha_fin_ls);
 	      $resultado= $client_ls->set_survey_properties($session_key, $id_encuesta_ls, $properties);
 	      $resultado= $client_ls->activate_tokens($session_key, $id_encuesta_ls);//Se abre la encuesta solo para usuarios con token
-	      //$resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
-	      
+	   
 	      //Buscar personas con el cargo de la encuesta de la i-ésima iteración
 	      $sql= "SELECT id_per, id_car, fecha_ini FROM PERSONA_CARGO ";
 	      $sql.= "WHERE actual=TRUE AND id_car='";
@@ -71,8 +111,6 @@
 	      $sql.="'";
 	      $atts= array("id_per","id_car","fecha_ini");
 	      $LISTA_PERSONA= obtenerDatos($sql, $conexion, $atts, "Per");
-	      echo "Esta es la consulta $sql<br>";
-	      echo "Este es el resultado de la consulta";
 	      
 	      //Agregar las encuestas correspondientes a cada usuario
 	      for($j=0; $j<$LISTA_PERSONA[max_res]; $j++){
@@ -94,18 +132,17 @@
 		  
 		    //Verificar que las personas tengan al menos 150 días (5 meses) en el cargo
 		    //QUEDA PENDIENTE VERIFICAR CONDICION ESPECIAL
-		    if(obtenerDiferenciaDias($_POST[ini], $LISTA_PERSONA["Per"]["fecha_ini"][$j])>150){
+		    if(obtenerDiferenciaDias($fecha_ini, $LISTA_PERSONA["Per"]["fecha_ini"][$j])>150){
 		      //Se agrega el usuario a la encuesta en Limesurvey
-		      //$session_key = $client_ls->get_session_key('admin', 'Segundo!!'); //Pedir llave de acceso a Limesurvey
 		      $usuario=array("usuario"=> array("email"=>$email,"firstname"=>$nombre,"lastname"=>$apellido));
 		      $resultado= $client_ls->add_participants($session_key, $id_encuesta_ls, $usuario);//Agregar participante
 		      $token_ls=$resultado["usuario"]["token"];//Obtener token asignado al usuario por limesurvey
+		      $tid_ls=$resultado["usuario"]["tid"];//Obtener ID del token asignado al usuario por limesurvey
 		      $ip=$_SERVER['REMOTE_ADDR'];
 		      $fecha_intento=date("d/m/Y.H:i");
-		      //$resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
 		    
 		      //Se agrega encuesta de autoevaluación
-		      $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha) VALUES(";
+		      $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha, tid_ls) VALUES(";
 		      $sql.="'$id_per', ";  //id persona encuestada    
 		      $sql.="'$id_per', ";  //id persona evaluada             
 		      $sql.="'$id_car', ";  //id cargo actual          
@@ -116,7 +153,8 @@
 		      $sql.="'t', "; //proceso de evaluación actual
 		      $sql.="'$periodo', "; //proceso de evaluación correspondiente
 		      $sql.="'$ip', ";//dirección ip del usuario
-		      $sql.="'$fecha_intento')";//fecha y hora de último intento
+		      $sql.="'$fecha_intento', ";//fecha y hora de último intento
+		      $sql.="'$tid_ls')";
 		      $resultado=ejecutarConsulta($sql, $conexion); 
 		      
 		      //Se buscan los evaluadores del usuario
@@ -141,17 +179,16 @@
 			
 			//Verificar que tenga al menos 150 días (5 meses) como evaluador
 			//QUEDA PENDIENTE VERIFICAR CONDICION ESPECIAL
-			if(obtenerDiferenciaDias($_POST[ini], $LISTA_EVALUADOR["Eva"]["fecha_ini"][$k])>150) {
+			if(obtenerDiferenciaDias($fecha_ini, $LISTA_EVALUADOR["Eva"]["fecha_ini"][$k])>150) {
 			
 			  //Se agrega el usuario a la encuesta en Limesurvey
-			  //$session_key = $client_ls->get_session_key('admin', 'Segundo!!'); //Pedir llave de acceso a Limesurvey
 			  $usuario=array("usuario"=> array("email"=>$email,"firstname"=>$nombre,"lastname"=>$apellido));
 			  $resultado= $client_ls->add_participants($session_key, $id_encuesta_ls, $usuario);//Agregar participante
 			  $token_ls=$resultado["usuario"]["token"];//Obtener token asignado al usuario por limesurvey
-			  //$resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
+			  $tid_ls=$resultado["usuario"]["tid"];//Obtener ID del token asignado al usuario por limesurvey
 			  
 			  //Se agrega encuesta de evaluador
-			  $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha) VALUES(";
+			  $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha, tid_ls) VALUES(";
 			  $sql.="'$id_eva', ";  //id persona encuestada    
 			  $sql.="'$id_per', ";  //id persona evaluada             
 			  $sql.="'$id_car', ";  //id cargo actual          
@@ -162,7 +199,8 @@
 			  $sql.="'t', "; //proceso de evaluación actual
 			  $sql.="'$periodo', "; //proceso de evaluación correspondiente
 			  $sql.="'$ip', ";//dirección ip del usuario
-			  $sql.="'$fecha_intento')";//fecha y hora de último intento
+			  $sql.="'$fecha_intento', ";//fecha y hora de último intento
+			  $sql.="'$tid_ls')";
 			  $resultado=ejecutarConsulta($sql, $conexion); 
 			} //cierre if (tiempo como evaluador)
 		     } //cierre iteración sobre los evaluadores
@@ -172,14 +210,24 @@
 	    } //cierre iteración sobre las encuestas
 	    //Devolver llave de acceso a Limesurvey
 	    $resultado=$client_ls->release_session_key($session_key);
-	  } //cierre if
+
 	  break;
+	
 	case 'desactivar':
-	  $sql= "UPDATE EVALUACION SET actual='f'";
+	  $sql= "UPDATE EVALUACION SET actual='f' WHERE fecha_ini='".$_GET['inicio']."'";
+	  $resultado= ejecutarConsulta($sql, $conexion);
+	  $sql= "UPDATE ENCUESTA SET estado='f'";
 	  $resultado= ejecutarConsulta($sql, $conexion);
 	  $sql= "UPDATE PERSONA_ENCUESTA SET actual='f'";
 	  $resultado= ejecutarConsulta($sql, $conexion);
-	  #code
+	  //Eliminar cronjob ejecutado
+	  $remove= '=desactivar&inicio='.$_GET['inicio'];
+	  $lines = file('../tmp/vernier_jobs.txt');
+	  foreach($lines as $key => $line)
+	    if(stristr($line,$remove)) unset($lines[$key]);
+	      $data = array_values($lines);
+	  $aux=file_put_contents('../tmp/vernier_jobs.txt', $data);
+	  $output=shell_exec('crontab ../tmp/vernier_jobs.txt');
 	  break;
 	case 'default':    
 	  #code
@@ -189,7 +237,7 @@
     
     // Obtención de los procesos de evaluacion del sistema
     $sql ="SELECT * ";
-    $sql.="FROM EVALUACION ORDER BY actual DESC";        
+    $sql.="FROM EVALUACION ORDER BY id ";        
     $atts = array("id","periodo", "fecha_ini", "fecha_fin", "actual", "total","pendiente", "en_proceso", "finalizada", "supervisada");
     $LISTA_EVALUACION= obtenerDatos($sql, $conexion, $atts, "Proc");
     
@@ -222,17 +270,29 @@
       $LISTA_EVALUACION["Proc"]["finalizada"][$i]=$aux[max_res];
       //Obtención del número de evaluaciones supervisadas CAMBIAR!!!
       $LISTA_EVALUACION["Proc"]["supervisada"][$i]=0;
+      
+      // Obtención de la fecha fin del último proceso de evaluacion
+      $ULTIMA_FECHA= $LISTA_EVALUACION["Proc"]["fecha_fin"][$i];
+      
     } //cierre iteración sobre los procesos de evaluación
+    
+    //Próxima fecha permitida para el inicio de un nuevo periodo
+    if (isset($ULTIMA_FECHA)){
+      $ULTIMA_FECHA=strtotime($ULTIMA_FECHA);
+      $ULTIMA_FECHA = strtotime("+1 day", $ULTIMA_FECHA);
+      $ULTIMA_FECHA = date("d-m-Y", $ULTIMA_FECHA);
+    } else {
+      $ULTIMA_FECHA=date("d-m-Y");
+    }
     
     //Cierre conexión a la BD
     cerrarConexion($conexion);
 
-    
     if (isset($_GET['action'])){
         switch ($_GET['action']) {
         
-            case 'activar':
-                $_SESSION['MSJ'] = "Se ha iniciado un nuevo proceso de evaluación";
+            case 'add':
+                $_SESSION['MSJ'] = "Se ha agregado un nuevo proceso de evaluación";
                 header("Location: ../vEvaluaciones.php?success"); 
                 break;
                 

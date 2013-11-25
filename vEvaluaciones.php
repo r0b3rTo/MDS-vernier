@@ -39,15 +39,14 @@
             errorClass: "help-inline"
         });
     });
-</script>
-    
+</script>    
 
      <?php
       if (isset($_GET['action']) && $_GET['action']=='try'){
      ?>
 	<!-- Formulario Nuevo proceso de evaluación-->
 	<div class="well" align="center">
-	    <form id="newProcess" class="form-horizontal" method="post" action="lib/cEvaluaciones.php?action=activar" >
+	    <form id="newProcess" class="form-horizontal" method="post" action="lib/cEvaluaciones.php?action=add" >
 		<div class="row">
 		<div class="span2"></div>
 		<div class="span4">
@@ -68,9 +67,9 @@
 		  <div class="control-group">
 		      <label class="control-label">Fecha de inicio del proceso</label>
 		      <div class="controls">
-			  <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+			  <div class="input-prepend date datepicker" data-date="<? echo $ULTIMA_FECHA ?>" data-date-language="es" data-date-start-View="2" data-date-autoclose="true" data-date-format="dd-mm-yyyy" data-date-start-Date="<? echo $ULTIMA_FECHA;?>">
 			      <span class="add-on"><i class="icon-calendar"></i></span>
-			      <input size="12" id="ini" name="ini" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" readonly>
+			      <input size="12" id="ini" name="ini" class="input-xlarge" type="text" value="<? echo $ULTIMA_FECHA ?>">
 			  </div>
 		      </div>
 		  </div>
@@ -78,9 +77,9 @@
 		<div class="control-group">
 		      <label class="control-label">Fecha de finalización del proceso</label>
 		      <div class="controls">
-			  <p class='lsmall muted' style="width:300px" align="justify">El tiempo de duración <i>por defecto</i> del proceso de evaluación es de dos (2) semanas. Si desea extender este tiempo cambie la fecha de finalización</p>
-			  <? $date = strtotime(date("d-m-Y")); $date = strtotime("+14 day", $date); ?>
-			  <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y", $date) ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+			  <p class='lsmall muted' style="width:300px" align="justify">Recuerde que el tiempo de duración <i>por defecto</i> del proceso de evaluación es de dos (2) semanas. Asegúrese de escoger el tiempo apropiado</p>
+			  <? $date = strtotime($ULTIMA_FECHA); $date = strtotime("+14 day", $date); ?>
+			  <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y", $date) ?>" data-date-language="es"  data-date-start-View="2" data-date-autoclose="true" data-date-format="dd-mm-yyyy" data-date-start-Date="<? echo $ULTIMA_FECHA ?>">
 			      <span class="add-on"><i class="icon-calendar"></i></span>
 			      <input size="12" id="fin" name="fin" class="input-xlarge" type="text" value="<? echo date("d-m-Y", $date) ?>" >
 			  </div>
@@ -148,30 +147,56 @@
 		<!--Evaluaciones pendientes-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["pendiente"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo round((($LISTA_EVALUACION["Proc"]["pendiente"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
+		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
+		      echo round((($LISTA_EVALUACION["Proc"]["pendiente"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
+		    } else {
+		      echo 0;
+		    }
+		    ?>%
 		  </a></small>
 		</td>  
 		<!--Evaluaciones en proceso-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["en_proceso"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo round((($LISTA_EVALUACION["Proc"]["en_proceso"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
+		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
+		      echo round((($LISTA_EVALUACION["Proc"]["en_proceso"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
+		    } else {
+		      echo 0;
+		    }
+		    ?>%
 		  </a></small>
 		</td> 
 		<!--Evaluaciones finalizadas-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["finalizada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo round ((($LISTA_EVALUACION["Proc"]["finalizada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
+		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
+		      echo round((($LISTA_EVALUACION["Proc"]["finalizada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
+		    } else {
+		      echo 0;
+		    }
+		    ?>%
 		  </a></small>
 		</td> 
 		<!--Evaluaciones supervisadas-->
 		<td class="center lsmallT" nowrap><small>
 		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["supervisada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
-		    <? echo round((($LISTA_EVALUACION["Proc"]["supervisada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));?>%
+		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
+		      echo round((($LISTA_EVALUACION["Proc"]["supervisada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
+		    } else {
+		      echo 0;
+		    }
+		    ?>%
 		  </a></small>
 		</td>    
 		<!--Estado del proceso de evaluación-->
 		<td class="center lsmallT" nowrap><small>
-		  <? if($LISTA_EVALUACION['Proc']['actual'][$i]=='t'){echo "En proceso";} else {echo "Culminada";}?></small>
+		  <? if ($LISTA_EVALUACION['Proc']['total'][$i]==0){
+		    echo "Por empezar";
+		  } else if($LISTA_EVALUACION['Proc']['actual'][$i]=='t'){
+		    echo "En proceso";
+		  } else {
+		    echo "Culminada";
+		  }?></small>
 		</td>
 		<!--Acciones-->
 		<td class="center lsmallT" nowrap>

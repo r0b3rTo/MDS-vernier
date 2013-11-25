@@ -71,6 +71,7 @@
 	  $session_key = $client_ls->get_session_key('admin', 'Segundo!!');//Pedir llave de acceso a Limesurvey
 	  $id_encuesta_ls=intval($_GET['id_encuesta_ls']);
 	  $token_ls=$_GET['token_ls'];
+	  //Hallar token ID y get_particpant_info
 	  $completed= $client_ls->get_summary($session_key, $id_encuesta_ls, 'token_completed');//Determinar si completó la encuesta
 	  $resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
 	  $ip=$_SERVER['REMOTE_ADDR'];

@@ -24,21 +24,21 @@
             "aButtons": [
               {
                 "sExtends": "copy",
-                "sButtonText": "Copiar  <img src='img/iconos/copy-16.png' border=0 style='margin-left:2px;'/>"
+                "sButtonText": "Copiar  <img src='img/iconos/copy-dark.png' border=0 style='margin-left:2px;'/>"
               },
               {
                 "sExtends": "csv",
                 "sTitle": "lista_cargo",
-                "sButtonText": "CSV  <img src='img/iconos/csv-16.png' border=0 style='margin-left:2px;'/>"
+                "sButtonText": "CSV  <img src='img/iconos/csv-dark.png' border=0 style='margin-left:2px;'/>"
               },
               {
                 "sExtends": "pdf",
                 "sTitle": "lista_cargo",
-                "sButtonText": "PDF  <img src='img/iconos/pdf-16.png' border=0 style='margin-left:2px;'/>"
+                "sButtonText": "PDF  <img src='img/iconos/pdf-dark.png' border=0 style='margin-left:2px;'/>"
               },
               {
                 "sExtends": "print",
-                "sButtonText": "Imprimir  <img src='img/iconos/printer-16.png' border=0 style='margin-left:2px;'/>"
+                "sButtonText": "Imprimir  <img src='img/iconos/printer-dark.png' border=0 style='margin-left:2px;'/>"
               },
             ]
           }
@@ -58,18 +58,13 @@
   }else{
   ?>
   <div class="well">
-    <?
-      if (!isAdmin())
-        echo "<div  align='center'><a href='vCargo.php' class='btn btn-info'>Registrar Nuevo</a></div>";
-    ?>
     <div class="row">
       <div class="span11">
-        <p class="text-center muted lsmall"><strong style="color:#06F">Sugerencia:</strong> <small>Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
+        <p class="text-justified muted lsmall"><small>Se le recomienda utilizar el campo de <i>b&uacute;squeda</i> y seleccionar 
             sobre las columnas de su preferencia para organizar las entidades en forma ascendente o descendente. Si desea ordenarlo en 
-            funci&oacute;n a m&aacute;s de un campo, debe presionar la tecla "SHIFT" y darle a la(s) columnas.</small>
-        </p>
+            funci&oacute;n a m&aacute;s de un campo, debe presionar la tecla <i>SHIFT</i> y hacer click en la(s) columna(s) correspondiente(s).</small>
+        </p><br>
       </div>
-
     </div>
        
           <div id="demo">
@@ -123,8 +118,12 @@
           <? } ?>     
         </tbody>
 </table>
-      </div>
-         
+</div>
+      
+<?
+  if (!isAdmin())
+    echo "<br><div  align='center'><a href='vCargo.php' class='btn btn-info'>Registrar Cargo</a></div>";
+?>         
 
   </div>
 <?php

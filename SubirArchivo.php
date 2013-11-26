@@ -107,22 +107,22 @@ $(document).ready(function() {
             
             <div class="control-group">
                 <label class="control-label">Base de Datos</label>
-                <div class="controls">
-                    
-                <label class="radio">
-                    <input type="radio" name="BD" id="Radio1" value="Per" checked>
-                        Persona
-                </label>
-                <label class="radio">
-                    <input type="radio" name="BD" id="Radio2" value="Org">
-                        Unidad
-                </label>
-                <label class="radio">
-                    <input type="radio" name="BD" id="Radio3" value="Car">
-                        Cargo
-                </label>
-
+                
+                <div class="controls"> 
+		  <label class="radio">
+		      <input type="radio" name="BD" id="Radio1" value="Per" checked>
+			  Persona
+		  </label>
+		  <label class="radio">
+		      <input type="radio" name="BD" id="Radio2" value="Org">
+			  Unidad
+		  </label>
+		  <label class="radio">
+		      <input type="radio" name="BD" id="Radio3" value="Car">
+			  Cargo
+		  </label>
                 </div>
+                
             </div>
 
             <div class="control-group ">
@@ -137,7 +137,7 @@ $(document).ready(function() {
             </div>
 
             <div class="control-group ">
-                <label class="control-label">Archivo CSV <img src='img/iconos/csv-24.png' border=0 style='margin-left: 2px;' /></label>
+                <label class="control-label">Archivo CSV <img src='img/iconos/csv-dark.png' border=0 style='margin-left: 2px;' /></label>
                 <div class="controls">
                     <input title="Seleccione el Archivo" type="file" class="input-xlarge" name="file" id="file">
                 </div>

@@ -12,4 +12,16 @@
 	    
     echo shell_exec('crontab -l');
     
+/*    
+    $path='../tmp/vernier_jobs.txt';
+    $remove='08-01-2014';
+    $lines = file($path);
+    foreach($lines as $key => $line)
+    if(stristr($line, $remove)) unset($lines[$key]);
+    $data = implode('\n', array_values($lines));
+    $aux=file_put_contents($path, $data);
+    
+*/
+
+
 ?>

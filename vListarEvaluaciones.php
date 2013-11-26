@@ -79,13 +79,13 @@
 	      <td class="center lsmallT" nowrap>
 		<? switch ($LISTA_EVALUACION_ACTUAL['Enc']['estado'][$i]){
 		case 'Pendiente': 
-		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit.png' style='width:20px; margin-left:5px;'></a>"; 
+		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
 		  break;
 		case 'En proceso': 
-		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit.png' style='width:20px; margin-left:5px;'></a>"; 
+		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
 		  break;  
 		case 'Finalizada': 
-		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Ver resultados'><img src='./img/iconos/watch.png' style='width:20px; margin-left:5px;'></a>"; 
+		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
 		  break;
 		}?>
 	      </td>
@@ -150,7 +150,7 @@
 	      <td class="center lsmallT" nowrap><small>
 		<? switch ($LISTA_EVALUACION_PASADA['Enc']['estado'][$i]){
 		case 'Finalizada': 
-		  echo "<a href='' title='Ver resultados' ><img src='./img/iconos/stats.png' style='width:20px; margin-left:5px;'></a>"; 
+		  echo "<a href='' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
 		  break; 
 		default: 
 		  echo "No hay acciones disponibles"; 

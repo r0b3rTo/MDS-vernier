@@ -50,7 +50,7 @@
 	    <div class='span5 offset1'>
 	      <a  class='btn' href='inicioEvaluaciones.php'>
 		<br>
-		Si formas del personal de la USB y deseas gestionar tus evaluaciones<br><br><strong>Haz click aquí</strong><br>
+		Si formas parte del personal de la USB y deseas gestionar tus evaluaciones<br><br><strong>Haz click aquí</strong><br>
 		<br>
 	     </a>
 	    </div>

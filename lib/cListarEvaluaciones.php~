@@ -82,6 +82,7 @@
 	  //Solicitar estado de la encuesta a Limesurvey
 	  $properties= $client_ls->get_participant_properties($session_key, $id_encuesta_ls, $tid_ls, $properties);//Determinar si completó la encuesta
 	  $completed= $properties["completed"][0];
+	  echo"ESTA COMPLETOA???: $completed";
 	  $resultado=$client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
 	  
 	  $ip=$_SERVER['REMOTE_ADDR'];

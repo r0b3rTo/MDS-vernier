@@ -315,27 +315,11 @@
 	    $fecha_original = $aux["Aux"]["fecha_ini"][0];
 	    $periodo= $aux["Aux"]["periodo"][0];
 	    if ($aux["Aux"]["actual"][0]=='t'){
-	    
 	      //Eliminar evaluaciones de usuarios
 	      $sql= "DELETE FROM PERSONA_ENCUESTA WHERE periodo='".$periodo."'";
 	      $resultado= ejecutarConsulta($sql, $conexion);
-	      
 	      //Desactivar en Limesurvey
-	      //////////////////////////
-	      $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol');//Crear un cliente para comunicarse con Limesurvey
-	      $session_key = $client_ls->get_session_key('admin', 'Segundo!!'); //Pedir llave de acceso a Limesurvey
-	      $fecha_fin_ls=date("Y-m-d");
-	      $properties=array("expires"=>$fecha_fin_ls);
-	      // Obtención de las encuestas definidas
-	      $sql ="SELECT id_encuesta_ls FROM ENCUESTA ORDER BY id_car";        
-	      $atts = array("id_encuesta_ls");
-	      $LISTA_ENCUESTA= obtenerDatos($sql, $conexion, $atts, "Enc");
-	      for ($j=0; $j<$LISTA_ENCUESTA[max_res]; $j++){
-		$id_encuesta_ls=intval($LISTA_ENCUESTA["Enc"]["id_encuesta_ls"][$j]);
-		$resultado= $client_ls->set_survey_properties($session_key, $id_encuesta_ls, $properties);
-	      }
-	      $resultado=$client_ls->release_session_key($session_key); //Devolver llave de acceso a Limesurvey
-	      
+	      //PENDIENTE!!!
 	    }
 	    //Eliminar proceso de evaluación
 	    $sql= "DELETE FROM EVALUACION WHERE id='".$_GET['proceso']."'";

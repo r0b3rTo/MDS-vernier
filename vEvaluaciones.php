@@ -38,6 +38,34 @@
 
             errorClass: "help-inline"
         });
+        $("#editProcess").validate({
+            submitHandler : function(form) {
+                bootbox.dialog('¿Está seguro de continuar?', [{
+                         'label':'No',
+                         'class':'btn'
+                        },
+                        {
+                         'label':'Sí',
+                         'class':'btn',
+                         'callback':function() {
+                                return form.submit();
+                         }
+                        }]);
+            },
+            rules:{
+                ini: "required",
+                fin: "required"
+            },
+            messages: {
+                ini:"Campo Requerido.",
+                fin:"Campo Requerido."
+            },
+
+            errorClass: "help-inline"
+        });
+        
+        
+        
     });
 </script>    
 
@@ -94,6 +122,47 @@
 	    
 	   
 	</div>
+      <?php
+	} else if (isset($_GET['action']) && isset($_GET['element']) && $_GET['action']=='editar'){
+      ?>
+      
+	<!-- Formulario Edición proceso de evaluación-->
+	<div class="well" align="center">
+	    <form id="editProcess" class="form-horizontal" method="post" action="lib/cEvaluaciones.php?action=edit&proceso=<? echo $LISTA_EVALUACION['Proc']['id'][$_GET['element']]?>" >
+		<div class="row">
+		<div class="span2"></div>
+		<div class="span4">
+		  
+		  <div class="control-group">
+		      <label class="control-label">Fecha de inicio del proceso</label>
+		      <div class="controls">
+			  <? if ($LISTA_EVALUACION['Proc']['actual'][$_GET['element']]=='t') {?>
+			    <p class='lsmall muted' style="width:300px" align="justify">El proceso de evaluación se encuentra activo en este momento, por lo tanto no podrá modificar la fecha de inicio. </p>
+			  <? } ?>
+			  <div class="input-prepend date datepicker" data-date="<? echo $LISTA_EVALUACION['Proc']['fecha_ini'][$_GET['element']] ?>" data-date-language="es" data-date-start-View="2" data-date-autoclose="true" data-date-format="dd-mm-yyyy" data-date-start-Date="<? echo $LISTA_EVALUACION['Proc']['fecha_ini'][$_GET['element']];?>">
+			      <span class="add-on"><i class="icon-calendar"></i></span>
+			      <input size="12" id="nuevo_ini" name="nuevo_ini" class="input-xlarge" type="text" value="<? echo $LISTA_EVALUACION['Proc']['fecha_ini'][$_GET['element']] ?>" <? if ($LISTA_EVALUACION['Proc']['actual'][$_GET['element']]=='t') echo "readonly";?>>
+			  </div>
+		      </div>
+		  </div>
+		  
+		<div class="control-group">
+		      <label class="control-label">Fecha de finalización del proceso</label>
+		      <div class="controls">
+			  <p class='lsmall muted' style="width:300px" align="justify">Asegúrese de escoger un tiempo de duración apropiado, recuerde que el tiempo recomendado es de dos (2) semanas. </p>
+			  <div class="input-prepend date datepicker" data-date="<? echo $LISTA_EVALUACION['Proc']['fecha_fin'][$_GET['element']] ?>" data-date-language="es"  data-date-start-View="2" data-date-autoclose="true" data-date-format="dd-mm-yyyy" data-date-start-Date="<? echo $LISTA_EVALUACION['Proc']['fecha_ini'][$_GET['element']] ?>">
+			      <span class="add-on"><i class="icon-calendar"></i></span>
+			      <input size="12" id="nuevo_fin" name="nuevo_fin" class="input-xlarge" type="text" value="<? echo $LISTA_EVALUACION['Proc']['fecha_fin'][$_GET['element']] ?>" >
+			  </div>
+		      </div>
+		  </div>
+		</div>
+		</div>
+		
+	    <button type="submit" id="confirmButton" class="btn" >Aceptar</button>
+	    <a href="?" class="btn">Cancelar</a>	
+	    </form>      
+      
       <?php
 	} else {
       ?>
@@ -200,10 +269,14 @@
 		</td>
 		<!--Acciones-->
 		<td class="center lsmallT" nowrap>
-		  <a href="?editar" title="Cambiar fecha fin" >
-		    <img src="./img/iconos/edit.png" style="width:20px; margin-left:5px;"></a>
-		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Ver estadísticas" >
-		    <img src="./img/iconos/watch.png" style="width:20px; margin-left:5px;"></a>
+		  <a href="?action=editar&element=<?echo $i; ?>" title="Editar periodo de duración" >
+		    <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a>  
+		  <? if ($LISTA_EVALUACION['Proc']['total'][$i]!=0){ ?>
+		    <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Ver estadísticas" >
+		      <img src="./img/iconos/visible-16.png" style="margin-left:5px;"></a>
+		  <? } ?>
+		    <a href="./lib/cEvaluaciones?action=delete&proceso=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Eliminar" >
+		      <img src="./img/iconos/delete-16.png" style="margin-left:5px;"></a>
 	      </td>
 	      </tr>
 	    <? } //cierre del for

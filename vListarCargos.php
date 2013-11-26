@@ -24,21 +24,21 @@
             "aButtons": [
               {
                 "sExtends": "copy",
-                "sButtonText": "Copiar <img src='img/iconos/permiso.png' width='20' height='20' border=0 />"
+                "sButtonText": "Copiar  <img src='img/iconos/copy-16.png' border=0 style='margin-left:2px;'/>"
               },
               {
                 "sExtends": "csv",
                 "sTitle": "lista_cargo",
-                "sButtonText": "CSV <img src='img/iconos/csv_hover.png' width='20' height='20' border=0 />"
+                "sButtonText": "CSV  <img src='img/iconos/csv-16.png' border=0 style='margin-left:2px;'/>"
               },
               {
                 "sExtends": "pdf",
                 "sTitle": "lista_cargo",
-                "sButtonText": "PDF <img src='img/iconos/pdf_hover.png' width='20' height='20' border=0 />"
+                "sButtonText": "PDF  <img src='img/iconos/pdf-16.png' border=0 style='margin-left:2px;'/>"
               },
               {
                 "sExtends": "print",
-                "sButtonText": "Imprimir <img src='img/iconos/print_hover.png' width='20' height='20' border=0 />"
+                "sButtonText": "Imprimir  <img src='img/iconos/printer-16.png' border=0 style='margin-left:2px;'/>"
               },
             ]
           }
@@ -112,11 +112,11 @@
           <td class="center lsmallT" nowrap>
             <?
                 echo "<a href='vCargo.php?action=edit&id=";
-                echo $LISTA_CARG['Carg']['id'][$i]."' rel='tooltip' title='Editar'><img src='img/iconos/edit.gif' width='20' height='20' border=0 /></a> &nbsp;&nbsp;&nbsp;"; 
+                echo $LISTA_CARG['Carg']['id'][$i]."' rel='tooltip' title='Editar'><img src='img/iconos/edit-16.png' border=0 /></a> &nbsp;&nbsp;&nbsp;"; 
                 echo "<a href='vCargo.php?action=copy&id=";
-                echo $LISTA_CARG['Carg']['id'][$i]."' rel='tooltip' title='Copiar'><img src='img/iconos/edit-copy.png' width='20' height='20' border=0 /></a> &nbsp;&nbsp;&nbsp;"; 
+                echo $LISTA_CARG['Carg']['id'][$i]."' rel='tooltip' title='Copiar'><img src='img/iconos/copy-16.png' border=0 /></a> &nbsp;&nbsp;&nbsp;"; 
                 echo "<a data-toggle='modal' data-data='Sebuah Data' href='#confirm' data-url='lib/cCargo.php?action=delete&id=";
-                echo $LISTA_CARG['Carg']['id'][$i]."' rel='tooltip' title='Eliminar' onclick='return confirmar()'><img src='img/iconos/eliminar.gif'/></a>&nbsp;&nbsp;&nbsp;"; 
+                echo $LISTA_CARG['Carg']['id'][$i]."' rel='tooltip' title='Eliminar' onclick='return confirmar()'><img src='img/iconos/delete-16.png'/></a>&nbsp;&nbsp;&nbsp;"; 
             ?>
           </td>
           </tr>

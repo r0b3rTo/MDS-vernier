@@ -137,7 +137,7 @@ $(document).ready(function() {
             </div>
 
             <div class="control-group ">
-                <label class="control-label">Archivo CSV <img src='img/iconos/csv_hover.png' width='20' height='20' border=0 /></label>
+                <label class="control-label">Archivo CSV <img src='img/iconos/csv-24.png' border=0 style='margin-left: 2px;' /></label>
                 <div class="controls">
                     <input title="Seleccione el Archivo" type="file" class="input-xlarge" name="file" id="file">
                 </div>

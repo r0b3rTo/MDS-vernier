@@ -114,7 +114,7 @@ if (isset($_GET['action'])) {
 	  
     case 'pesos':
     
-	  print_r($_POST);	  
+	  //print_r($_POST);	  
 	  //$_SESSION['MSJ']="Los pesos suministrados fueron registrados";
 	  //header("Location: ../vImportarEncuesta.php?success"); 
     

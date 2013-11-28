@@ -62,14 +62,13 @@
                 $sql1 ="SELECT * ";
                 $sql1.="FROM PERSONA_EVALUADOR ";
                 $sql1.="WHERE id_per='".$_POST['id']."'";
-                //$sql1.="ORDER BY id_per ";
 
                 $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
 
-                if ($LISTA_PER_EVA['max_res']!==0) {
-                    $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
-                    $resultado=ejecutarConsulta($sql, $conexion);
-                }
+//                 if ($LISTA_PER_EVA['max_res']!==0) {
+//                     $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
+//                     $resultado=ejecutarConsulta($sql, $conexion);
+//                 }
 
                     $sql="INSERT INTO PERSONA_EVALUADOR (id_per, id_eva, actual, fecha_ini, observacion) VALUES(".
                     "'$_POST[id]', ".  //id persona              
@@ -81,6 +80,24 @@
                     ")";
                 break;  
                 
+            case 'delete_eval':
+
+                $atts = array("id_per", "id_eva");
+
+                $sql1 ="SELECT * ";
+                $sql1.="FROM PERSONA_EVALUADOR ";
+                $sql1.="WHERE id_per='".$_GET['id']."' ";
+                $sql1.="AND id_eva='".$_GET['id_eva']."'";
+
+                $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
+
+                if ($LISTA_PER_EVA['max_res']!==0) {
+                    $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_GET[fin]' WHERE id_per='$_GET[id]' AND id_eva='$_GET[id_eva]' AND actual='t'";
+//                     $resultado=ejecutarConsulta($sql, $conexion);
+                }
+                
+                break;  
+            
             case 'add_sup':
 
                 $atts = array("id_sup");
@@ -88,9 +105,9 @@
                 $sql1 ="SELECT * ";
                 $sql1.="FROM PERSONA_SUPERVISOR ";
                 $sql1.="WHERE id_per='".$_POST['id']."'";
-                //$sql1.="ORDER BY id_per ";
 
-                $LISTA_PER_SUP = obtenerDatos($sql1, $conexion, $atts, "Per_Sup"); 
+                $LISTA_PER_SUP = obtenerDatos($sql1, $conexion, $atts, "Per_Sup");
+                
                 if ($LISTA_PER_SUP['max_res']!==0) {
                     $sql = "UPDATE PERSONA_SUPERVISOR SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
                     $resultado=ejecutarConsulta($sql, $conexion);
@@ -129,16 +146,22 @@
     if (isset($_GET['action'])){
 
         switch ($_GET['action']) {
-            case 'delete':
-                $_SESSION['MSJ'] = "Los datos fueron eliminados";
-                header("Location: ../vListarPersonas.php?success"); 
-                break;
-
             case 'add':
                 $_SESSION['MSJ'] = "Los datos fueron registrados";
                 header("Location: ../vListarPersonas.php?success");
                 break;
-            
+      
+            case 'delete':
+                $_SESSION['MSJ'] = "Los datos fueron eliminados";
+                header("Location: ../vListarPersonas.php?success"); 
+                break;
+                
+            case 'delete_eval':
+                $_SESSION['MSJ'] = "Los datos del evaluador fueron eliminados";
+                $Location = "Location: ../vPersona.php?success&action=edit&id=".$_GET['id'];
+                header($Location); 
+                break;
+                
             default:
                 $_SESSION['MSJ'] = "Los cambios fueron guardados";
                 $Location = "Location: ../vPersona.php?success&action=edit&id=".$_POST['id'];

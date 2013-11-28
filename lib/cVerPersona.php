@@ -52,20 +52,21 @@
 
         $LISTA_PER_CAR = obtenerDatos($sql, $conexion, $atts, "Per_Car");        
 
-        $atts = array("id_per", "id_sup", "observacion");
+        $atts = array("id_per", "id_sup", "fecha_ini", "observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_SUPERVISOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
-      $sql.="ORDER BY fecha_fin DESC";
+        $sql.="ORDER BY fecha_fin DESC";
 
         $LISTA_PER_SUP = obtenerDatos($sql, $conexion, $atts, "Per_Sup"); 
 
-        $atts = array("id_per", "id_eva", "observacion");
+        $atts = array("id_per", "id_eva", "fecha_ini","observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_EVALUADOR ";
         $sql.="WHERE id_per='".$_GET['id']."'";
+        $sql.="AND actual=TRUE ";
         $sql.="ORDER BY fecha_fin DESC";
 
         $LISTA_PER_EVA = obtenerDatos($sql, $conexion, $atts, "Per_Eva"); 

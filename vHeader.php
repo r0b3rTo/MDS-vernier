@@ -114,14 +114,17 @@
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones<b class='caret'></b></a>
             <ul class='dropdown-menu'>
               <li><a href='vEvaluaciones.php'>Administrar Evaluaciones</a></li>
-              <li><a href=''>Ver Resultados</a></li>
+              <li><a href='vResultados.php'>Ver Resultados</a></li>
+              <li class='divider'></li>
+              <li><a href='vEncuestas.php'>Administrar Encuestas Limesurvey</a></li>
+              <li><a href='vImportarEncuesta.php'>Importar Encuesta Limesurvey</a></li>              
             </ul>
           </li>
         </ul>
         <ul class='nav pull-right' id='main-menu-right'>
           <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'>";mostrarDatosUsuario(); echo "<b class='caret'></b></a>
             <ul class='dropdown-menu'>
-              <li><a rel='tooltip' target='_blank' href='#' title='Ir a LiveSurveys' onclick='_gaq.push(['_trackEvent', 'click', 'outbound', 'builtwithbootstrap']);'>LiveSurveys <i class='icon-share-alt'></i></a></li>
+              <li><a rel='tooltip' target='_blank' href='http://localhost/limesurvey/admin' title='Ir a Limesurvey' onclick='_gaq.push(['_trackEvent', 'click', 'outbound', 'builtwithbootstrap']);'>Limesurvey <i class='icon-share-alt'></i></a></li>
               <li class='divider'></li>
               <li><a rel='tooltip' href='salir.php' title='Cerrar Sesi&oacute;n'>Salir <i class='icon-off'></i></a></li>
             </ul>

@@ -128,7 +128,7 @@ function break_line($linea)
 }
 
 function isAdmin() {
-    if ($_SESSION['USBID'] == "dghc" or $_SESSION['USBID'] == "evaluaciones")
+    if ($_SESSION['USBID'] == "dgch" or $_SESSION['USBID'] == "evaluaciones")
         return true;
     else
         return false;

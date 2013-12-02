@@ -15,11 +15,10 @@
     if (isset($_GET['id_encuesta_ls'])){
       //Lista de preguntas
       $sql ="SELECT * ";
-      $sql.="FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."'";        
+      $sql.="FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."' AND seccion='factor'";        
       $atts = array("id_encuesta_ls","id_pregunta", "id_pregunta_root", "titulo", "peso", "seccion");
       $LISTA_PREGUNTA= obtenerDatos($sql, $conexion, $atts, "Preg"); 
     }
-    
     
 if (isset($_GET['action'])) {
   switch($_GET['action']){
@@ -61,32 +60,23 @@ if (isset($_GET['action'])) {
 	      $sql.="'f', "; //estado actual de la encuesta
 	      $sql.="'$_POST[encuesta]')";  //id de la encuesta en limesurvey 
 	      $resultado_sql=ejecutarConsulta($sql, $conexion);
-	      echo "<br>INSERT: $sql<br>";
 	      
 	      //Pedir preguntas de cada sección
 	      for($i=0; $i<count($resultado); $i++){
 	      
 		if ($i==0){
-		  $seccion="factor";
-		} else {
 		  $seccion="competencia";
+		} else {
+		  $seccion="factor";
 		}
-	      
-		echo "<br>ID DEL GRUPO $i: <br>";
-		echo $resultado[$i]['id']['gid'];
-		
+	   
 		$group_id=intval($resultado[$i]['id']['gid']); //ID de la sección de preguntas
 	    
 		$preguntas= $client_ls->list_questions($session_key, $id_encuesta_ls, $group_id);
 		
 		//Pedir la información de cada pregunta
 		for($j=0; $j<count($preguntas); $j++){
-		
-		  echo "<br>ID DE LA PREGUNTA $j: <br>";
-		  echo $preguntas[$j]['id']['qid'];
-		  echo "<br>QUÉ DICE LA PREGUNTA $j: <br>";
-		  echo $preguntas[$j]['question'];
-		  
+				  
 		  $question_id=intval($preguntas[$j]['id']['qid']);
 		  $question= $preguntas[$j]['question'];
 		  $properties=array("subquestions");
@@ -98,24 +88,16 @@ if (isset($_GET['action'])) {
 		    $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta, titulo, seccion) VALUES (";
 		    $sql.="'$id_encuesta_ls', '$question_id', '$question', '$seccion')";
 		    $resultado_sql=ejecutarConsulta($sql, $conexion);
-		    echo "<br>INSERT: $sql<br>";
 		    
-		  
-		    echo "<br>SÍ HAY SUBPREGUNTAS<br>";
 		    //Pedir la información de las subpreguntas de cada pregunta
 		    while (current($subpreguntas['subquestions'])) {
-		      echo "<br>ID DE LA SUBPREGUNTA<br>";
 		      $id_subquestion=key($subpreguntas['subquestions']);
-		      echo $id_subquestion;
-		      echo "<br>QUÉ DICE LA SUBPREGUNTA<br>";
-		      echo $subpreguntas['subquestions'][$id_subquestion]['question'];
 		      $subquestion= $subpreguntas['subquestions'][$id_subquestion]['question'];
 		      
 		      //INSERT DE LA SUBPREGUNTA
 		      $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta, id_pregunta_root, titulo, seccion) VALUES (";
 		      $sql.="'$id_encuesta_ls', '$id_subquestion', '$question_id', '$subquestion', '$seccion')";
 		      $resultado_sql=ejecutarConsulta($sql, $conexion);
-		      echo "<br>INSERT: $sql<br>";
 		      
 		      next($subpreguntas['subquestions']);
 		      
@@ -125,23 +107,17 @@ if (isset($_GET['action'])) {
 		    $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta, titulo, seccion) VALUES (";
 		    $sql.="'$id_encuesta_ls', '$question_id', '$question', '$seccion')";
 		    $resultado_sql=ejecutarConsulta($sql, $conexion);
-		    echo "<br>INSERT: $sql<br>";
-		    echo "<br>NO HAY SUBPREGUNTAS<br>";
 		  }
 		  
 		} //cierre ciclo sobre preguntas
-		
 	      } //cierre ciclo sobre secciones de preguntas
-	      
 	      
 	    $_SESSION['MSJ']="La encuesta ha sido importada";
 	    header("Location: ../vImportarEncuesta.php?action=pesos&id_encuesta_ls=$id_encuesta_ls"); 
 	    
 	    } //cierre else (ID encuesta válido)
 	  } //cierre else (verificación de datos no repetidos)
-	  
-	  
-	  
+	   
 	  break;
 	  
     case 'set':

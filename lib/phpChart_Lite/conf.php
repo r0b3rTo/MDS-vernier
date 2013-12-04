@@ -1,6 +1,6 @@
 <?php
 define('SCRIPTPATH','/vernier/lib/phpChart_Lite/');
-define('DEBUG', true);
+define('DEBUG', false);
 
 
 

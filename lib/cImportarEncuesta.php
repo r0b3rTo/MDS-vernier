@@ -7,16 +7,15 @@
     $_WARNING = array();
     $_SUCCESS = array();
     require_once 'XML/RPC2/Client.php';
-    
-    
+        
     //Lista de cargos
     $CAR_ID = obtenerIds($conexion, "CARGO", false);
     
     if (isset($_GET['id_encuesta_ls'])){
       //Lista de preguntas
-      $sql ="SELECT * ";
+      $sql ="SELECT id_encuesta_ls, id_pregunta_ls, id_pregunta_root_ls, titulo, peso, seccion, id_pregunta ";
       $sql.="FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."' AND seccion='factor'";        
-      $atts = array("id_encuesta_ls","id_pregunta", "id_pregunta_root", "titulo", "peso", "seccion");
+      $atts = array("id_encuesta_ls","id_pregunta_ls", "id_pregunta_root_ls", "titulo", "peso", "seccion", "id_pregunta");
       $LISTA_PREGUNTA= obtenerDatos($sql, $conexion, $atts, "Preg"); 
     }
     
@@ -85,7 +84,7 @@ if (isset($_GET['action'])) {
 		  if(is_array($subpreguntas['subquestions'])){
 		  
 		    //INSERT DE LA PREGUNTA
-		    $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta, titulo, seccion) VALUES (";
+		    $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta_ls, titulo, seccion) VALUES (";
 		    $sql.="'$id_encuesta_ls', '$question_id', '$question', '$seccion')";
 		    $resultado_sql=ejecutarConsulta($sql, $conexion);
 		    
@@ -95,7 +94,7 @@ if (isset($_GET['action'])) {
 		      $subquestion= $subpreguntas['subquestions'][$id_subquestion]['question'];
 		      
 		      //INSERT DE LA SUBPREGUNTA
-		      $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta, id_pregunta_root, titulo, seccion) VALUES (";
+		      $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta_ls, id_pregunta_root_ls, titulo, seccion) VALUES (";
 		      $sql.="'$id_encuesta_ls', '$id_subquestion', '$question_id', '$subquestion', '$seccion')";
 		      $resultado_sql=ejecutarConsulta($sql, $conexion);
 		      
@@ -104,7 +103,7 @@ if (isset($_GET['action'])) {
 		    } // cierre ciclo sobre subpreguntas
 		  } else {
 		  
-		    $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta, titulo, seccion) VALUES (";
+		    $sql="INSERT INTO PREGUNTA (id_encuesta_ls, id_pregunta_ls, titulo, seccion) VALUES (";
 		    $sql.="'$id_encuesta_ls', '$question_id', '$question', '$seccion')";
 		    $resultado_sql=ejecutarConsulta($sql, $conexion);
 		  }

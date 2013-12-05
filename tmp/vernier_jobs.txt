@@ -1,4 +1,0 @@
-
-
-00 00 29 11 * wget -O -q -t 1 'http://localhost/vernier/lib/cEvaluaciones.php?action=desactivar&inicio=27-11-2013'
-00 00 27 11 * wget -O -q -t 1 'http://localhost/vernier/lib/cEvaluaciones.php?action=activar&inicio=27-11-2013'

@@ -65,21 +65,32 @@
 
                 $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
 
-//                 if ($LISTA_PER_EVA['max_res']!==0) {
-//                     $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_POST[fin]' WHERE id_per='$_POST[id]' AND actual='t'";
-//                     $resultado=ejecutarConsulta($sql, $conexion);
-//                 }
-
-                    $sql="INSERT INTO PERSONA_EVALUADOR (id_per, id_eva, actual, fecha_ini, observacion) VALUES(".
-                    "'$_POST[id]', ".  //id persona              
-                    "'$_POST[eval]', ".  //id evaluador            
-                    "'t', ".  // evaluador actual              
-                    "'$_POST[fech]', ".  //fecha
-                    "'$_POST[obs]' ".  //observacion
-                    //observacion
-                    ")";
+                $sql="INSERT INTO PERSONA_EVALUADOR (id_per, id_eva, actual, fecha_ini, observacion) VALUES(".
+                  "'$_POST[id]', ".  //id persona              
+                  "'$_POST[eval]', ".  //id evaluador            
+                  "'t', ".  // evaluador actual              
+                  "'$_POST[fech]', ".  //fecha
+                  "'$_POST[obs]' ".  //observacion
+                ")";
+                    
                 break;  
                 
+            case 'update_eval':
+
+                $atts = array("id_per");
+
+                $sql1 ="SELECT * ";
+                $sql1.="FROM PERSONA_EVALUADOR ";
+                $sql1.="WHERE id_per='".$_POST['id']."'";
+
+                $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
+
+                if ($LISTA_PER_EVA['max_res']!==0) {
+                    $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_GET[fin]' WHERE id_per='$_GET[id]' AND id_eva='$_GET[id_eva]' AND actual='t'";
+                }
+                
+                break;  
+            
             case 'delete_eval':
 
                 $atts = array("id_per", "id_eva");
@@ -93,7 +104,6 @@
 
                 if ($LISTA_PER_EVA['max_res']!==0) {
                     $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_GET[fin]' WHERE id_per='$_GET[id]' AND id_eva='$_GET[id_eva]' AND actual='t'";
-//                     $resultado=ejecutarConsulta($sql, $conexion);
                 }
                 
                 break;  

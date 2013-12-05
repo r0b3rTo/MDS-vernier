@@ -22,7 +22,7 @@
 	    $sql.="'$_POST[ini]', ";  //fecha_ini            
 	    $sql.="'$_POST[fin]', ";  //fecha_fin         
 	    $sql.="'f')";  //periodo actual            
-	    $resultado=ejecutarConsulta($sql, $conexion);  
+	    $resultado=ejecutarConsulta($sql, $conexion);
 	    
 	    //Agregar cronjob para el día de expiración de la encuesta
 	    $aux= explode("-",$_POST[fin]);
@@ -124,6 +124,7 @@
 		  $sql= "SELECT id, nombre, apellido, email FROM PERSONA WHERE id='";
 		  $sql.= $id_per."'";
 		  $atts= array("id","nombre","apellido","email");
+		  
 		  $DATOS= obtenerDatos($sql, $conexion, $atts, "Dat");
 		  $email=$DATOS["Dat"]["email"][0];
 		  $nombre=$DATOS["Dat"]["nombre"][0];
@@ -161,6 +162,7 @@
 		      $sql= "SELECT id_eva, fecha_ini FROM PERSONA_EVALUADOR ";
 		      $sql.= "WHERE actual=TRUE AND id_per=$id_per";
 		      $atts= array("id_eva","fecha_ini");
+		      
 		      $LISTA_EVALUADOR=obtenerDatos($sql, $conexion, $atts, "Eva");
 		      
 		      //Agregar las encuestas de evaluador correspondientes a cada usuario

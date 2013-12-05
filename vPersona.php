@@ -511,7 +511,7 @@ $(function() {
    ?>
       <!-- Formulario Evaluadores Actuales-->
    <div class="well" align="center">
-      <form id="newEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=edit_eval" >
+      <form id="newEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=update_eval" >
          <input type="hidden" id="id" name="id" value="<? if (isset($_GET['id'])) echo $_GET['id']; ?>"/>
          
          <div class="row">

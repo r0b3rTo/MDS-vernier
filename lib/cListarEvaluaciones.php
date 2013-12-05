@@ -8,7 +8,7 @@
    $_WARNING = array();
    $_SUCCESS = array();
    date_default_timezone_set('America/Caracas');
-    
+   
    require_once 'XML/RPC2/Client.php';
 
    // Obtención de datos del usuario
@@ -19,7 +19,7 @@
       $cedula= $_SESSION['cedula'];
       $sql.="WHERE cedula='".$cedula."'";
    }
-    
+   
    $PERSONA = obtenerDatos($sql, $conexion, $atts, "Per");
    $id_usuario=$PERSONA['Per']['id'][0];
    
@@ -45,7 +45,7 @@
       $sql.="FROM PERSONA_ENCUESTA ";
       $sql.="WHERE id_encuestado='".$LISTA_EVALUADOS["Per_Eva"]["id_per"][$i]."' ";
       $sql.="AND actual='t'";
- 
+
       $atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
       $LISTA_EVALUACION_ACTUAL= obtenerDatos($sql, $conexion, $atts, "Enc");
    }
@@ -71,7 +71,7 @@
       $sql.="FROM PERSONA_ENCUESTA ";
       $sql.="WHERE id_encuestado='".$LISTA_EVALUADOS["Per_Eva"]["id_per"][$i]."' ";
       $sql.="AND actual='f'";
- 
+
       $atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
       $LISTA_EVALUACION_PASADA= obtenerDatos($sql, $conexion, $atts, "Enc");
    }
@@ -88,65 +88,77 @@
       $LISTA_EVALUACION_PASADA["Enc"]["apellido"][$i]=$NOMBRES["Nom"]["apellido"][0];
    }
    
-   //Obtención de los supervisados del usuario
-   $sql ="SELECT id_per ";
-   $sql.="FROM PERSONA_SUPERVISOR ";
-   $sql.="WHERE id_sup='".$id_usuario."' ";
-   $sql.="AND actual='t'";
+   if (isset($_GET['action']) ){
    
-   $atts = array("id_per");
-   $LISTA_SUPERVISADOS= obtenerDatos($sql, $conexion, $atts, "Per_Sup");
+      switch ($_GET['action']) {
+            case 'viewSupervisor':
+               //Obtención de los supervisados del usuario
+               $sql ="SELECT id_per ";
+               $sql.="FROM PERSONA_SUPERVISOR ";
+               $sql.="WHERE id_sup='".$id_usuario."' ";
+               $sql.="AND actual='t'";
    
-   //Evaluaciones actuales de la lista de supervisados
-   ///////////////////////
-   // Obtención del identificador, tipo, estado, periodo y token de Limesurvey de las encuestas del usuario
+               $atts = array("id_per");
+               $LISTA_SUPERVISADOS= obtenerDatos($sql, $conexion, $atts, "Per_Sup");
    
-   for($i=0; $i<$LISTA_SUPERVISADOS['max_res']; $i++){
-      $sql ="SELECT id_encuesta_ls, id_evaluado, token_ls, tipo, estado, periodo ";
-      $sql.="FROM PERSONA_ENCUESTA ";
-      $sql.="WHERE id_encuestado='".$LISTA_SUPERVISADOS["Per_Sup"]["id_per"][$i]."' ";
-      $sql.="AND actual='t'";
- 
-      $atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
-      $LISTA_SUPERVISION_ACTUAL= obtenerDatos($sql, $conexion, $atts, "Enc");
-   }
+               //Evaluaciones actuales de la lista de supervisados
+               ///////////////////////
+               // Obtención del identificador, tipo, estado, periodo y token de Limesurvey de las encuestas del usuario
    
-   //Obtención de los nombres de los supervisados
-   for ($i=0; $i<$LISTA_SUPERVISION_ACTUAL[max_res]; $i++){
-      $sql ="SELECT nombre, apellido ";
-      $sql.="FROM PERSONA ";
-      $sql.="WHERE ";
-      $sql.= "id='".$LISTA_SUPERVISION_ACTUAL["Enc"]["id_evaluado"][$i]."'";
-      $atts = array("nombre", "apellido");
-      $NOMBRES= obtenerDatos($sql, $conexion, $atts, "Nom");
-      $LISTA_SUPERVISION_ACTUAL["Enc"]["nombre"][$i]=$NOMBRES["Nom"]["nombre"][0];
-      $LISTA_SUPERVISION_ACTUAL["Enc"]["apellido"][$i]=$NOMBRES["Nom"]["apellido"][0];
-   }
+               for($i=0; $i<$LISTA_SUPERVISADOS['max_res']; $i++){
+                  $sql ="SELECT id_encuesta_ls, id_evaluado, token_ls, tipo, estado, periodo ";
+                  $sql.="FROM PERSONA_ENCUESTA ";
+                  $sql.="WHERE id_encuestado='".$LISTA_SUPERVISADOS["Per_Sup"]["id_per"][$i]."' ";
+                  $sql.="AND actual='t'";
+
+                  $atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
+                  $LISTA_SUPERVISION_ACTUAL= obtenerDatos($sql, $conexion, $atts, "Enc");
+               }
    
-   //Evaluaciones pasadas de los supervisados
-   //////////////////////
-   // Obtención del identificador, tipo, estado y token de Limesurvey de las encuestas del usuario
+               //Obtención de los nombres de los supervisados
+               for ($i=0; $i<$LISTA_SUPERVISION_ACTUAL[max_res]; $i++){
+                  $sql ="SELECT nombre, apellido ";
+                  $sql.="FROM PERSONA ";
+                  $sql.="WHERE ";
+                  $sql.= "id='".$LISTA_SUPERVISION_ACTUAL["Enc"]["id_evaluado"][$i]."'";
+                  $atts = array("nombre", "apellido");
+                  $NOMBRES= obtenerDatos($sql, $conexion, $atts, "Nom");
+                  $LISTA_SUPERVISION_ACTUAL["Enc"]["nombre"][$i]=$NOMBRES["Nom"]["nombre"][0];
+                  $LISTA_SUPERVISION_ACTUAL["Enc"]["apellido"][$i]=$NOMBRES["Nom"]["apellido"][0];
+               }
    
-   for($i=0; $i<$LISTA_SUPERVISADOS['max_res']; $i++){
-      $sql ="SELECT id_encuesta_ls, id_evaluado, token_ls, tipo, estado, periodo ";
-      $sql.="FROM PERSONA_ENCUESTA ";
-      $sql.="WHERE id_encuestado='".$LISTA_SUPERVISADOS["Per_Sup"]["id_per"][$i]."' ";
-      $sql.="AND actual='f'";
- 
-      $atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
-      $LISTA_SUPERVISION_PASADA= obtenerDatos($sql, $conexion, $atts, "Enc");
-   }
+               //Evaluaciones pasadas de los supervisados
+               //////////////////////
+               // Obtención del identificador, tipo, estado y token de Limesurvey de las encuestas del usuario
+   
+               for($i=0; $i<$LISTA_SUPERVISADOS['max_res']; $i++){
+                  $sql ="SELECT id_encuesta_ls, id_evaluado, token_ls, tipo, estado, periodo ";
+                  $sql.="FROM PERSONA_ENCUESTA ";
+                  $sql.="WHERE id_encuestado='".$LISTA_SUPERVISADOS["Per_Sup"]["id_per"][$i]."' ";
+                  $sql.="AND actual='f'";
+
+                  $atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
+                  $LISTA_SUPERVISION_PASADA= obtenerDatos($sql, $conexion, $atts, "Enc");
+               }
       
-   //Obtención de los nombres de los evaluados
-   for ($i=0; $i<$LISTA_SUPERVISION_PASADA['max_res']; $i++){
-      $sql ="SELECT nombre, apellido ";
-      $sql.="FROM PERSONA ";
-      $sql.="WHERE ";
-      $sql.= "id='".$LISTA_SUPERVISION_PASADA["Enc"]["id_evaluado"][$i]."'";
-      $atts = array("nombre", "apellido");
-      $NOMBRES= obtenerDatos($sql, $conexion, $atts, "Nom");
-      $LISTA_SUPERVISION_PASADA["Enc"]["nombre"][$i]=$NOMBRES["Nom"]["nombre"][0];
-      $LISTA_SUPERVISION_PASADA["Enc"]["apellido"][$i]=$NOMBRES["Nom"]["apellido"][0];
+               //Obtención de los nombres de los evaluados
+               for ($i=0; $i<$LISTA_SUPERVISION_PASADA['max_res']; $i++){
+                  $sql ="SELECT nombre, apellido ";
+                  $sql.="FROM PERSONA ";
+                  $sql.="WHERE ";
+                  $sql.= "id='".$LISTA_SUPERVISION_PASADA["Enc"]["id_evaluado"][$i]."'";
+                  $atts = array("nombre", "apellido");
+                  $NOMBRES= obtenerDatos($sql, $conexion, $atts, "Nom");
+                  $LISTA_SUPERVISION_PASADA["Enc"]["nombre"][$i]=$NOMBRES["Nom"]["nombre"][0];
+                  $LISTA_SUPERVISION_PASADA["Enc"]["apellido"][$i]=$NOMBRES["Nom"]["apellido"][0];
+               }
+               break;
+               
+            default:
+               # code...
+               break;
+      }
+      
    }
       
    if (isset($_GET['token_ls']) && isset($_GET['id_encuesta_ls'])) {
@@ -185,7 +197,7 @@
          header("Location: ./vListarEvaluaciones.php?warning"); 
       }
    }
-    
-    cerrarConexion($conexion);
-    
+   
+   cerrarConexion($conexion);
+   
 ?>

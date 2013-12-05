@@ -27,6 +27,8 @@
   
 <!-- Codigo importante -->
 <?php
+if (!(isset($_GET['action']))){
+
    if ($LISTA_EVALUACION_ACTUAL['max_res']==0){
       echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay evaluaciones para el usuario.</p><br><br><br><br><br><br>";
    }else{
@@ -222,6 +224,233 @@
    </table>
    </div>
 <?
-   }// cierra el if
+   }  // cierra el if de LISTA_EVALUACION_ACTUAL
+?>
+   <br>
+   <div class="control-group">
+      <div class="row">
+         <div class="span5"></div>
+         <div class="span6">
+            <p>
+               <a class="btn btn-info" href="?action=viewSupervisor">Listar Encuestas por Supervisar</a>
+            </p>
+         </div>
+      </div>   
+   </div>
+<?php
+}  //cierra el if del action
+
+if (isset($_GET['action']) && $_GET['action'] == "viewSupervisor"){
+   
+   if ($LISTA_SUPERVISION_ACTUAL['max_res']==0){
+      echo "<br><br><br><br><br><br><p class='text-center text-info'>Hasta el momento no hay evaluaciones por supervisar para el usuario.</p><br><br><br><br><br><br>";
+   }else{
+?>
+   <br>
+   <p class="lead">
+      <small>Lista de evaluaciones por supervisar</small>
+   </p>
+   <p class="lsmall muted"> Evaluaciones por supervisar correspondientes al proceso de evaluación actual</p>
+   <div id="demo">
+   <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered lista" id="table_1" width="100%">
+      <thead>
+         <tr>
+            <th class="lsmallT"><small>Periodo del proceso de evaluación</small></th>
+            <th class="lsmallT"><small>Tipo de evaluación</small></th>
+            <th class="lsmallT"><small>Persona a evaluar</small></th>
+            <th class="lsmallT"><small>Estado</small></th>
+            <th class="lsmallT"><small>Acción</small></th>
+         </tr>
+      </thead>
+      <tfoot>
+         <tr>
+            <th class="lsmallT"><small>Periodo del proceso de evaluación</small></th>
+            <th class="lsmallT"><small>Tipo de evaluación</small></th>
+            <th class="lsmallT"><small>Persona a evaluar</small></th>
+            <th class="lsmallT"><small>Estado</small></th>
+            <th class="lsmallT"><small>Acción</small></th>
+         </tr>
+      </tfoot>
+      <tbody role="alert" aria-live="polite" aria-relevant="all">
+         <!-- Encuestas del usuario -->
+      <?php
+      if ($LISTA_SUPERVISION_ACTUAL['max_res']>0){
+         for ($i=0;$i<$LISTA_SUPERVISION_ACTUAL['max_res'];$i++){
+      ?>
+         <tr class="<?php echo $color_tabla; ?>" >
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                     echo $LISTA_SUPERVISION_ACTUAL['Enc']['periodo'][$i];echo " ";
+                  ?>
+               </small>
+            </td>
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                  if ($LISTA_SUPERVISION_ACTUAL['Enc']['tipo'][$i]=="autoevaluacion") echo 'Encuesta de autoevaluación';
+                  if ($LISTA_SUPERVISION_ACTUAL['Enc']['tipo'][$i]=="evaluador") echo 'Encuesta como evaluador';
+                  ?>
+               </small>
+            </td>     
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                  echo $LISTA_SUPERVISION_ACTUAL['Enc']['nombre'][$i];echo " ";echo $LISTA_SUPERVISION_ACTUAL['Enc']['apellido'][$i];
+                  ?>
+               </small>
+            </td>
+            <? switch ($LISTA_SUPERVISION_ACTUAL['Enc']['estado'][$i]){ case 'Pendiente': $color='#ffe1d9'; break; case 'En proceso':$color='rgb(252,248,227)'; break; case 'Finalizada': $color='rgb(223,240,216)'; break;}?>
+            <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap>
+               <small>
+                  <?
+                  echo $LISTA_SUPERVISION_ACTUAL['Enc']['estado'][$i];
+                  ?>
+               </small>
+            </td>
+            <td class="center lsmallT" nowrap>
+            <? 
+            switch ($LISTA_SUPERVISION_ACTUAL['Enc']['estado'][$i]){
+               case 'Pendiente': 
+//                echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_SUPERVISION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_SUPERVISION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
+               break;
+               case 'En proceso': 
+//                echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_SUPERVISION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_SUPERVISION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
+               break;  
+               case 'Finalizada': 
+               echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_SUPERVISION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_SUPERVISION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+               break;
+            }
+            ?>
+            </td>
+         </tr>
+      <? 
+         } //cierre del for
+      } //cierre del if
+      ?>
+      </tbody>
+   </table>
+   </div>
+         
+
+<?php
+   }//cierra el else
+   //Listado de evaluaciones por supervisar pasadas
+   if (!($LISTA_SUPERVISION_PASADA['max_res']==0)){
+?>
+   <br>
+   <p class="lead">
+      <small>Lista de evaluaciones pasadas</small>
+   </p>
+   <p class="lsmall muted"> Puede consultar el estado y los resultados de evaluaciones pasadas</p>
+   <div id="demo">
+   <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered lista" id="table_2" width="100%">
+      <thead>
+         <tr>
+            <th class="lsmallT"><small>Periodo del proceso de evaluación</small></th>
+            <th class="lsmallT"><small>Tipo de evaluación</small></th>
+            <th class="lsmallT"><small>Persona a evaluar</small></th>
+            <th class="lsmallT"><small>Estado</small></th>
+            <th class="lsmallT"><small>Acción</small></th>
+         </tr>
+      </thead>
+      <tfoot>
+         <tr>
+            <th class="lsmallT"><small>Periodo del proceso de evaluación</small></th>
+            <th class="lsmallT"><small>Tipo de evaluación</small></th>
+            <th class="lsmallT"><small>Persona a evaluar</small></th>
+            <th class="lsmallT"><small>Estado</small></th>
+            <th class="lsmallT"><small>Acción</small></th>
+         </tr>
+      </tfoot>
+      <tbody role="alert" aria-live="polite" aria-relevant="all">
+      <!-- Encuestas del usuario -->
+      <?php
+         if ($LISTA_SUPERVISION_PASADA['max_res']>0){
+            for ($i=0;$i<$LISTA_SUPERVISION_PASADA['max_res'];$i++){
+      ?>
+         <tr class="<?php echo $color_tabla; ?>" >
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                     echo $LISTA_SUPERVISION_PASADA['Enc']['periodo'][$i];echo " ";
+                  ?>
+               </small>
+            </td>
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                  if ($LISTA_SUPERVISION_PASADA['Enc']['tipo'][$i]=="autoevaluacion") echo 'Encuesta de autoevaluación';
+                  if ($LISTA_SUPERVISION_PASADA['Enc']['tipo'][$i]=="evaluador") echo 'Encuesta como evaluador';
+                  ?>
+               </small>
+            </td>     
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                  echo $LISTA_SUPERVISION_PASADA['Enc']['nombre'][$i];echo " ";echo $LISTA_SUPERVISION_PASADA['Enc']['apellido'][$i];
+                  ?>
+               </small>
+            </td>
+            <? switch ($LISTA_SUPERVISION_PASADA['Enc']['estado'][$i]){ 
+               case 'Pendiente': 
+                  $color='#ffe1d9'; 
+                  $mensaje='No la realizó';
+                  break; 
+               case 'En proceso':
+                  $color='#ffffcc'; 
+                  $mensaje='No la terminó'; 
+                  break; 
+               case 'Finalizada':
+                  $color='rgb(223,240,216)';
+                  $mensaje='Se realizó'; 
+                  break;
+            }
+            ?>
+            <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap>
+               <small>
+                  <?
+                     echo $mensaje;
+                  ?>
+               </small>
+            </td>
+            <td class="center lsmallT" nowrap>
+               <small>
+                  <? 
+                  switch ($LISTA_SUPERVISION_PASADA['Enc']['estado'][$i]){
+                  case 'Finalizada': 
+                     echo "<a href='' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+                     break; 
+                  default: 
+                     echo "No hay acciones disponibles";
+                     break;
+                  }
+                  ?>
+               </small>
+            </td>
+         </tr>
+        <? 
+            } //cierre del for
+         } //cierre del if
+         ?>
+      </tbody>
+   </table>
+   </div>
+<?
+   }  // cierra el if de LISTA_SUPERVISION_ACTUAL
+?>
+   <br>
+   <div class="control-group">
+      <div class="row">
+         <div class="span5"></div>
+         <div class="span6">
+            <p>
+               <a class="btn btn-info" href="?">Listar Encuestas por Realizar</a>
+            </p>
+         </div>
+      </div>   
+   </div>
+<?
+}  // cierra el if del action
    include "vFooter.php";
 ?>

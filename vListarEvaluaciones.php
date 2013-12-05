@@ -319,6 +319,8 @@ if (isset($_GET['action']) && $_GET['action'] == "viewSupervisor"){
                break;  
                case 'Finalizada': 
                echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_SUPERVISION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_SUPERVISION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+               echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_SUPERVISION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_SUPERVISION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Aprobar resultados'><i class='icon-ok'></i></a>"; 
+               echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_SUPERVISION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_SUPERVISION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Refutar resultados'><i class='icon-remove'></i></a>"; 
                break;
             }
             ?>
@@ -420,6 +422,8 @@ if (isset($_GET['action']) && $_GET['action'] == "viewSupervisor"){
                   switch ($LISTA_SUPERVISION_PASADA['Enc']['estado'][$i]){
                   case 'Finalizada': 
                      echo "<a href='' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+                     echo "<a href='' title='Aprobar resultados'><i class='icon-ok'></i></a>"; 
+                     echo "<a href='' title='Refutar resultados'><i class='icon-remove'></i></a>"; 
                      break; 
                   default: 
                      echo "No hay acciones disponibles";

@@ -269,8 +269,10 @@
 		</td>
 		<!--Acciones-->
 		<td class="center lsmallT" nowrap>
+		  <? if ($LISTA_EVALUACION['Proc']['actual'][$i]!='f'){ ?>
 		  <a href="?action=editar&element=<?echo $i; ?>" title="Editar periodo de duración" >
-		    <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a>  
+		    <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a>
+		  <? } ?>
 		  <? if ($LISTA_EVALUACION['Proc']['total'][$i]!=0){ ?>
 		    <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Ver estadísticas" >
 		      <img src="./img/iconos/visible-16.png" style="margin-left:5px;"></a>

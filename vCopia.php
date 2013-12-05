@@ -150,7 +150,7 @@
 	      <td class="center lsmallT" nowrap><small>
 		<? switch ($LISTA_EVALUACION_PASADA['Enc']['estado'][$i]){
 		case 'Finalizada': 
-		  echo "<a href='' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
 		  break; 
 		default: 
 		  echo "No hay acciones disponibles"; 

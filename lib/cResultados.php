@@ -16,18 +16,28 @@
       $resultado= obtenerDatos($sql, $conexion, $atts, "Enc"); //ID de la encuesta para el token del usuario
       
       $id_encuesta_ls=$resultado['Enc']['id_encuesta_ls'][0];
-      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."'";
-      $atts = array("id_pregunta", "resultado");
-      $resultado= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='competencia'";
+      $atts = array("id_pregunta", "titulo", "resultado");
+      $LISTA_COMPETENCIAS= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas de la sección de competencias
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='factor'";
+      $LISTA_FACTORES= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas de la sección de competencias
 
-      for($i=0; $i<$resultado[max_res] ;$i++){
-	$id_pregunta_i=$resultado['Preg']['id_pregunta'][$i];
+      for($i=0; $i<$LISTA_COMPETENCIAS[max_res] ;$i++){
+	$id_pregunta_i=$LISTA_COMPETENCIAS['Preg']['id_pregunta'][$i];
 	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$id_pregunta_i."'";
 	$atts = array("respuesta");
 	$aux= obtenerDatos($sql, $conexion, $atts, "Res");
-	$resultado['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
+	$LISTA_COMPETENCIAS['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
       }
       
+      for($i=0; $i<$LISTA_FACTORES[max_res] ;$i++){
+	$id_pregunta_i=$LISTA_FACTORES['Preg']['id_pregunta'][$i];
+	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$id_pregunta_i."'";
+	$atts = array("respuesta");
+	$aux= obtenerDatos($sql, $conexion, $atts, "Res");
+	$LISTA_FACTORES['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
+      }
+     
     }
     
     //Cierre conexión a la BD

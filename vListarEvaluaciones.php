@@ -1,7 +1,7 @@
 <?php
     session_start();
     $Legend = "Evaluaciones";
-    include "lib/cCopia.php";
+    include "lib/cListarEvaluaciones.php";
     include "vHeaderEvaluaciones.php";
     extract($_GET);
     $all = true;

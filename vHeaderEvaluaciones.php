@@ -72,7 +72,7 @@
 <?
   if (isset($_SESSION['USBID'])){
     $cedula= $_SESSION['cedula'];
-    echo "
+?>
     <div class='navbar navbar-fixed-top '>
     <div class='navbar-inner'>
       <div class='container'>
@@ -87,13 +87,16 @@
           <li class='dropdown'>
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones <b class='caret'></b></a>
             <ul class='dropdown-menu' id='swatch-menu'>
-              <li><a href='vListarEvaluaciones.php?view&id=$cedula'>Listar Evaluaciones</a></li>
+              <li><a href='vListarEvaluaciones.php?view&id=<? echo $cedula ?>'>Listar Evaluaciones</a></li>
               <li><a href='vListarResultados.php'>Ver Resultados</a></li>
+              <? if(true) { ?>
+	      <li><a href='vSupervisar.php'>Supervisar Evaluaciones</a></li>
+	      <? } ?>
             </ul>
           </li>
         </ul>
         <ul class='nav pull-right' id='main-menu-right'>
-          <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'>";mostrarDatosUsuario(); echo "<b class='caret'></b></a>
+          <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'><?mostrarDatosUsuario()?><b class='caret'></b></a>
             <ul class='dropdown-menu'>
               <li><a rel='tooltip' href='salir.php' title='Cerrar Sesi&oacute;n'>Salir <i class='icon-off'></i></a></li>
             </ul>
@@ -103,8 +106,8 @@
      </div>
    </div>
  </div>
- ";
-}
+<?
+  }
 ?>
 
     <div class="container">  

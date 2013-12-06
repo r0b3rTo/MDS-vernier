@@ -4,7 +4,7 @@
 	$_SESSION[USBID]="dgch";
 	$_SESSION[nombres]="Dirección";
 	$_SESSION[apellidos]="de Gestión de Capital Humano"; 
-	$_SESSION[cedula]="18445082";
+	$_SESSION[cedula]="1000000";
 	$_SESSION[tipo]="administrativos";
 
 	$_SESSION[cct]=1;

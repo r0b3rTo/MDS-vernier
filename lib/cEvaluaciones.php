@@ -14,11 +14,14 @@
       
 	case 'add':
 
-	  if (isset($_POST[periodo]) & isset($_POST[ini]) & isset($_POST[fin])){
+	  if (isset($_POST[ini]) & isset($_POST[fin])){
+	  
+	    $aux= explode("-",$_POST[ini]);
+	    $periodo=determinarPeriodo($aux[1], $aux[2]);
 	  
 	    //Agregar nuevo periodo de evaluación
 	    $sql="INSERT INTO EVALUACION (periodo, fecha_ini, fecha_fin, actual) VALUES(";
-	    $sql.="'$_POST[periodo]', ";  //periodo de evaluacion    
+	    $sql.="'$periodo', ";  //periodo de evaluacion    
 	    $sql.="'$_POST[ini]', ";  //fecha_ini            
 	    $sql.="'$_POST[fin]', ";  //fecha_fin         
 	    $sql.="'f')";  //periodo actual            
@@ -94,7 +97,6 @@
 	      $id_car=$LISTA_ENCUESTA["Enc"]["id_car"][$i];//Cargo para la encuesta de la i-ésima iteración
 	      $fecha_ini_ls=date("Y-m-d", strtotime($fecha_ini)); //Fecha de inicio
 	      $fecha_fin_ls=date("Y-m-d", strtotime($fecha_fin)); //Fecha de finalización
-	      //$periodo=$_POST[periodo];
 	      
 	      //Activación de la encuesta en Limesurvey
 	      $resultado= $client_ls->activate_survey($session_key, $id_encuesta_ls);//Activar la encuesta

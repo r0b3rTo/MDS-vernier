@@ -11,6 +11,16 @@
     //Lista de cargos
     $CAR_ID = obtenerIds($conexion, "CARGO", false);
     
+    
+    $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol'); //Crear un cliente para comunicarse con Limesurvey
+    $session_key = $client_ls->get_session_key('admin', 'Segundo!!');//Pedir llave de acceso a Limesurvey
+    $resultado = $client_ls->list_surveys($session_key);//Lista de encuestas registradas en Limesurvey
+    $ENCUESTAS_LS=array();//Listado de encuestas
+    for($i=0; $i<count($resultado); $i++){
+      $ENCUESTAS_LS['id_encuesta_ls'][$i]=$resultado[$i]['sid'];
+      $ENCUESTAS_LS['nombre'][$i]=$resultado[$i]['surveyls_title'];
+    }
+    
     if (isset($_GET['id_encuesta_ls'])){
       //Lista de preguntas
       $sql ="SELECT id_encuesta_ls, id_pregunta_ls, id_pregunta_root_ls, titulo, peso, seccion, id_pregunta ";
@@ -40,8 +50,6 @@ if (isset($_GET['action'])) {
 	    header("Location: ../vImportarEncuesta.php?error");
 	  } else {
 	  
-	    $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol'); //Crear un cliente para comunicarse con Limesurvey
-	    $session_key = $client_ls->get_session_key('admin', 'Segundo!!');//Pedir llave de acceso a Limesurvey
 	    $id_encuesta_ls=intval($_POST['encuesta']);
 	    
 	    //Solicitar las secciones de preguntas de la encuesta
@@ -145,7 +153,7 @@ if (isset($_GET['action'])) {
   } //cierre switch
 } //cierre if
   
-
+  $resultado = $client_ls->release_session_key($session_key);//Devolver llave de acceso a Limesurvey
   cerrarConexion($conexion);
 
 ?>

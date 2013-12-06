@@ -60,14 +60,17 @@
 
 
 	    <div class="control-group">
-		<label class="control-label">Código de la encuesta</label>
+		<label class="control-label">Escoja la encuesta</label>
 		<div class="controls">
-		    <div class="input-prepend">
-			<span class="add-on"><i class="icon-pencil"></i></span>
-			<input type="text" required class="input-xlarge" id="encuesta" name="encuesta" data-format="ddddddd" placeholder="C&oacute;digo de la encuesta en Limesurvey">
-		    </div>
+			<select style="width:200px" id="encuesta" name="encuesta" class="select2" data-size="auto">
+			    <?
+				for ($i=0; $i<count($ENCUESTAS_LS['id_encuesta_ls']); $i++){
+				    echo "<option value=".$ENCUESTAS_LS['id_encuesta_ls'][$i].">".$ENCUESTAS_LS['nombre'][$i]."</option>";
+				}
+			    ?>
+			</select>
 		</div>
-	    </div>
+	    </div> 
 	    
 	    <div class="control-group">
 		<label class="control-label">Cargo asociado a la encuesta</label>

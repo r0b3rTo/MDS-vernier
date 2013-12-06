@@ -78,19 +78,6 @@
 		<div class="row">
 		<div class="span2"></div>
 		<div class="span4">
-		  <div class="control-group">
-		      <label class="control-label">Periodo del proceso de evaluación</label>
-		      <div class="controls">
-			<p class='lsmall muted' style="width:300px" align="justify">Por favor seleccione el periodo correspondiente al nuevo proceso de evaluación.</p>
-			      <select class="select2" id="periodo" name="periodo"  size=1 data-size="auto">
-				<option value="Febrero <?echo date("Y")?>"> Febrero <?echo date("Y")?></option>
-				<option value="Octubre <?echo date("Y")?>"> Octubre <?echo date("Y")?></option>
-				<!--Temporales solo para prueba-->
-				<option value="Febrero 2014"> Febrero 2014</option>
-				<option value="Octubre 2014"> Octubre 2014</option>
-			      </select>
-		      </div>
-		  </div>
 
 		  <div class="control-group">
 		      <label class="control-label">Fecha de inicio del proceso</label>

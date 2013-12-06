@@ -125,7 +125,6 @@
 </div>
       
 <?
-  if (!isAdmin())
     echo "<br><br><div align='center'><a href='vPersona.php' class='btn btn-info'>Agregar Persona</a></div>";
 ?>
          

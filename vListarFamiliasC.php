@@ -110,7 +110,6 @@
 </div>
          
 <?
-  if (!isAdmin())
     echo "<div  align='center'><a href='vFamiliaC.php' class='btn btn-info'>Agregar Familia Cargo</a></div>";
 ?>
   </div>

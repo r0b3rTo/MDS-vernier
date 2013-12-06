@@ -121,7 +121,6 @@
 </div>
       
 <?
-  if (!isAdmin())
     echo "<br><div  align='center'><a href='vCargo.php' class='btn btn-info'>Registrar Cargo</a></div>";
 ?>         
 

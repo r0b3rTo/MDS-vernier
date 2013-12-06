@@ -115,7 +115,6 @@
 </table>
 </div>
 <?
-  if (!isAdmin())
     echo "<br><div  align='center'><a href='vUnidad.php' class='btn btn-info'>Agregar Unidad</a></div>";
 ?>
          

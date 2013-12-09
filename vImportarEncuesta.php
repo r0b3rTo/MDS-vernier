@@ -31,11 +31,13 @@
             },
             rules:{
                 encuesta:"required",
-                car:"required",         
+                car:"required",
+                unidad: "required",
             },
             messages: {
                 encuesta:"Campo Requerido.",
                 car:"Campo Requerido.",
+                unidad: "Campo Requerido.",
             },
             errorClass: "help-inline"
         })
@@ -49,7 +51,7 @@
 ?>
     <!-- Formulario-->
     <div class="well" align="center">
-      <p class='muted'><small>Por favor ingrese los siguientes datos asociados a la nueva encuesta de evaluación.</small></p><br>
+      <p class='muted'><small>Por favor escoja la encuesta que desea importar y la familia de cargos y unidad asociadas a la nueva encuesta de evaluación.</small></p><br>
       <form id="newSurvey" class="form-horizontal" method="post" action="lib/cImportarEncuesta.php?action=import" >
 	  
       <div class="row">
@@ -60,7 +62,7 @@
 
 
 	    <div class="control-group">
-		<label class="control-label">Escoja la encuesta</label>
+		<label class="control-label">Encuesta de evaluación</label>
 		<div class="controls">
 			<select style="width:200px" id="encuesta" name="encuesta" class="select2" data-size="auto">
 			    <?
@@ -73,7 +75,7 @@
 	    </div> 
 	    
 	    <div class="control-group">
-		<label class="control-label">Cargo asociado a la encuesta</label>
+		<label class="control-label">Familia de cargos</label>
 		<div class="controls">
 			<select style="width:200px" id="car" name="car" class="select2  car-sel" data-size="auto">
 			    <?
@@ -84,6 +86,19 @@
 			</select>
 		</div>
 	    </div> 
+	    
+	    <div class="control-group">
+		<label class="control-label">Unidad</label>
+		<div class="controls">
+			<select style="width:200px" id="unidad" name="unidad" class="select2" data-size="auto">
+			    <?
+				while (list($key, $val) = each($UNIDAD_ID)){
+				    echo "<option value=".$key.">".$val."</option>";
+				}
+			    ?>
+			</select>
+		</div>
+	    </div>
 
 	  </div> <!--cierre span4-->
 
@@ -109,7 +124,7 @@
     <p class='muted'><small>Por favor ingrese los pesos asociados a los factores de esta evaluación. Recuerde que el rango de valores posibles es: 0.0 - 1.0</small></p>
     
     <div class="well" style="background-color:#fff">
-    <form id="newWeight" class="form-horizontal" method="post" action="lib/cImportarEncuesta.php?action=set&id_encuesta_ls=<? echo $_GET['id_encuesta_ls'];?>" >
+    <form id="newWeight" class="form-horizontal" method="post" action="lib/cImportarEncuesta.php?action=set&id_encuesta=<? echo $_GET['id_encuesta'];?>" >
     <table class="table table-hover" >
     
 	<thead>

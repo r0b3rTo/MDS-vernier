@@ -66,24 +66,26 @@
 	      $output=shell_exec('crontab ../tmp/vernier_jobs.txt');  
 	    }
 	    
+	    //Determinar ID del proceso de evaluacion
+	    $sql= "SELECT id FROM EVALUACION ORDER BY id DESC";
+	    $atts = array("id");
+	    $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	    $id_evaluacion=$aux['Aux']['id'][0];
+	    
 	    //Buscar fecha de finalización del proceso
-	    $sql= "SELECT fecha_fin, periodo FROM EVALUACION WHERE fecha_ini='".$fecha_ini."'";
-	    $atts = array("fecha_fin", "periodo");
+	    $sql= "SELECT fecha_fin FROM EVALUACION WHERE fecha_ini='".$fecha_ini."'";
+	    $atts = array("fecha_fin");
 	    $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
 	    $fecha_fin=$aux["Aux"]["fecha_fin"][0];
-	    $periodo=$aux["Aux"]["periodo"][0];
 	    
 	    //Actualización de las encuestas
 	    $sql = "UPDATE ENCUESTA SET estado= 't'";
 	    $resultado=ejecutarConsulta($sql, $conexion);
-	    //Reorganizar encuestas
-	    $sql= "SELECT * FROM ENCUESTA ORDER BY id_car";
-	    $resultado=ejecutarConsulta($sql, $conexion);
 	    
 	    // Obtención de las encuestas definidas
-	    $sql ="SELECT id_car, id_encuesta_ls ";
-	    $sql.="FROM ENCUESTA ORDER BY id_car";        
-	    $atts = array("id_car", "id_encuesta_ls");
+	    $sql ="SELECT id_fam, id_unidad, id, id_encuesta_ls ";
+	    $sql.="FROM ENCUESTA ORDER BY id_fam";        
+	    $atts = array("id_fam", "id_unidad", "id", "id_encuesta_ls");
 	    $LISTA_ENCUESTA= obtenerDatos($sql, $conexion, $atts, "Enc");
 	    
 	    //Crear un cliente para comunicarse con Limesurvey
@@ -92,9 +94,10 @@
 	    $session_key = $client_ls->get_session_key('admin', 'Segundo!!');
 	    
 	    for($i=0; $i<$LISTA_ENCUESTA[max_res]; $i++){
-	    
+	      $id_encuesta=$LISTA_ENCUESTA["Enc"]["id"][$i];
 	      $id_encuesta_ls=intval($LISTA_ENCUESTA["Enc"]["id_encuesta_ls"][$i]);//Encuesta de i-ésima iteración
-	      $id_car=$LISTA_ENCUESTA["Enc"]["id_car"][$i];//Cargo para la encuesta de la i-ésima iteración
+	      $id_fam=$LISTA_ENCUESTA["Enc"]["id_fam"][$i];//Familia de cargos asociada a la encuesta de la i-ésima iteración
+	      $id_unidad=$LISTA_ENCUESTA["Enc"]["id_unidad"][$i];//Unidad asociada a la encuesta de la i-ésima iteración
 	      $fecha_ini_ls=date("Y-m-d", strtotime($fecha_ini)); //Fecha de inicio
 	      $fecha_fin_ls=date("Y-m-d", strtotime($fecha_fin)); //Fecha de finalización
 	      
@@ -105,14 +108,17 @@
 	      $properties=array("startdate"=> $fecha_ini_ls, "expires"=>$fecha_fin_ls);
 	      $resultado= $client_ls->set_survey_properties($session_key, $id_encuesta_ls, $properties);
 	      $resultado= $client_ls->activate_tokens($session_key, $id_encuesta_ls);//Se abre la encuesta solo para usuarios con token
-	   
-	      //Buscar personas con el cargo de la encuesta de la i-ésima iteración
-	      $sql= "SELECT id_per, id_car, fecha_ini FROM PERSONA_CARGO ";
-	      $sql.= "WHERE actual=TRUE AND id_car='";
-	      $sql.=$id_car;
-	      $sql.="'";
+	      
+	      //Buscar personas con el cargo de la familia de cargos de la encuesta de la i-ésima iteración
+	      $sql= "SELECT id_per, id_car, fecha_ini FROM PERSONA_CARGO WHERE actual=TRUE AND id_car IN (";
+	      $sql.="SELECT id FROM CARGO WHERE id_fam='".$id_fam."')";
 	      $atts= array("id_per","id_car","fecha_ini");
 	      $LISTA_PERSONA= obtenerDatos($sql, $conexion, $atts, "Per");
+	      
+	      echo "El sql de interés es: $sql<br>";
+	      echo "El resultado de la consulta es: <br>";
+	      print_r($LISTA_PERSONA);
+	      
 	      
 	      //Agregar las encuestas correspondientes a cada usuario
 	      for($j=0; $j<$LISTA_PERSONA[max_res]; $j++){
@@ -141,23 +147,26 @@
 		      $resultado= $client_ls->add_participants($session_key, $id_encuesta_ls, $usuario);//Agregar participante
 		      $token_ls=$resultado["usuario"]["token"];//Obtener token asignado al usuario por limesurvey
 		      $tid_ls=$resultado["usuario"]["tid"];//Obtener ID del token asignado al usuario por limesurvey
+		      
 		      $ip=$_SERVER['REMOTE_ADDR'];
 		      $fecha_intento=date("d/m/Y.H:i");
-		    
+		      
 		      //Se agrega encuesta de autoevaluación
-		      $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha, tid_ls) VALUES(";
+		      $sql="INSERT INTO PERSONA_ENCUESTA (id_encuesta, id_encuesta_ls, token_ls, tid_ls, periodo, id_car, id_unidad, tipo, id_encuestado, id_evaluado, estado, actual, fecha, ip) VALUES(";
+		      $sql.="'$id_encuesta', "; //id de la encuesta en el sistema
+		      $sql.="'$id_encuesta_ls', "; //id de la encuesta en Limesurvey
+		      $sql.="'$token_ls', ";  //token asignado al encuestado por limesurvey
+		      $sql.="'$tid_ls', "; //id del encuestado en Limesurvey
+		      $sql.="'$id_evaluacion', "; //proceso de evaluación correspondiente
+		      $sql.="'$id_car', ";  //id cargo actual    
+		      $sql.="'$id_unidad', ";  //id de la unidad     
+		      $sql.="'autoevaluacion', ";  //tipo de encuesta              
 		      $sql.="'$id_per', ";  //id persona encuestada    
 		      $sql.="'$id_per', ";  //id persona evaluada             
-		      $sql.="'$id_car', ";  //id cargo actual          
-		      $sql.="'autoevaluacion', ";  //tipo de encuesta              
-		      $sql.="'$token_ls', ";  //token asignado al encuestado por limesurvey
 		      $sql.="'Pendiente', "; //estado de la encuesta
-		      $sql.="'$id_encuesta_ls', "; //id de la encuesta
 		      $sql.="'t', "; //proceso de evaluación actual
-		      $sql.="'$periodo', "; //proceso de evaluación correspondiente
-		      $sql.="'$ip', ";//dirección ip del usuario
 		      $sql.="'$fecha_intento', ";//fecha y hora de último intento
-		      $sql.="'$tid_ls')";
+		      $sql.="'$ip')";//dirección ip del usuario
 		      $resultado=ejecutarConsulta($sql, $conexion); 
 		      
 		      //Se buscan los evaluadores del usuario
@@ -191,21 +200,23 @@
 			  $token_ls=$resultado["usuario"]["token"];//Obtener token asignado al usuario por limesurvey
 			  $tid_ls=$resultado["usuario"]["tid"];//Obtener ID del token asignado al usuario por limesurvey
 			  
-			  //Se agrega encuesta de evaluador
-			  $sql="INSERT INTO PERSONA_ENCUESTA (id_encuestado, id_evaluado, id_car, tipo, token_ls, estado, id_encuesta_ls, actual, periodo, ip, fecha, tid_ls) VALUES(";
+			  $sql="INSERT INTO PERSONA_ENCUESTA (id_encuesta, id_encuesta_ls, token_ls, tid_ls, periodo, id_car, id_unidad, tipo, id_encuestado, id_evaluado, estado, actual, fecha, ip) VALUES(";
+			  $sql.="'$id_encuesta', "; //id de la encuesta en el sistema
+			  $sql.="'$id_encuesta_ls', "; //id de la encuesta en Limesurvey
+			  $sql.="'$token_ls', ";  //token asignado al encuestado por limesurvey
+			  $sql.="'$tid_ls', "; //id del encuestado en Limesurvey
+			  $sql.="'$id_evaluacion', "; //proceso de evaluación correspondiente
+			  $sql.="'$id_car', ";  //id cargo actual    
+			  $sql.="'$id_unidad', ";  //id de la unidad     
+			  $sql.="'evaluador', ";  //tipo de encuesta              
 			  $sql.="'$id_eva', ";  //id persona encuestada    
 			  $sql.="'$id_per', ";  //id persona evaluada             
-			  $sql.="'$id_car', ";  //id cargo actual          
-			  $sql.="'evaluador', ";  //tipo de encuesta              
-			  $sql.="'$token_ls', ";  //token asignado al encuestado por limesurvey
 			  $sql.="'Pendiente', "; //estado de la encuesta
-			  $sql.="'$id_encuesta_ls', "; //id de la encuesta
 			  $sql.="'t', "; //proceso de evaluación actual
-			  $sql.="'$periodo', "; //proceso de evaluación correspondiente
-			  $sql.="'$ip', ";//dirección ip del usuario
 			  $sql.="'$fecha_intento', ";//fecha y hora de último intento
-			  $sql.="'$tid_ls')";
+			  $sql.="'$ip')";//dirección ip del usuario
 			  $resultado=ejecutarConsulta($sql, $conexion); 
+			  
 			} //cierre if (tiempo como evaluador)
 		     } //cierre iteración sobre los evaluadores
 		     
@@ -214,7 +225,7 @@
 	    } //cierre iteración sobre las encuestas
 	    //Devolver llave de acceso a Limesurvey
 	    $resultado=$client_ls->release_session_key($session_key);
-
+	    
 	  break;
 	
 	case 'desactivar':
@@ -271,7 +282,7 @@
 	      $properties=array("expires"=>$fecha_fin_ls);
 	     
 	      // Obtención de las encuestas definidas
-	      $sql ="SELECT id_encuesta_ls FROM ENCUESTA ORDER BY id_car";        
+	      $sql ="SELECT id_encuesta_ls FROM ENCUESTA ORDER BY id_fam";        
 	      $atts = array("id_encuesta_ls");
 	      $LISTA_ENCUESTA= obtenerDatos($sql, $conexion, $atts, "Enc");
 	      for ($j=0; $j<$LISTA_ENCUESTA[max_res]; $j++){
@@ -313,15 +324,14 @@
 	case 'delete':
 	
 	  if (isset($_GET['proceso'])){
-	    $sql ="SELECT actual, fecha_ini, periodo FROM EVALUACION WHERE id='".$_GET['proceso']."'"; 
+	    $sql ="SELECT actual, fecha_ini FROM EVALUACION WHERE id='".$_GET['proceso']."'"; 
 	    $atts = array("actual", "fecha_ini", "periodo");
 	    $aux= obtenerDatos($sql, $conexion, $atts, "Aux");
 	    $fecha_original = $aux["Aux"]["fecha_ini"][0];
-	    $periodo= $aux["Aux"]["periodo"][0];
 	    if ($aux["Aux"]["actual"][0]=='t'){
 	    
 	      //Eliminar evaluaciones de usuarios
-	      $sql= "DELETE FROM PERSONA_ENCUESTA WHERE periodo='".$periodo."'";
+	      $sql= "DELETE FROM PERSONA_ENCUESTA WHERE periodo='".$_GET['proceso']."'";
 	      $resultado= ejecutarConsulta($sql, $conexion);
 	      
 	      //Desactivar en Limesurvey
@@ -331,7 +341,7 @@
 	      $fecha_fin_ls=date("Y-m-d");
 	      $properties=array("expires"=>$fecha_fin_ls);
 	      // Obtención de las encuestas definidas
-	      $sql ="SELECT id_encuesta_ls FROM ENCUESTA ORDER BY id_car";        
+	      $sql ="SELECT id_encuesta_ls FROM ENCUESTA ORDER BY id_fam";        
 	      $atts = array("id_encuesta_ls");
 	      $LISTA_ENCUESTA= obtenerDatos($sql, $conexion, $atts, "Enc");
 	      for ($j=0; $j<$LISTA_ENCUESTA[max_res]; $j++){
@@ -368,7 +378,7 @@
     $LISTA_EVALUACION= obtenerDatos($sql, $conexion, $atts, "Proc");
     
     for($i=0; $i<$LISTA_EVALUACION[max_res]; $i++){ 
-      $periodo= $LISTA_EVALUACION["Proc"]["periodo"][$i];//periodo de evaluación de la i-ésima iteración
+      $periodo= $LISTA_EVALUACION["Proc"]["id"][$i];//periodo de evaluación de la i-ésima iteración
       //Obtención del número total de evaluaciones
       $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
       $sql.=$periodo;
@@ -413,7 +423,7 @@
     
     //Cierre conexión a la BD
     cerrarConexion($conexion);
-
+    
     if (isset($_GET['action'])){
         switch ($_GET['action']) {
         

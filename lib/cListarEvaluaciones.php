@@ -35,19 +35,21 @@
 	$sql.="FROM PERSONA_ENCUESTA ";
 	$sql.="WHERE id_encuestado='".$id_usuario."' AND actual='t'";
 	    
-	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
+	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre_periodo", "nombre", "apellido");
 	$LISTA_EVALUACION_ACTUAL= obtenerDatos($sql, $conexion, $atts, "Enc");
 
-	//Obtención de los nombres de los evaluados
+	//Obtención de los nombres de los evaluados y el nombre del proceso de evaluación
 	for ($i=0; $i<$LISTA_EVALUACION_ACTUAL[max_res]; $i++){
-	  $sql ="SELECT nombre, apellido ";
-	  $sql.="FROM PERSONA ";
-	  $sql.="WHERE ";
-	  $sql.= "id='".$LISTA_EVALUACION_ACTUAL["Enc"]["id_evaluado"][$i]."'";
+	  $sql ="SELECT periodo FROM EVALUACION WHERE id='".$LISTA_EVALUACION_ACTUAL["Enc"]["periodo"][$i]."'";
+	  $atts = array("periodo");
+	  $NOMBRE_PERIODO= obtenerDatos($sql, $conexion, $atts, "Nom");
+	  $LISTA_EVALUACION_ACTUAL["Enc"]["nombre_periodo"][$i]=$NOMBRE_PERIODO["Nom"]["periodo"][0];//Nombre del proceso de evaluación
+	  
+	  $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$LISTA_EVALUACION_ACTUAL["Enc"]["id_evaluado"][$i]."'";
 	  $atts = array("nombre", "apellido");
 	  $NOMBRE= obtenerDatos($sql, $conexion, $atts, "Nom");
-	  $LISTA_EVALUACION_ACTUAL["Enc"]["nombre"][$i]=$NOMBRE["Nom"]["nombre"][0];
-	  $LISTA_EVALUACION_ACTUAL["Enc"]["apellido"][$i]=$NOMBRE["Nom"]["apellido"][0];
+	  $LISTA_EVALUACION_ACTUAL["Enc"]["nombre"][$i]=$NOMBRE["Nom"]["nombre"][0];//Nombre del evaluado
+	  $LISTA_EVALUACION_ACTUAL["Enc"]["apellido"][$i]=$NOMBRE["Nom"]["apellido"][0];//Apellido del evaluado
 	}
 	
       //Evaluaciones pasadas
@@ -58,15 +60,17 @@
 	$sql.="FROM PERSONA_ENCUESTA ";
 	$sql.="WHERE id_encuestado='".$id_usuario."' AND actual='f'";
 	    
-	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre", "apellido");
+	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre_periodo", "nombre", "apellido");
 	$LISTA_EVALUACION_PASADA= obtenerDatos($sql, $conexion, $atts, "Enc");
 	
 	//Obtención de los nombres de los evaluados
 	for ($i=0; $i<$LISTA_EVALUACION_PASADA[max_res]; $i++){
-	  $sql ="SELECT nombre, apellido ";
-	  $sql.="FROM PERSONA ";
-	  $sql.="WHERE ";
-	  $sql.= "id='".$LISTA_EVALUACION_PASADA["Enc"]["id_evaluado"][$i]."'";
+	  $sql ="SELECT periodo FROM PERSONA WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["periodo"][$i]."'";
+	  $atts = array("periodo");
+	  $NOMBRE_PERIODO= obtenerDatos($sql, $conexion, $atts, "Nom");
+	  $LISTA_EVALUACION_PASADA["Enc"]["nombre"][$i]=$NOMBRE_PERIODO["Nom"]["periodo"][0];
+	  
+	  $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["id_evaluado"][$i]."'";
 	  $atts = array("nombre", "apellido");
 	  $NOMBRE= obtenerDatos($sql, $conexion, $atts, "Nom");
 	  $LISTA_EVALUACION_PASADA["Enc"]["nombre"][$i]=$NOMBRE["Nom"]["nombre"][0];
@@ -104,10 +108,16 @@
 	      $sql.= "token_ls='".$token_ls."'";
 	      $resultado=ejecutarConsulta($sql, $conexion);
 	      
+	      //Obtención del ID de la encuesta en el sistema
+	      $sql="SELECT id_encuesta FROM PERSONA_ENCUESTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."'";
+	      $atts= array("id_encuesta");
+	      $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	      $id_encuesta=$aux['Aux']['id_encuesta'][0];
+	      
 	      //Obtención de los resultados
 	      ////////////////////////////
 	      
-	      $sql ="SELECT id_pregunta_ls, id_pregunta_root_ls, id_pregunta FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."' ORDER BY id_pregunta";        
+	      $sql ="SELECT id_pregunta_ls, id_pregunta_root_ls, id_pregunta FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' ORDER BY id_pregunta";        
 	      $atts = array("id_pregunta_ls", "id_pregunta_root_ls","id_pregunta");
 	      $LISTA_PREGUNTA= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas
 	      $n=0; //indice del numero de preguntas con resultados

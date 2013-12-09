@@ -65,7 +65,7 @@
         ?>
 	    <tr class="<?php echo $color_tabla; ?>" >
 	      <td class="center lsmallT" nowrap><small><? 
-		echo $LISTA_SUPERVISION_ACTUAL['Sup']['periodo'][$i];echo " ";
+		echo $LISTA_SUPERVISION_ACTUAL['Sup']['nombre_periodo'][$i];echo " ";
 	      ?></small></td>
 	      <td class="center lsmallT" nowrap><small><? 
 		if ($LISTA_SUPERVISION_ACTUAL['Sup']['tipo'][$i]=="autoevaluacion") echo 'Encuesta de autoevaluación';

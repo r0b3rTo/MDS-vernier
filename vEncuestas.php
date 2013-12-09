@@ -48,14 +48,16 @@
     <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example" width="100%">
     <thead>
       <tr>
-	<th class="lsmallT"><small>Cargo evaluado por la encuesta</small></th>
+	<th class="lsmallT"><small>Familia de cargo evaluado por la encuesta</small></th>
+	<th class="lsmallT"><small>Unidad asociada</small></th>
 	<th class="lsmallT"><small>Estado</small></th>
 	<th class="lsmallT"><small>Acción</small></th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-	<th class="lsmallT"><small>Cargo evaluado por la encuesta</small></th>
+	<th class="lsmallT"><small>Familia de cargo evaluado por la encuesta</small></th>
+	<th class="lsmallT"><small>Unidad asociada</small></th>
 	<th class="lsmallT"><small>Estado</small></th>
 	<th class="lsmallT"><small>Acción</small></th>
       </tr>
@@ -68,12 +70,13 @@
       for ($i=0;$i<$LISTA_ENCUESTA['max_res'];$i++){
     ?>
     <tr class="<?php echo $color_tabla; ?>" >
-      <td class="center lsmallT" nowrap><small> <? echo $LISTA_CARGOS['Car']['nombre'][$i];?></small></td>     
+      <td class="center lsmallT" nowrap><small> <? echo $LISTA_CARGOS['Car']['nombre'][$i];?></small></td>   
+      <td class="center lsmallT" nowrap><small> <? echo $LISTA_UNIDADES['Uni']['nombre'][$i];?></small></td>
       <td class="center lsmallT" nowrap><small><? if (($LISTA_ENCUESTA['Enc']['estado'][$i])=='f') { echo "Encuesta inactiva"; } else { echo "Encuesta activa";}?></small></td>
       <td class="center lsmallT" nowrap><small><? 
 	if (($LISTA_ENCUESTA['Enc']['estado'][$i])=='f') {
-	  echo '<a href="?action=modificar&id_encuesta_ls='; echo $LISTA_ENCUESTA['Enc']['id_encuesta_ls'][$i];echo '" title="Editar pesos de la encuesta"> <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a></a>';
-	  echo '<a href="lib/cEncuestas?action=eliminar&id_encuesta_ls='; echo $LISTA_ENCUESTA['Enc']['id_encuesta_ls'][$i];echo '" title="Eliminar encuesta"><img src="./img/iconos/delete-16.png" style="margin-left:7px;"></a>';
+	  echo '<a href="?action=modificar&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i];echo '" title="Editar pesos de la encuesta"> <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a></a>';
+	  echo '<a href="lib/cEncuestas?action=delete&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i];echo '" title="Eliminar encuesta"><img src="./img/iconos/delete-16.png" style="margin-left:7px;"></a>';
 	  } else {
 	  echo 'No hay acciones disponibles';
 	  }
@@ -107,7 +110,7 @@
       <p class='muted'><small>A continuación se listan los pesos definidos para cada uno de los factores evaluados en esta encuesta. Si desea modificar alguno de los pesos tan sólo <i>haga click</i> sobre el campo correspondiente e ingrese el nuevo valor. Recuerde que el rango de valores posibles es: 0.0 - 1.0</small></p>
       
       <div class="well" style="background-color:#fff">
-      <form id="newWeight" class="form-horizontal" method="post" action="lib/cEncuestas.php?action=set&id_encuesta_ls=<? echo $_GET['id_encuesta_ls'];?>" >
+      <form id="newWeight" class="form-horizontal" method="post" action="lib/cEncuestas.php?action=set&id_encuesta=<? echo $_GET['id_encuesta'];?>" >
       <table class="table table-hover" >
       
 	  <thead>

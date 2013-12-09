@@ -1,6 +1,8 @@
 <?
     $Legend='Cheat Inicio';
     
+    include_once "lib/cConstantes.php";
+    
     if (isset($_REQUEST['dgch'])) {
         include_once("lib/scriptcas-dgch.php");
         header("Location: index.php");  

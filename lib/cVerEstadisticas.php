@@ -19,7 +19,7 @@
       
       //Obtención del número total de evaluaciones
       $sql="SELECT tipo, token_ls, id_encuesta_ls, id_encuestado, id_evaluado, estado, ip, fecha FROM PERSONA_ENCUESTA WHERE periodo='";
-      $sql.=$nombre_periodo;
+      $sql.=$_GET['periodo'];
       $sql.="'";
       $atts= array("tipo", "token_ls", "id_encuesta_ls", "id_encuestado", "id_evaluado", "estado", "ip", "fecha");
       $LISTA_EVALUACION=obtenerDatos($sql, $conexion, $atts, "Aux");

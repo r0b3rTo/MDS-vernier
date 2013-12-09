@@ -11,15 +11,15 @@
     
     if(isset($_GET['token_ls'])){
     
-      $sql="SELECT id_encuesta_ls FROM PERSONA_ENCUESTA WHERE token_ls='".$_GET['token_ls']."'";
-      $atts = array("id_encuesta_ls");
+      $sql="SELECT id_encuesta FROM PERSONA_ENCUESTA WHERE token_ls='".$_GET['token_ls']."'";
+      $atts = array("id_encuesta");
       $resultado= obtenerDatos($sql, $conexion, $atts, "Enc"); //ID de la encuesta para el token del usuario
       
-      $id_encuesta_ls=$resultado['Enc']['id_encuesta_ls'][0];
-      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='competencia'";
+      $id_encuesta=$resultado['Enc']['id_encuesta'][0];
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='competencia'";
       $atts = array("id_pregunta", "titulo", "resultado");
       $LISTA_COMPETENCIAS= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas de la sección de competencias
-      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='factor'";
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='factor'";
       $LISTA_FACTORES= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas de la sección de competencias
 
       for($i=0; $i<$LISTA_COMPETENCIAS[max_res] ;$i++){

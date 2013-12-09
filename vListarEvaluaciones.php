@@ -63,7 +63,7 @@
         ?>
 	    <tr class="<?php echo $color_tabla; ?>" >
 	      <td class="center lsmallT" nowrap><small><? 
-		echo $LISTA_EVALUACION_ACTUAL['Enc']['periodo'][$i];echo " ";
+		echo $LISTA_EVALUACION_ACTUAL['Enc']['nombre_periodo'][$i];echo " ";
 	      ?></small></td>
 	      <td class="center lsmallT" nowrap><small><? 
 		if ($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="autoevaluacion") echo 'Encuesta de autoevaluación';
@@ -134,7 +134,7 @@
         ?>
 	    <tr class="<?php echo $color_tabla; ?>" >
 	      <td class="center lsmallT" nowrap><small><? 
-		echo $LISTA_EVALUACION_PASADA['Enc']['periodo'][$i];echo " ";
+		echo $LISTA_EVALUACION_PASADA['Enc']['nombre_periodo'][$i];echo " ";
 	      ?></small></td>
 	      <td class="center lsmallT" nowrap><small><? 
 		if ($LISTA_EVALUACION_PASADA['Enc']['tipo'][$i]=="autoevaluacion") echo 'Encuesta de autoevaluación';

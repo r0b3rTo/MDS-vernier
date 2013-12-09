@@ -41,13 +41,12 @@
 	  }
 	}
 	$sql.=") ORDER BY tipo DESC";
-	$atts = array("id_encuesta_ls", "id_evaluado", "id_encuestado", "token_ls", "tipo", "estado", "periodo");
+	$atts = array("id_encuesta_ls", "id_evaluado", "id_encuestado", "token_ls", "tipo", "estado", "periodo", "nombre_periodo");
 	$LISTA_SUPERVISION_ACTUAL= obtenerDatos($sql, $conexion, $atts, "Sup");
 
 	$LISTA_NOMBRE_EVALUADO=array();
 	$LISTA_NOMBRE_ENCUESTADO=array();
-	//Obtención de los nombres de los evaluados y encuestados
-	
+	//Obtención de los nombres de los evaluados y encuestados y el nombre del proceso de evaluación
 	for ($i=0; $i<$LISTA_SUPERVISION_ACTUAL[max_res]; $i++){
 	  $atts = array("nombre", "apellido");
 	  //Nombre del evaluado
@@ -60,6 +59,11 @@
 	  $sql.= "id='".$LISTA_SUPERVISION_ACTUAL["Sup"]["id_encuestado"][$i]."'";
 	  $resultado= obtenerDatos($sql, $conexion, $atts, "Nom");
 	  $LISTA_NOMBRE_ENCUESTADO[$i]=$resultado["Nom"]["nombre"][0].' '.$resultado["Nom"]["apellido"][0];
+	  //Nombre del proceso
+	  $sql ="SELECT periodo FROM EVALUACION WHERE id='".$LISTA_SUPERVISION_ACTUAL["Sup"]["periodo"][$i]."'";
+	  $atts = array("periodo");
+	  $NOMBRE_PERIODO= obtenerDatos($sql, $conexion, $atts, "Nom");
+	  $LISTA_SUPERVISION_ACTUAL["Sup"]["nombre_periodo"][$i]=$NOMBRE_PERIODO["Nom"]["periodo"][0];//Nombre del proceso de evaluación
 	}
       }
 

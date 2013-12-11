@@ -65,7 +65,7 @@
 	    $LISTA_EN_PROCESO["nombre_evaluador"][$k]= $nombre_evaluador;
 	    $LISTA_EN_PROCESO["fecha"][$k]= $LISTA_EVALUACION["Aux"]["fecha"][$i];
 	    $LISTA_EN_PROCESO["ip"][$k]= $LISTA_EVALUACION["Aux"]["ip"][$i];
-	    $k++;	  
+	    $k++;
 	  }
 	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="Finalizada"){
 	    $LISTA_FINALIZADA["tipo"][$l]= $LISTA_EVALUACION["Aux"]["tipo"][$i];
@@ -73,7 +73,8 @@
 	    $LISTA_FINALIZADA["nombre_evaluador"][$l]= $nombre_evaluador;
 	    $LISTA_FINALIZADA["fecha"][$l]= $LISTA_EVALUACION["Aux"]["fecha"][$i];
 	    $LISTA_FINALIZADA["ip"][$l]= $LISTA_EVALUACION["Aux"]["ip"][$i];
-	    $l++;	  
+	    $LISTA_FINALIZADA["token_ls"][$l]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
+	    $l++;  
 	  }
       }
     

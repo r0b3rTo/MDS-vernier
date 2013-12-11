@@ -77,6 +77,7 @@
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
 		<th class="lsmallT"><small>Fecha de finalización</small></th>
 		<th class="lsmallT"><small>Dirección IP</small></th>
+		<th class="lsmallT"><small>Acción</small></th>
 	      </tr>
 	    </thead>
 	    <tfoot>
@@ -86,6 +87,7 @@
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
 		<th class="lsmallT"><small>Fecha de finalización</small></th>
 		<th class="lsmallT"><small>Dirección IP</small></th>
+		<th class="lsmallT"><small>Accción</small></th>
 	      </tr>
 	    </tfoot>
 	    <tbody role="alert" aria-live="polite" aria-relevant="all">   
@@ -104,6 +106,10 @@
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['fecha'][$i];?></small></td>
 		<!--Dirección IP-->
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['ip'][$i];?></small></td>
+		<!--Acciones-->
+		<td class="center lsmallT" nowrap><small>
+		  <a href='./vResultados.php?token_ls=<? echo $LISTA_FINALIZADA["token_ls"][$i];?>' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>
+		</small></td>
 	      </tr>
 	    <? } //cierre del for
 	    ?>   
@@ -186,13 +192,8 @@
 	  </div> <!-- Fin de la tabla-->
 	  <!-- Fin sección: Evaluaciones en proceso -->
 
-	  	  
+
 	  <!-- Inicio sección: Evaluaciones pendientes -->
-	  <?php 
-	    if (!(isset($LISTA_PENDIENTE))){
-	    echo "<br><br><br><br><br><br><p class='text-center text-info lsmall'>No hay evaluaciones pendientes.</p><br><br><br><br><br><br>";
-	    } else {
-	  ?>
 	  <p class="lsmall"> Porcentaje de evaluaciones pendientes</p>
 	  <?php
 	    if (isset($LISTA_PENDIENTE)){
@@ -209,8 +210,14 @@
 	      </div>
 	    </div>
 	  </a>
+	  
 	  <!-- Tabla de evaluaciones pendientes -->
 	  <div id="pendientes" align="center" style="display: none;" class="well">
+	  <?php 
+	    if (!(isset($LISTA_PENDIENTE))){
+	    echo "<br><br><br><br><br><br><p class='text-center text-info lsmall'>No hay evaluaciones pendientes.</p><br><br><br><br><br><br>";
+	    } else {
+	  ?>
 	  <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered lista" id="example" width="100%">
 	    <thead>
 	      <tr>

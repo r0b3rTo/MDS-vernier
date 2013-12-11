@@ -15,6 +15,10 @@
         include_once("lib/scriptcas-evaluador.php");
         header("Location: index.php");  
     }
+    if (isset($_REQUEST['otro'])) {
+        include_once("lib/scriptcas-roberto.php");
+        header("Location: index.php");  
+    }
     if (isset($_REQUEST['supervisor'])) {
         include_once("lib/scriptcas-supervisor.php");
         header("Location: index.php");  
@@ -37,7 +41,11 @@
 		  <div>
 		    Ingresar al sistema como evaluador (supervisor inmediato)
 		    <a class="btn btn-info" href="?evaluador=">Haga click aquí</a>
-		  </div><br><br>        
+		  </div><br><br>
+		  <div>
+		    Ingresar al sistema como <i>otro</i> evaluador (supervisor inmediato)
+		    <a class="btn btn-info" href="?otro=">Haga click aquí</a>
+		  </div><br><br>
 		  Ingresar al sistema como supervisor jerarquico
 		    <a class="btn btn-info" href="?supervisor=">Haga click aquí</a>
 		  </div><br><br>

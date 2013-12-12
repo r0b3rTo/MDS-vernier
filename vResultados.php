@@ -379,7 +379,7 @@
             <div class="span3"></div>
             <div class="span5">
                <p>
-                  <a class="btn" href="vListarEvaluaciones?view&id=<?echo $_GET['id']?>">Atr&aacute;s</a>
+                  <a class="btn" href="vListarEvaluaciones?view&id=<?/*echo $_GET['id']*/?>">Atr&aacute;s</a>
                </p>
             </div>
          </div>

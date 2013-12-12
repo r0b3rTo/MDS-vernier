@@ -54,7 +54,8 @@
 		  $id_pregunta=$LISTA_PREGUNTA['Preg']['id_pregunta'][$i];
 		  $tag='peso_'.$id_pregunta;
 		  if($_POST[$tag]!='-'){
-		    $sql="UPDATE PREGUNTA SET peso='".$_POST[$tag]."' WHERE id_pregunta='".$id_pregunta."'";
+		    $peso=$_POST[$tag]/100;
+		    $sql="UPDATE PREGUNTA SET peso='".$peso."' WHERE id_pregunta='".$id_pregunta."'";
 		    $resultado_sql=ejecutarConsulta($sql,$conexion);
 		  } else {
 		    $sql="UPDATE PREGUNTA SET peso=NULL WHERE id_pregunta='".$id_pregunta."'";

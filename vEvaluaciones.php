@@ -202,7 +202,7 @@
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_EVALUACION['Proc']['fecha_fin'][$i];?></small></td> 
 		<!--Evaluaciones pendientes-->
 		<td class="center lsmallT" nowrap><small>
-		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["pendiente"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
+		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["pendiente"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
 		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
 		      echo round((($LISTA_EVALUACION["Proc"]["pendiente"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
 		    } else {
@@ -213,7 +213,7 @@
 		</td>  
 		<!--Evaluaciones en proceso-->
 		<td class="center lsmallT" nowrap><small>
-		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["en_proceso"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
+		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["en_proceso"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
 		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
 		      echo round((($LISTA_EVALUACION["Proc"]["en_proceso"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
 		    } else {
@@ -224,7 +224,7 @@
 		</td> 
 		<!--Evaluaciones finalizadas-->
 		<td class="center lsmallT" nowrap><small>
-		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["finalizada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
+		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["finalizada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
 		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
 		      echo round((($LISTA_EVALUACION["Proc"]["finalizada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
 		    } else {
@@ -235,7 +235,7 @@
 		</td> 
 		<!--Evaluaciones supervisadas-->
 		<td class="center lsmallT" nowrap><small>
-		  <a href="" title="<? echo "".$LISTA_EVALUACION["Proc"]["supervisada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
+		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["supervisada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
 		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
 		      echo round((($LISTA_EVALUACION["Proc"]["supervisada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
 		    } else {
@@ -264,6 +264,7 @@
 		    <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Ver estadísticas" >
 		      <img src="./img/iconos/visible-16.png" style="margin-left:5px;"></a>
 		  <? } ?>
+		  <!--ARREGLAR!!! CUANDO LA EVALUACION ES ANTIGUA NO SE DEBE OFRECER LA OPCIÓN DE ELIMINAR. SOLO DEBE ESTAR DISPONIBLE PARA LAS DEL FUTURO!!!-->
 		    <a href="./lib/cEvaluaciones?action=delete&proceso=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Eliminar" >
 		      <img src="./img/iconos/delete-16.png" style="margin-left:5px;"></a>
 	      </td>

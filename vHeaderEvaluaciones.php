@@ -89,7 +89,7 @@
             <ul class='dropdown-menu' id='swatch-menu'>
               <li><a href='vListarEvaluaciones.php?view&id=<? echo $cedula ?>'>Listar Evaluaciones</a></li>
               <li><a href='vListarResultados.php'>Ver Resultados</a></li>
-              <? if(true) { ?>
+              <? if($is_supervisor) { ?>
 	      <li><a href='vSupervisar.php'>Supervisar Evaluaciones</a></li>
 	      <? } ?>
             </ul>

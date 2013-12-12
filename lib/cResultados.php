@@ -94,7 +94,7 @@
       }
       
       //Obtención del ID y token de cada evaluador
-      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado='Finalizada'";
+      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado='Finalizada' AND id_evaluado='".$id_evaluado."'";
       $atts = array("id_encuestado", "token_ls", "nombre", "re_competencia", "re_factor");
       $LISTA_EVALUADORES=obtenerDatos($sql, $conexion, $atts, "Eva");
       $PROMEDIO_EVALUADORES=array("re_competencia", "re_factor");//Arreglo donde se lleva la suma de los resultados de los evaluadores

@@ -260,10 +260,15 @@ function obtenerDiferenciaDias ($fecha_1, $fecha_2){
     isSupervisor. Determina si el identificador suministrado pertenece o no a un
     a un usuario que es supervisor jerárquico en el sistema 
     ---------------------------------------------------------------------------
-    $id_usuario - identificador del usuario
     $conexion - conexión a la base de datos
 */
-function isSupervisor ($id_usuario, $conexion){
+function isSupervisor ($conexion){
+  if(!isAdmin()){
+    $sql= "SELECT id FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+    $resultado=ejecutarConsulta($sql, $conexion);
+    $resultado=obtenerResultados($resultado);
+    $id_usuario=$resultado[0];
+    
     $sql= "SELECT * FROM PERSONA_SUPERVISOR WHERE id_sup='".$id_usuario."'";
     $resultado=ejecutarConsulta($sql, $conexion);
     $resultado=obtenerResultados($resultado);
@@ -272,16 +277,26 @@ function isSupervisor ($id_usuario, $conexion){
     } else {
       return false;
     }
+  }
+  else {
+      return false;
+  }
 }
+
 
 /*
     isEvaluador. Determina si el identificador suministrado pertenece o no a un
     a un usuario que es evaluador (supervisor inmediato) en el sistema
     ---------------------------------------------------------------------------
-    $id_usuario - identificador del usuario
     $conexion - conexión a la base de datos
-*/
-function isEvaluador ($id_usuario, $conexion){
+
+function isEvaluador ($ci_usuario, $conexion){
+
+    $sql= "SELECT id FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+    $atts=array('id');
+    $resultado=obtenerDatos($sql, $conexion, $atts, 'Res');
+    $id_usuario=$resultado['Res']['id'][0];
+ 
     $sql= "SELECT * FROM PERSONA_EVALUADOR WHERE id_eva='".$id_usuario."'";
     $resultado=ejecutarConsulta($sql, $conexion);
     $resultado=obtenerResultados($resultado);
@@ -291,6 +306,7 @@ function isEvaluador ($id_usuario, $conexion){
       return false;
     }
 }
+*/
 
 /*
     determinarPeriodo. Transforma una fecha de la forma mm/yyyy a su forma textual

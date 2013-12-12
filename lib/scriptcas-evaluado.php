@@ -5,7 +5,8 @@
   $_SESSION[USBID]="tjporco";
   //$_SESSION[USBID]="07-41336";
   $_SESSION[nombres]="Teresa";
-  $_SESSION[apellidos]="Porco"; 
+  $_SESSION[apellidos]="Porco";
+  //$_SESSION[cedula]="6367689";
   $_SESSION[cedula]="6208709";
   // $_SESSION[carnet]="05-38242";
   $_SESSION[tipo]="administrativos";

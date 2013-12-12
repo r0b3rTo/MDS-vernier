@@ -75,6 +75,7 @@
 		<th class="lsmallT"><small>Tipo de evaluación</small></th>
 		<th class="lsmallT"><small>Nombre del evaluador</small></th>
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
+		<th class="lsmallT"><small>Unidad adscrita</small></th>
 		<th class="lsmallT"><small>Fecha de finalización</small></th>
 		<th class="lsmallT"><small>Dirección IP</small></th>
 		<th class="lsmallT"><small>Acción</small></th>
@@ -85,6 +86,7 @@
 		<th class="lsmallT"><small>Tipo de evaluación</small></th>
 		<th class="lsmallT"><small>Nombre del evaluador</small></th>
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
+		<th class="lsmallT"><small>Unidad adscrita</small></th>
 		<th class="lsmallT"><small>Fecha de finalización</small></th>
 		<th class="lsmallT"><small>Dirección IP</small></th>
 		<th class="lsmallT"><small>Accción</small></th>
@@ -102,6 +104,8 @@
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['nombre_evaluador'][$i];?></small></td>    
 		<!--Nombre del evaluado-->
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['nombre_evaluado'][$i];?></small></td>
+		<!--Unidad adscrita-->
+		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['unidad'][$i];?></small></td>
 		<!--Fecha-->
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_FINALIZADA['fecha'][$i];?></small></td>
 		<!--Dirección IP-->
@@ -152,6 +156,7 @@
 		      <th class="lsmallT"><small>Tipo de evaluación</small></th>
 		      <th class="lsmallT"><small>Nombre del evaluador</small></th>
 		      <th class="lsmallT"><small>Nombre del evaluado</small></th>
+		      <th class="lsmallT"><small>Unidad adscrita</small></th>
 		      <th class="lsmallT"><small>Fecha de último intento</small></th>
 		      <th class="lsmallT"><small>Dirección IP</small></th>
 		    </tr>
@@ -161,6 +166,7 @@
 		      <th class="lsmallT"><small>Tipo de evaluación</small></th>
 		      <th class="lsmallT"><small>Nombre del evaluador</small></th>
 		      <th class="lsmallT"><small>Nombre del evaluado</small></th>
+		      <th class="lsmallT"><small>Unidad adscrita</small></th>
 		      <th class="lsmallT"><small>Fecha de último intento</small></th>
 		      <th class="lsmallT"><small>Dirección IP</small></th>
 		    </tr>
@@ -177,6 +183,8 @@
 		      <td class="center lsmallT" nowrap><small><? echo $LISTA_EN_PROCESO['nombre_evaluador'][$i];?></small></td>    
 		      <!--Nombre del evaluado-->
 		      <td class="center lsmallT" nowrap><small><? echo $LISTA_EN_PROCESO['nombre_evaluado'][$i];?></small></td>
+		      <!--Unidad adscrita-->
+		      <td class="center lsmallT" nowrap><small><? echo $LISTA_EN_PROCESO['unidad'][$i];?></small></td>
 		      <!--Fecha de último intento-->
 		      <td class="center lsmallT" nowrap><small><? echo $LISTA_EN_PROCESO['fecha'][$i];?></small></td>
 		      <!--Dirección IP-->
@@ -224,6 +232,8 @@
 		<th class="lsmallT"><small>Tipo de evaluación</small></th>
 		<th class="lsmallT"><small>Nombre del evaluador</small></th>
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
+		<th class="lsmallT"><small>Unidad adscrita</small></th>
+		
 	      </tr>
 	    </thead>
 	    <tfoot>
@@ -231,6 +241,7 @@
 		<th class="lsmallT"><small>Tipo de evaluación</small></th>
 		<th class="lsmallT"><small>Nombre del evaluador</small></th>
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
+		<th class="lsmallT"><small>Unidad adscrita</small></th>
 	      </tr>
 	    </tfoot>
 	    <tbody role="alert" aria-live="polite" aria-relevant="all">   
@@ -245,6 +256,8 @@
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_PENDIENTE['nombre_evaluador'][$i];?></small></td>    
 		<!--Nombre del evaluado-->
 		<td class="center lsmallT" nowrap><small><? echo $LISTA_PENDIENTE['nombre_evaluado'][$i];?></small></td>
+		<!--Unidad adscrita-->
+		<td class="center lsmallT" nowrap><small><? echo $LISTA_PENDIENTE['unidad'][$i];?></small></td>
 	      </tr>
 	    <? } //cierre del for
 	    } //cierre del else (lista no vacía)
@@ -271,6 +284,7 @@
 		<th class="lsmallT"><small>Nombre del supervisor</small></th>
 		<th class="lsmallT"><small>Nombre del evaluador</small></th>
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
+		<th class="lsmallT"><small>Unidad adscrita</small></th>
 		<th class="lsmallT"><small>Fecha de aceptación</small></th>
 		<th class="lsmallT"><small>Dirección IP</small></th>
 	      </tr>
@@ -280,6 +294,7 @@
 		<th class="lsmallT"><small>Nombre del supervisor</small></th>
 		<th class="lsmallT"><small>Nombre del evaluador</small></th>
 		<th class="lsmallT"><small>Nombre del evaluado</small></th>
+		<th class="lsmallT"><small>Unidad adscrita</small></th>
 		<th class="lsmallT"><small>Fecha de aceptación</small></th>
 		<th class="lsmallT"><small>Dirección IP</small></th>
 	      </tr>
@@ -297,10 +312,12 @@
 		<td class="center lsmallT" nowrap><small>Campo 2</small></td>
 		<!--Nombre del evaluado-->
 		<td class="center lsmallT" nowrap><small>Campo 3</small></td>
-		<!--Fecha de aceptación-->
+		<!--Unidad adscrita-->
 		<td class="center lsmallT" nowrap><small>Campo 4</small></td>
-		<!--Dirección IP-->
+		<!--Fecha de aceptación-->
 		<td class="center lsmallT" nowrap><small>Campo 5</small></td>
+		<!--Dirección IP-->
+		<td class="center lsmallT" nowrap><small>Campo 6</small></td>
 	      </tr>
 	    <? //} //cierre del for
 	    ?>   

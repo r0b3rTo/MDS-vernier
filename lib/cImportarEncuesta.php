@@ -24,7 +24,6 @@
       $ENCUESTAS_LS['nombre'][$i]=$resultado[$i]['surveyls_title'];
     }
     
-    //REVISAR!!!!!!!!!!!!!!!!!!!!!!!!!!!
     if (isset($_GET['id_encuesta'])){
       //Lista de preguntas
       $sql ="SELECT id_encuesta, id_encuesta_ls, id_pregunta, id_pregunta_ls, id_pregunta_root_ls, titulo, peso, seccion ";
@@ -132,14 +131,13 @@ if (isset($_GET['action'])) {
 	  break;
 	  
     case 'set':
-    
-	  print_r($_POST);
-	  
+    	  
 	  for ($i=0; $i<$LISTA_PREGUNTA[max_res]; $i++){
 	    $id_pregunta=$LISTA_PREGUNTA['Preg']['id_pregunta'][$i];
 	    $tag='peso_'.$id_pregunta;
 	    if($_POST[$tag]!='-'){
-	      $sql="UPDATE PREGUNTA SET peso='".$_POST[$tag]."' WHERE id_pregunta='".$id_pregunta."'";
+	      $peso=$_POST[$tag]/100;
+	      $sql="UPDATE PREGUNTA SET peso='".$peso."' WHERE id_pregunta='".$id_pregunta."'";
 	      echo $sql;
 	      $resultado_sql=ejecutarConsulta($sql,$conexion);
 	    } else {

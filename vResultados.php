@@ -2,7 +2,11 @@
     session_start();
     include "lib/cResultados.php";
     $Legend = "Resultados de la Evaluación | $PERIODO";
-    include "vHeader.php";
+    if(isAdmin()){
+      include "vHeader.php";
+    } else {
+      include "vHeaderEvaluaciones.php";
+    }
     extract($_GET);
     extract($_POST);
     $all = true;
@@ -31,13 +35,13 @@
   <?php 
     $EVALUADO_OK=1;//Estatus de la autoevaluación
     $EVALUADOR_OK=1;//Estatus de la evaluación
-    if(count($LISTA_EVALUADORES['Eva']['id_encuestado'])==0){
+    if(!isset($LISTA_EVALUADORES['Eva']['id_encuestado'])){
       echo "<div class='alert alert-warning'>
 		<button type='button' class='close' data-dismiss='alert'>&times;</button>
 		<strong>Atención: </strong>Ningún supervisor inmediato ha finalizado la evaluación del trabajador
 	    </div>";
       $EVALUADOR_OK=0;//No hay evaluaciones finalizadas
-    } else if (count($LISTA_COMPETENCIAS['Preg']['resultado'])==0) {
+    } else if (count($LISTA_COMPETENCIAS['Preg']['resultado'][0])==0) {
       echo "<div class='alert alert-warning'>
 	      <button type='button' class='close' data-dismiss='alert'>&times;</button>
 	      <strong>Atención: </strong>El trabajador no ha finalizado su autoevaluación
@@ -76,7 +80,7 @@
     
     <!--Tabla para el gŕafico-->
     <table class="tabla_competencias" style="display: none">
-    <caption>Prueba de título</caption>
+    <caption><small>Gráfico de los resultados</small></caption>
     <thead><tr>
 	<td></td>
 	<?php for($i=0; $i<$LISTA_COMPETENCIAS['max_res']; $i++){ ?>
@@ -138,11 +142,13 @@
 	      <small>Resultado auto-evaluación</small>
 	      <span style="font-size:8px; padding-left:8px; background:#62c462;">&nbsp;</span>
 	    </th>
-	  <?php } ?>
-	  <? for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['nombre']); $j++){
+	  <?php } 
+	  if($EVALUADOR_OK){
+	    for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['nombre']); $j++){
 	    echo "<th class='lsmallT' style='border-top: 1px solid #dddddd'>
 		  <small>Resultado evaluación<br>(".$LISTA_EVALUADORES['Eva']['nombre'][$j].") </small>
 		  <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span></th>";
+	    }
 	  } ?>
 	  <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
 	</tr>
@@ -160,9 +166,11 @@
 	  <td class="center lsmallT" nowrap><small><? echo $LISTA_COMPETENCIAS['Preg']['resultado'][$i]?></small></td>   
 	  <? } ?>
 	  <!--Resultado de las evaluaciones-->
-	  <? for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['id_encuestado']); $j++){
-	    echo "<td class='center lsmallT' nowrap><small>".$LISTA_EVALUADORES['Eva']['re_competencia'][$j][$i]."</small></td>";
-	  } ?>
+	  <?if ($EVALUADOR_OK){
+	    for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['id_encuestado']); $j++){
+	      echo "<td class='center lsmallT' nowrap><small>".$LISTA_EVALUADORES['Eva']['re_competencia'][$j][$i]."</small></td>";
+	    }
+	    }?>
 	  <!--Resultado esperado-->
 	  <td class="center lsmallT" nowrap><small><? echo "Siempre"?></small></td>
 	</tr>
@@ -175,6 +183,7 @@
     <!--Estadísticas-->
     <div class="well" style="padding:8px;">
       <p style="font-size:11px"><b>Puntaje obtenido en la sección de competencias</b></p>
+      <?if ($EVALUADOR_OK){?>
       <a title="<?echo (round(($PUNTAJE_COMPETENCIAS/$PUNTAJE_COMPETENCIAS_MAX)*100)).'%'?> (<?echo $PUNTAJE_COMPETENCIAS?> de <?echo $PUNTAJE_COMPETENCIAS_MAX?> puntos)" style="text-decoration: none;">
       <div class="progress" style="height: 20px;">
 	<div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo (($PUNTAJE_COMPETENCIAS/$PUNTAJE_COMPETENCIAS_MAX)*100).'%'?>; height: 100%;">
@@ -182,6 +191,9 @@
 	</div>
       </div>
       </a>
+      <?} else {
+	echo "<p align='center' style='font-size:11px;'>No hay resultados disponibles para la evaluación del trabajador</p>";
+      }?>
     </div>
     <!--FIN DE LA SECCION DE COMPETENCIAS-->
     
@@ -195,7 +207,7 @@
     <br>
     <!--Tabla para el gŕafico-->
     <table class="tabla_factores" style="display: none">
-    <caption>Prueba de título</caption>
+    <caption>Gráfico de los resultados</caption>
     <thead>
       <tr>
 	<td></td>
@@ -264,10 +276,12 @@
 	    <span style="font-size:8px; padding-left:8px; background:#62c462;">&nbsp;</span>
 	  </th>
 	  <?}?>
-	  <? for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['nombre']); $j++){
+	  <?if($EVALUADOR_OK){
+	    for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['nombre']); $j++){
 	    echo "<th class='lsmallT' style='border-top: 1px solid #dddddd'>
 		  <small>Resultado evaluación<br>(".$LISTA_EVALUADORES['Eva']['nombre'][$j].") </small>
 		  <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span></th>";
+	    }
 	  } ?>
 	  <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
 	</tr>
@@ -285,9 +299,11 @@
 	  <td class="center lsmallT" nowrap><small><? echo $LISTA_FACTORES['Preg']['resultado'][$i]?></small></td>   
 	  <? }?>
 	  <!--Resultado de las evaluaciones-->
-	  <? for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['id_encuestado']); $j++){
-	    echo "<td class='center lsmallT' nowrap><small>".$LISTA_EVALUADORES['Eva']['re_factor'][$j][$i]."</small></td>";
-	  } ?>
+	  <?if($EVALUADOR_OK){ 
+	    for ($j=0; $j<count($LISTA_EVALUADORES['Eva']['id_encuestado']); $j++){
+	      echo "<td class='center lsmallT' nowrap><small>".$LISTA_EVALUADORES['Eva']['re_factor'][$j][$i]."</small></td>";
+	    }
+	    } ?>
 	  <!--Resultado esperado-->
 	  <td class="center lsmallT" nowrap><small><? echo "Excelente"?></small></td>
 	</tr>
@@ -300,6 +316,7 @@
     <!--Estadísticas-->
     <div class="well" style="padding:8px;">
       <p style="font-size:11px"><b>Puntaje obtenido en la sección de factores</b></p>
+      <? if ($EVALUADOR_OK) {?>
       <a title="<?echo (round(($PUNTAJE_FACTORES/$PUNTAJE_FACTORES_MAX)*100)).'%'?> (<?echo $PUNTAJE_FACTORES?> de <?echo $PUNTAJE_FACTORES_MAX?> puntos)" style="text-decoration: none;">
       <div class="progress" style="height: 20px;">
 	<div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo (($PUNTAJE_FACTORES/$PUNTAJE_FACTORES_MAX)*100).'%'?>; height: 100%;">
@@ -307,14 +324,18 @@
 	</div>
       </div>
       </a>
+      <?} else {
+	echo "<p align='center' style='font-size:11px;'>No hay resultados disponibles para la evaluación del trabajador</p>";
+      }?>
     </div>
     <!--FIN DE LA SECCION DE FACTORES-->
     
     <!--SECCION DE PUNTAJE-->
+    
     <p class="lead"><small>Síntesis de resultados</small></p>
     <p class="lsmall muted"> Resultados obtenidos a partir de la evaluación del supervisor inmediato o el grupo de supervisores inmediatos</p>
     <div class="well" style="padding:8px; background-color: #fff">
-    
+    <?if($EVALUADOR_OK){?>
       <p style="font-size:11px"><b>Indice aptitudinal</b></p>
       <a title="<?echo round($PUNTAJE,2).'%'?> (<?echo ($PUNTAJE_COMPETENCIAS+$PUNTAJE_FACTORES)?> de <?echo ($PUNTAJE_COMPETENCIAS_MAX+$PUNTAJE_FACTORES_MAX)?> puntos)" style="text-decoration: none;">
       <div class="progress" style="height: 20px;">
@@ -332,7 +353,9 @@
 	</div>
       </div>
       </a>
-      
+    <?} else {
+      echo "<br><br><p align='center' style='font-size:11px;'>No hay resultados disponibles para la evaluación del trabajador</p><br><br>";
+    }?>  
     </div>
     
 

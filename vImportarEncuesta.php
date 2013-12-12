@@ -121,7 +121,7 @@
     
     <!--Sección de factores-->
     <br><p class="lead"><small>Pesos de factores</small></p>
-    <p class='muted'><small>Por favor ingrese los pesos asociados a los factores de esta evaluación. Recuerde que el rango de valores posibles es: 0.0 - 1.0</small></p>
+    <p class='muted'><small>Por favor ingrese los pesos asociados a los factores de esta evaluación. Recuerde que el rango de valores posibles es: 0 - 100</small></p>
     
     <div class="well" style="background-color:#fff">
     <form id="newWeight" class="form-horizontal" method="post" action="lib/cImportarEncuesta.php?action=set&id_encuesta=<? echo $_GET['id_encuesta'];?>" >
@@ -149,7 +149,7 @@
 		<? } else { ?>
 		  <td class="center lsmallT" ><small>&nbsp;&nbsp;&nbsp;&nbsp;&rarr;<? echo $LISTA_PREGUNTA['Preg']['titulo'][$i] ?></small></td>
 		  <td class="center lsmallT" style="width: 30px" nowrap>
-		    <input type="text" required name="peso_<?echo $LISTA_PREGUNTA['Preg']['id_pregunta'][$i]?>" id="peso_<?echo $i?>" data-format="d.d" value="<?if ($LISTA_PREGUNTA['Preg']['peso'][$i]!=NULL) echo $LISTA_PREGUNTA['Preg']['peso'][$i]; ?>" placeholder="0.0" maxLength="3" style="width: 30px;" />
+		    <input type="text" required name="peso_<?echo $LISTA_PREGUNTA['Preg']['id_pregunta'][$i]?>" id="peso_<?echo $i?>" data-format="d.d" value="<?if ($LISTA_PREGUNTA['Preg']['peso'][$i]!=NULL) echo ($LISTA_PREGUNTA['Preg']['peso'][$i]*100); ?>" placeholder="0" maxLength="3" style="width: 30px;" />
 		  </td>
 		  </td> 		
 		<? }?>

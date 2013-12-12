@@ -18,10 +18,10 @@
       $nombre_periodo= $aux["Proc"]["periodo"][0];//nombre del periodo de evaluación
       
       //Obtención del número total de evaluaciones
-      $sql="SELECT tipo, token_ls, id_encuesta_ls, id_encuestado, id_evaluado, estado, ip, fecha FROM PERSONA_ENCUESTA WHERE periodo='";
+      $sql="SELECT tipo, token_ls, id_encuesta_ls, id_encuestado, id_evaluado, estado, ip, fecha, id_unidad FROM PERSONA_ENCUESTA WHERE periodo='";
       $sql.=$_GET['periodo'];
       $sql.="'";
-      $atts= array("tipo", "token_ls", "id_encuesta_ls", "id_encuestado", "id_evaluado", "estado", "ip", "fecha");
+      $atts= array("tipo", "token_ls", "id_encuesta_ls", "id_encuestado", "id_evaluado", "estado", "ip", "fecha", "id_unidad");
       $LISTA_EVALUACION=obtenerDatos($sql, $conexion, $atts, "Aux");
       
       //Sorting de las evaluaciones según su estado
@@ -49,14 +49,21 @@
 	$aux= obtenerDatos($sql, $conexion, $atts, "Nom");
 	$nombre_evaluador=$aux["Nom"]["nombre"][0]." ".$aux["Nom"]["apellido"][0];
    
-	//Pedir la fecha y el IP a LimeSurvey para el usuario token_ls de la encuesta id_encuesta_ls
-	//PENDIENTE!!!!
+	//Obtención del nombre de la unidad adscrita
+	$sql ="SELECT nombre ";
+	$sql.="FROM ORGANIZACION ";
+	$sql.="WHERE ";
+	$sql.= "id='".$LISTA_EVALUACION["Aux"]["id_unidad"][$i]."'";
+	$atts = array("nombre");
+	$aux= obtenerDatos($sql, $conexion, $atts, "Uni");
+	$nombre_unidad=$aux["Uni"]["nombre"][0];
 
 	//Agregar a la lista correspondiente
 	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="Pendiente"){
 	    $LISTA_PENDIENTE["tipo"][$j]= $LISTA_EVALUACION["Aux"]["tipo"][$i];
 	    $LISTA_PENDIENTE["nombre_evaluado"][$j]= $nombre_evaluado;
 	    $LISTA_PENDIENTE["nombre_evaluador"][$j]= $nombre_evaluador;
+	    $LISTA_PENDIENTE["unidad"][$j]=$nombre_unidad;
 	    $j++;
 	  }
 	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="En proceso"){
@@ -65,6 +72,7 @@
 	    $LISTA_EN_PROCESO["nombre_evaluador"][$k]= $nombre_evaluador;
 	    $LISTA_EN_PROCESO["fecha"][$k]= $LISTA_EVALUACION["Aux"]["fecha"][$i];
 	    $LISTA_EN_PROCESO["ip"][$k]= $LISTA_EVALUACION["Aux"]["ip"][$i];
+	    $LISTA_EN_PROCESO["unidad"][$k]=$nombre_unidad;
 	    $k++;
 	  }
 	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="Finalizada"){
@@ -74,6 +82,7 @@
 	    $LISTA_FINALIZADA["fecha"][$l]= $LISTA_EVALUACION["Aux"]["fecha"][$i];
 	    $LISTA_FINALIZADA["ip"][$l]= $LISTA_EVALUACION["Aux"]["ip"][$i];
 	    $LISTA_FINALIZADA["token_ls"][$l]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
+	    $LISTA_FINALIZADA["unidad"][$l]=$nombre_unidad;
 	    $l++;  
 	  }
       }

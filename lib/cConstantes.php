@@ -12,6 +12,7 @@ if (MANEJADOR_BD == "mysql") {
 
 }else if(MANEJADOR_BD == "postgres"){
 	$conexion = crearConexion("localhost", NOMBRE_BD , USER, PASS); //Cambiar si cambia contrasena Base de Datos
+	$is_supervisor = isSupervisor($conexion); //Determinar si el usuario conectado es supervisor o no
 }
 
 /*

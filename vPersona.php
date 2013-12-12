@@ -7,9 +7,25 @@
    extract($_POST);
    date_default_timezone_set('America/Caracas');
 ?>
-
+<style type="text/css">
+   @import "css/bootstrap.css";
+   @import "css/dataTables.bootstrap.css";
+</style>
+<!-- <script type="text/javascript" charset="utf-8" src="js/DataTable/js/jquery.js"></script> -->
+<script type="text/javascript" charset="utf-8" src="js/DataTable/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf-8" src="js/DataTools/js/ZeroClipboard.js"></script>
+<!--<script type="text/javascript" charset="utf-8" src="js/DataTools/js/TableTools.js"></script>-->
+<script type="text/javascript" charset="utf-8" src="js/dataTables.bootstrap.js"></script>
 <script type="text/javascript">
    $(document).ready(function(){
+   
+      $('#example').dataTable( {
+          "sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+          "language": {
+            "emptyTable": "No se han asignado evaluadores"
+          }
+      });
+      
       $("#newPer").validate({
             submitHandler : function(form) {
                bootbox.dialog('Esta Seguro de continuar?', [{
@@ -52,6 +68,88 @@
       });
 
       $("#newSup").validate({
+            submitHandler : function(form) {
+               bootbox.dialog('Esta Seguro de continuar?', [{
+                        'label':'No',
+                        'class':'btn'
+                        },
+                        {
+                        'label':'Si',
+                        'class':'btn',
+                        'callback':function() {
+                              return form.submit();
+                        }
+                        }]);
+            },
+            rules:{
+               name:"required",
+               lname:"required",
+               ced: "required",
+               tel: "required",
+               dir: "required",
+               email:{
+                  required:true,
+                  email: true
+               },              
+            },
+            messages: {
+               name:"Campo Requerido.",
+               lname:"Campo Requerido.",
+               ced: "Campo Requerido.",
+               tel: "Campo Requerido.",
+               dir: "Campo Requerido.",
+               email:{
+                  required:"Campo Requerido",
+                  email: "Formato de email incorrecto"
+               },   
+            },
+
+            errorClass: "help-inline"
+
+      });
+      
+      $("#newEva").validate({
+            submitHandler : function(form) {
+               bootbox.dialog('Esta Seguro de continuar?', [{
+                        'label':'No',
+                        'class':'btn'
+                        },
+                        {
+                        'label':'Si',
+                        'class':'btn',
+                        'callback':function() {
+                              return form.submit();
+                        }
+                        }]);
+            },
+            rules:{
+               name:"required",
+               lname:"required",
+               ced: "required",
+               tel: "required",
+               dir: "required",
+               email:{
+                  required:true,
+                  email: true
+               },              
+            },
+            messages: {
+               name:"Campo Requerido.",
+               lname:"Campo Requerido.",
+               ced: "Campo Requerido.",
+               tel: "Campo Requerido.",
+               dir: "Campo Requerido.",
+               email:{
+                  required:"Campo Requerido",
+                  email: "Formato de email incorrecto"
+               },   
+            },
+
+            errorClass: "help-inline"
+
+      });
+      
+      $("#updateEva").validate({
             submitHandler : function(form) {
                bootbox.dialog('Esta Seguro de continuar?', [{
                         'label':'No',
@@ -385,7 +483,7 @@ $(function() {
             ?>
 
             <div class="control-group">
-               <label class="control-label">Nuevo cargo</label>
+               <label class="control-label">Nuevo Cargo</label>
                <div class="controls">
                         <select style="width:200px" id="car" name="car" class="select2  car-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
                            <?
@@ -398,7 +496,7 @@ $(function() {
             </div>
 
             <div class="control-group">
-               <label class="control-label">Fecha Inicio nuevo cargo</label>
+               <label class="control-label">Fecha Inicio Nuevo Cargo</label>
                <div class="controls">
                   <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
                         <span class="add-on"><i class="icon-calendar"></i></span>
@@ -420,12 +518,30 @@ $(function() {
             </div>
          </div>
          
-         <button type="submit" id="confirmButton" class="btn" >Aceptar</button>
-         <a href="?" class="btn">Cancelar</a>
-         
+         <div class="control-group">
+            <div class="row">
+               <div class="span2"></div>
+               <div class="span6">
+                  <p>
+                  <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
+                  <?                         
+                     if (isset($_GET['id']) & !isset($_GET['view'])) {
+                        echo '<a href="?" class="btn">Cancelar</a>
+                              <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
+                     }else if (isset($_GET['id']) & isset($_GET['view'])){
+                        echo '<a href="?action=edit&id='.$_GET['id'].'&tab=2" class="btn btn-warning">Editar</a>' ;
+                     } else{
+                        echo '<a href="?" class="btn">Cancelar</a>
+                              <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
+                     }
+                  ?>
+                  </p>
+               </div>
+            </div>   
+         </div>
       </form>
       
-      </div>
+   </div>
       
    </div>
    
@@ -434,11 +550,11 @@ $(function() {
    
    <!-- Formulario tercera pestaña, Asociar Evaluador a Persona-->
    <?php
-      if ((isset($_GET['action']) && $_GET['action']=='try') || $LISTA_PER_EVA['max_res']==0){
+      if (isset($_GET['action']) && $_GET['action']=='try'){
    ?>
    <!-- Formulario Nuevo Evaluador-->
    <div class="well" align="center">
-      <form id="newProcess" class="form-horizontal" method="post" action="lib/cPersona.php?action=add_eval" >
+      <form id="newEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=add_eval" >
       <input type="hidden" id="id" name="id" value="<? if (isset($_GET['id'])) echo $_GET['id']; ?>"/>
       <div class="row">
          <div class="span2"></div>
@@ -451,6 +567,7 @@ $(function() {
                               while (list($key, $val) = each($EVA_ID)){
                                     echo "<option value=".$key.">".$val."</option>";
                               }
+                              reset($EVA_ID);
                            ?>
                         </select>
                </div>
@@ -471,7 +588,7 @@ $(function() {
                <div class="controls">
                   <div class="input-prepend">
                         <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo ' disabled' ?>><? if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0) echo $LISTA_PER_EVA['Per_Eva']['observacion']['0'];?></textarea>
+                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"<? if (isset($_GET['view'])) echo ' disabled' ?>></textarea>
                   </div>
                </div>
             </div>
@@ -485,7 +602,7 @@ $(function() {
                   <?                         
                      if (isset($_GET['id']) & !isset($_GET['view'])) {
                         echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico</a>
-                              <input class="btn" type="reset" value="Borrar">
+                              <a class="btn" href="?action=edit&id='.$_GET['id'].'&tab=3" >Cancelar</a>
                               <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
                      }else if (isset($_GET['id']) & isset($_GET['view'])){
                         echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico</a>
@@ -507,47 +624,24 @@ $(function() {
    </div>
    
    <?php
-      } else {
+      } elseif (isset($_GET['action']) && $_GET['action']=='update_eval'){
    ?>
-      <!-- Formulario Evaluadores Actuales-->
+   <!-- Formulario Modificar Evaluador-->
    <div class="well" align="center">
-      <form id="newEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=update_eval" >
+      <form id="updateEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=set_eval" >
          <input type="hidden" id="id" name="id" value="<? if (isset($_GET['id'])) echo $_GET['id']; ?>"/>
-         
+         <input type="hidden" id="id_eva" name="id_eva" value="<? echo $LISTA_PER_EVA['Per_Eva']['id_eva'][$_GET["nro_eva"]]; ?>"/>
          <div class="row">
          <div class="span2"></div>
          <div class="span4">
             
-            <?
-            if (isset($_GET['action']) && $_GET['action'] == "edit"){
-      
-               if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0 && $LISTA_PER_EVA['Per_Eva']['id_eva']['0']!=0){
-                  echo "<p class='lsmall muted'>Al cambiar el evaluador es necesario guardar la fecha fin del evaluador anterior, nombre y fecha del nuevo evaluador. Por defecto aparece la fecha actual.</p>
-                        <div class='control-group'>
-                           <label class='control-label'>Fecha Fin antiguo Evaluador</label>
-                           <div class='controls'>
-                           <div class='input-prepend date datepicker'".date('d-m-Y')."' data-date-language='es' 
-                           data-date-today-Btn='true' data-date-start-View='2' data-date-today-Highlight='true' data-date-autoclose='true' data-date-format='dd-mm-yyyy'>
-                           <span class='add-on'><i class='icon-calendar'></i></span>
-                           <input size='12' id='fin' name='fin' class='input-xlarge' type='text' value='".date('d-m-Y')."' readonly>
-                           </div>
-                           </div>
-                        </div>";
-               }
-            }
-            ?>
-            
-            <?
-               for ($i = 0; $i < $LISTA_PER_EVA['max_res']; $i++) {
-            ?>
-            
             <div class="control-group">
                <label class="control-label">Evaluador</label>
                <div class="controls">
-                        <select style="width:200px" id="eval<?echo $i?>" name="eval<?echo $i?>" class="select2  eva-sel" data-size="auto" <? if (isset($_GET['view'])) echo 'disabled' ?>>
+                        <select style="width:200px" id="eval" name="eval" class="select2  eva-sel" data-size="auto" disabled>
                            <?
                               while (list($key, $val) = each($EVA_ID)){
-                                 $selected = ($key == $LISTA_PER_EVA['Per_Eva']['id_eva'][$i]) ? " selected='selected'" : ""; 
+                                 $selected = ($key ==  $LISTA_PER_EVA['Per_Eva']['id_eva'][$_GET["nro_eva"]]) ? " selected='selected'" : ""; 
                                  echo "<option value=".$key."".$selected.">".$val."</option>";
                               }
                               reset($EVA_ID);
@@ -559,9 +653,19 @@ $(function() {
             <div class="control-group">
                <label class="control-label">Fecha Inicio del Evaluador</label>
                <div class="controls">
-                  <div class="input-prepend date datepicker" data-date="<? echo $LISTA_PER_EVA['Per_Eva']['fecha_ini'][$i] ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+                  <div class="input-prepend date datepicker" data-date="<? echo $LISTA_PER_EVA['Per_Eva']['fecha_ini'][$_GET["nro_eva"]] ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
                         <span class="add-on"><i class="icon-calendar"></i></span>
-                        <input size="12" id="fech" name="fech" class="input-xlarge" type="text" value="<? echo $LISTA_PER_EVA['Per_Eva']['fecha_ini'][$i] ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+                        <input size="12" id="fecha_ini" name="fecha_ini" class="input-xlarge" type="text" value="<? echo $LISTA_PER_EVA['Per_Eva']['fecha_ini'][$_GET["nro_eva"]] ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+                  </div>
+               </div>
+            </div>
+            
+            <div class="control-group">
+               <label class="control-label">Fecha Fin del <br>Evaluador</label>
+               <div class="controls">
+                  <div class="input-prepend date datepicker" data-date="<? echo $LISTA_PER_EVA['Per_Eva']['fecha_fin'][$_GET["nro_eva"]] ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+                        <span class="add-on"><i class="icon-calendar"></i></span>
+                        <input size="12" id="fecha_fin" name="fecha_fin" class="input-xlarge" type="text" value="<? echo $LISTA_PER_EVA['Per_Eva']['fecha_fin'][$_GET["nro_eva"]] ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
                   </div>
                </div>
             </div>
@@ -571,52 +675,19 @@ $(function() {
                <div class="controls">
                   <div class="input-prepend">
                         <span class="add-on"><i class="icon-edit"></i></span>
-                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"
-                        <? if (isset($_GET['view'])) echo 'disabled' ?>><? if(isset($LISTA_PER_EVA) && $LISTA_PER_EVA['max_res']>0) 
-                           echo $LISTA_PER_EVA['Per_Eva']['observacion'][$i];
-                        ?>
-                        </textarea>
+                        <textarea class="input-xlarge" rows="3" id="obs" name="obs" placeholder="Observaciones"><? echo $LISTA_PER_EVA['Per_Eva']['observacion'][$_GET["nro_eva"]] ?></textarea>
                   </div>
                </div>
             </div>
-            
-            <div class="control-group">
-               <? if (isset($_GET['action']) && $_GET['action'] == "edit"){
-//                      echo '<a href="?action=try&id='.$_GET['id'].'&tab=3" class="btn btn-success">Agregar otro Evaluador</a>';
-                     echo '<a href="?action=try&id='.$_GET['id'].'&tab=3" class="btn btn-small" title="Agregar otro Evaluador">
-                              <i class="icon-plus-sign"></i>
-                           </a>';
-                     echo '<a href="lib/cPersona.php?action=delete_eval&id='.$_GET['id'].'&id_eva='.$LISTA_PER_EVA['Per_Eva']['id_eva'][$i].'&fin='.date('d-m-Y').'" class="btn btn-small" title="Remover Evaluador">
-                              <i class="icon-remove-sign"></i>
-                           </a>';
-                  }
-               ?>
-            </div>
-            
-            <?
-               //Cierre del foreach por cada Evaluador Actual
-               }
-            ?>
              
             <div class="control-group">
                <div class="row">
                   <div class="span5"></div>
                   <div class="span6">
-                     <p>
-                     <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
-                     <?                         
-                        if (isset($_GET['id']) & !isset($_GET['view'])) {
-                           echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico</a>
-                                 <input class="btn" type="reset" value="Borrar">
-                                 <button type="submit" id="confirmButton" class="btn btn-success" >Registrar</button>';
-                        }else if (isset($_GET['id']) & isset($_GET['view'])){
-                           echo '<a class="btn btn-info" href="vListarEvaluadoresPersona.php?id='.$_GET["id"].'">Histórico</a>
-                                 <a href="?action=edit&id='.$_GET['id'].'&tab=3" class="btn btn-warning">Editar</a>' ;
-                        } else{
-                           echo '<button type="submit" id="confirmButton" class="btn btn-success" disabled>Registrar</button>';
-                           echo ' Debe registrar una Persona';
-                        }
-                     ?>
+                     <p>                     
+                        <button class="btn" type="reset">Borrar</button>
+                        <a class="btn" href="?action=edit&id=<?echo $_GET['id']?>&tab=3" >Cancelar</a>
+                        <button type="submit" id="confirmButton" class="btn btn-success">Registrar</button>
                      </p>
                   </div>
                </div>
@@ -629,7 +700,168 @@ $(function() {
    </div>
    
    <?php
-      }//cierra el else (lista no vacia)
+      } elseif (isset($_GET['action']) && $_GET['action']=='remove_eval'){
+   ?>
+   <!-- Formulario Remover Evaluador-->
+   <div class="well" align="center">
+      <form id="removeEva" class="form-horizontal" method="post" action="lib/cPersona.php?action=remove_eval" >
+         <input type="hidden" id="id" name="id" value="<? if (isset($_GET['id'])) echo $_GET['id']; ?>"/>
+         <input type="hidden" id="id_eva" name="id_eva" value="<? echo $LISTA_PER_EVA['Per_Eva']['id_eva'][$_GET["nro_eva"]]; ?>"/>
+         
+         <div class="row">
+            <div class="span9">
+               <p class="text-center muted lsmall">
+                  <strong style="color:#06F">Nota:</strong> 
+                  <small>
+                     Al remover un evaluador, es necesario asignar la fecha de finalización correspondiente.
+                  </small>
+               </p>
+            </div>
+         </div>
+         <div class="row">
+         <div class="span2"></div>
+         <div class="span4">
+            
+            <div class="control-group">
+               <label class="control-label">Evaluador</label>
+               <div class="controls">
+                        <select style="width:200px" id="eval" name="eval" class="select2  eva-sel" data-size="auto" disabled>
+                           <?
+                              while (list($key, $val) = each($EVA_ID)){
+                                 $selected = ($key ==  $LISTA_PER_EVA['Per_Eva']['id_eva'][$_GET["nro_eva"]]) ? " selected='selected'" : ""; 
+                                 echo "<option value=".$key."".$selected.">".$val."</option>";
+                              }
+                              reset($EVA_ID);
+                           ?>
+                        </select>
+               </div>
+            </div>
+            
+            <div class="control-group">
+               <label class="control-label">Fecha Fin del <br>Evaluador</label>
+               <div class="controls">
+                  <div class="input-prepend date datepicker" data-date="<? echo date("d-m-Y") ?>" data-date-language="es" data-date-today-Btn="true" data-date-start-View="2" data-date-today-Highlight="true" data-date-autoclose="true" data-date-format="dd-mm-yyyy">
+                        <span class="add-on"><i class="icon-calendar"></i></span>
+                        <input size="12" id="fecha_fin" name="fecha_fin" class="input-xlarge" type="text" value="<? echo date("d-m-Y") ?>" <? if (isset($_GET['view'])) echo 'disabled' ?>  readonly>
+                  </div>
+               </div>
+            </div>
+             
+            <div class="control-group">
+               <div class="row">
+                  <div class="span5"></div>
+                  <div class="span6">
+                     <p>
+                        <a class="btn" href="?action=edit&id=<?echo $_GET['id']?>&tab=3" >Cancelar</a>
+                        <button type="submit" id="confirmButton" class="btn btn-success">Aceptar</button>
+                     </p>
+                  </div>
+               </div>
+            </div>
+         </div>
+         </div>   
+      </form>
+   </div>
+   
+   </div>
+ 
+   <?php
+      } else {
+   ?>
+   <!-- Inicio Nuevo Codigo Listar Evaluadores-->
+   <div class="well span9 offset1">
+      <div class="row">
+         <div class="span9">
+            <p class="text-center muted lsmall"><strong style="color:#06F">Sugerencia:</strong> <small>Se le recomienda utilizar el campo de "B&uacute;squeda" y seleccionar 
+               sobre las columnas de su preferencia para organizar las entidades en forma ascendente o descendente. Si desea ordenarlo en 
+               funci&oacute;n a m&aacute;s de un campo, debe presionar la tecla "SHIFT" y darle a la(s) columnas.</small>
+            </p>
+         </div>
+      </div>
+       
+      <div id="demo">
+         <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example" width="100%">
+         <thead>
+            <tr>
+               <th class="lsmallT"><small>Evaluadores Actuales</small></th>
+               <th class="lsmallT"><small>Inicio</small></th>
+               <th class="lsmallT"><small>Fin</small></th>
+               <th class="lsmallT"><small>Observaciones</small></th>
+               <? if (isset($_GET['action']) && $_GET['action'] == "edit"){ ?>
+                  <th class="lsmallT"><small>Acciones</small></th>
+               <? } ?>
+            </tr>
+         </thead>
+         <tfoot>
+            <tr>
+               <th class="lsmallT"><small>Evaluadores Actuales</small></th>
+               <th class="lsmallT"><small>Inicio</small></th>
+               <th class="lsmallT"><small>Fin</small></th>
+               <th class="lsmallT"><small>Observaciones</small></th>
+               <? if (isset($_GET['action']) && $_GET['action'] == "edit"){ ?>
+                  <th class="lsmallT"><small>Acciones</small></th>
+               <? } ?>
+            </tr>
+         </tfoot>
+         <tbody role="alert" aria-live="polite" aria-relevant="all">
+         <?
+            for ($i=0;$i<$LISTA_PER_EVA['max_res'];$i++){
+         ?>
+            <tr class="<?php echo $color_tabla; ?>" >
+            <td class="center lsmallT" nowrap><small><a href='vPersona.php?view&id=<? echo $LISTA_PER_EVA['Per_Eva']['id_eva'][$i];?>'> <? echo $EVA_ID[$LISTA_PER_EVA['Per_Eva']['id_eva'][$i]];?></a> </small></td>
+            <td class="center lsmallT"><small><? echo $LISTA_PER_EVA['Per_Eva']['fecha_ini'][$i];?></small></td>
+            <td class='center lsmallT'><small><? echo $LISTA_PER_EVA['Per_Eva']['fecha_fin'][$i];?></small></td>
+            <td class='center lsmallT'><small><? echo $LISTA_PER_EVA['Per_Eva']['observacion'][$i];?></small></td>
+            <? if (isset($_GET['action']) && $_GET['action'] == "edit"){ ?>
+            <td class='center lsmallT'>
+               <a href="?action=update_eval&id=<?echo $_GET['id']?>&nro_eva=<?echo $i?>&tab=3" title="Editar Evaluador" >
+                  <img src="./img/iconos/edit-16.png" style="margin-left:5px;">
+               </a>
+               <a href="?action=remove_eval&id=<?echo $_GET['id']?>&&nro_eva=<?echo $i?>&tab=3" title="Remover Evaluador" >
+                  <img src="./img/iconos/delete-16.png" style="margin-left:5px;">
+               </a>
+            </td>
+            <? } ?>
+            </tr>
+          <? } ?>     
+         </tbody>
+         </table>
+      </div>
+
+      <div class="row">
+         <div class="span3"></div>
+         <div class="span4">
+            <div class="control-group">
+               <? 
+                  if (isset($_GET['action']) && $_GET['action'] == "edit"){
+                     echo '<a href="?action=try&id='.$_GET['id'].'&tab=3" class="btn btn-success">Agregar Nuevo Evaluador</a>';
+                  }
+               ?>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="well" align="center">
+      <div class="row">
+         <div class="span3"></div>
+         <div class="span5">
+            <p>
+               <a class="btn btn-info" href="vListarPersonas.php">Listar Personas</a>
+               <a class="btn btn-info" href="vListarEvaluadoresPersona.php?id=<?echo $_GET["id"]?>">Histórico</a>
+               <?                         
+                  if (isset($_GET['id']) & isset($_GET['view'])){
+                     echo '<a class="btn btn-warning" href="?action=edit&id='.$_GET['id'].'&tab=3">Editar</a>' ;
+                  }
+               ?>
+            </p>
+         </div>
+      </div>
+   </div>
+   <!-- Fin Nuevo Codigo Listar Evaluadores-->
+   </div>
+   
+   <?php
+      }//cierra el else
    ?>
 
       <div class="tab-pane <? if(($_GET['tab'])==4 ) echo'active'?>" id="tab4">

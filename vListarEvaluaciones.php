@@ -72,7 +72,23 @@
 	      <td class="center lsmallT" nowrap><small><? 
 		echo $LISTA_EVALUACION_ACTUAL['Enc']['nombre'][$i];echo " ";echo $LISTA_EVALUACION_ACTUAL['Enc']['apellido'][$i];
 	      ?></small></td>
-	      <? switch ($LISTA_EVALUACION_ACTUAL['Enc']['estado'][$i]){ case 'Pendiente': $color='#ffe1d9'; break; case 'En proceso':$color='rgb(252,248,227)'; break; case 'Finalizada': $color='rgb(223,240,216)'; break;}?>
+	      <? switch ($LISTA_EVALUACION_ACTUAL['Enc']['estado'][$i]){ 
+            case 'Pendiente': 
+               $color='#ffe1d9'; 
+               break; 
+            case 'En proceso':
+               $color='rgb(252,248,227)';
+               break; 
+            case 'Finalizada': 
+               $color='rgb(223,240,216)'; 
+               break;
+            case 'Aprobada':
+               $color='rgb(197,189,206)';
+               break;
+            case 'Rechazada':
+               $color='rgb(255,132,99)';
+               break;
+         }?>
 	      <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap><small><?
 		echo $LISTA_EVALUACION_ACTUAL['Enc']['estado'][$i];
 	      ?></small></td>
@@ -87,6 +103,12 @@
 		case 'Finalizada': 
 		  echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
 		  break;
+		case 'Aprobada': 
+        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarA' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+        break;
+      case 'Rechazada': 
+        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarR' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+        break;
 		}?>
 	      </td>
 	      
@@ -143,7 +165,28 @@
 	      <td class="center lsmallT" nowrap><small><? 
 		echo $LISTA_EVALUACION_PASADA['Enc']['nombre'][$i];echo " ";echo $LISTA_EVALUACION_PASADA['Enc']['apellido'][$i];
 	      ?></small></td>
-	      <? switch ($LISTA_EVALUACION_PASADA['Enc']['estado'][$i]){ case 'Pendiente': $color='#ffe1d9'; $mensaje='No la realizó'; break; case 'En proceso':$color='#ffffcc'; $mensaje='No la terminó'; break; case 'Finalizada': $color='rgb(223,240,216)'; $mensaje='Se realizó'; break;}?>
+	      <? switch ($LISTA_EVALUACION_PASADA['Enc']['estado'][$i]){
+            case 'Pendiente':
+               $color='#ffe1d9'; 
+               $mensaje='No la realizó'; 
+               break;
+            case 'En proceso':
+               $color='#ffffcc'; 
+               $mensaje='No la terminó'; 
+               break;
+            case 'Finalizada': 
+               $color='rgb(223,240,216)'; 
+               $mensaje='Se realizó'; 
+               break;
+            case 'Aprobada':
+               $color='rgb(197,189,206)';
+               $mensaje='Se aprobó';
+               break;
+            case 'Rechazada':
+               $color='rgb(255,132,99)';
+               $mensaje='Se rechazó';
+               break;
+         }?>
 	      <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap><small><?
 		echo $mensaje;
 	      ?></small></td>
@@ -151,7 +194,13 @@
 		<? switch ($LISTA_EVALUACION_PASADA['Enc']['estado'][$i]){
 		case 'Finalizada': 
 		  echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
-		  break; 
+		  break;
+	   case 'Aprobada': 
+        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+        break; 
+      case 'Rechazada': 
+        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+        break; 
 		default: 
 		  echo "No hay acciones disponibles"; 
 		  break;

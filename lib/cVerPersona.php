@@ -61,7 +61,7 @@
 
         $LISTA_PER_SUP = obtenerDatos($sql, $conexion, $atts, "Per_Sup"); 
 
-        $atts = array("id_per", "id_eva", "fecha_ini","observacion");
+        $atts = array("id_per", "id_eva", "actual", "fecha_ini","fecha_fin", "observacion");
 
         $sql ="SELECT * ";
         $sql.="FROM PERSONA_EVALUADOR ";

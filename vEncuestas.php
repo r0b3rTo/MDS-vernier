@@ -71,7 +71,7 @@
     ?>
     <tr class="<?php echo $color_tabla; ?>" >
       <td class="center lsmallT" nowrap><small> <? echo $LISTA_CARGOS['Car']['nombre'][$i];?></small></td>   
-      <td class="center lsmallT" nowrap><small> <? echo $LISTA_UNIDADES['Uni']['nombre'][$i];?></small></td>
+      <td class="center lsmallT" nowrap><small> <? echo $LISTA_UNIDADES['Uni']['nombre'][0];?></small></td>
       <td class="center lsmallT" nowrap><small><? if (($LISTA_ENCUESTA['Enc']['estado'][$i])=='f') { echo "Encuesta inactiva"; } else { echo "Encuesta activa";}?></small></td>
       <td class="center lsmallT" nowrap><small><? 
 	if (($LISTA_ENCUESTA['Enc']['estado'][$i])=='f') {

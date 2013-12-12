@@ -65,10 +65,10 @@
 	
 	//Obtención de los nombres de los evaluados
 	for ($i=0; $i<$LISTA_EVALUACION_PASADA[max_res]; $i++){
-	  $sql ="SELECT periodo FROM PERSONA WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["periodo"][$i]."'";
+	  $sql ="SELECT periodo FROM EVALUACION WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["periodo"][$i]."'";
 	  $atts = array("periodo");
 	  $NOMBRE_PERIODO= obtenerDatos($sql, $conexion, $atts, "Nom");
-	  $LISTA_EVALUACION_PASADA["Enc"]["nombre"][$i]=$NOMBRE_PERIODO["Nom"]["periodo"][0];
+	  $LISTA_EVALUACION_PASADA["Enc"]["nombre_periodo"][$i]=$NOMBRE_PERIODO["Nom"]["periodo"][0];
 	  
 	  $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["id_evaluado"][$i]."'";
 	  $atts = array("nombre", "apellido");

@@ -93,23 +93,9 @@
 	$LISTA_FACTORES['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
       }
       
-      //Manejador de los diferentes casos: Finalizada, Aprobada o Rechazada
-      if(isset($_GET['action'])){
-      
-         if($_GET['action'] == "supervisar"){
-            $estado = "Finalizada";
-         }elseif($_GET['action'] == "revisarA"){
-            $estado = "Aprobada";
-         } elseif($_GET['action'] == "rechazarR"){
-            $estado = "Rechazada";
-         }else{
-         //No realizar ninguna acción
-         }
-      }
-      
       
       //Obtención del ID y token de cada evaluador
-      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado='".$estado."' AND id_evaluado='".$id_evaluado."'";
+      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado!='En proceso' AND estado!='Pendiente' AND id_evaluado='".$id_evaluado."'";
       $atts = array("id_encuestado", "token_ls", "nombre", "re_competencia", "re_factor");
       $LISTA_EVALUADORES=obtenerDatos($sql, $conexion, $atts, "Eva");
       $PROMEDIO_EVALUADORES=array("re_competencia", "re_factor");//Arreglo donde se lleva la suma de los resultados de los evaluadores

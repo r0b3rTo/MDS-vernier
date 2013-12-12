@@ -93,8 +93,23 @@
 	$LISTA_FACTORES['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
       }
       
+      //Manejador de los diferentes casos: Finalizada, Aprobada o Rechazada
+      if(isset($_GET['action'])){
+      
+         if($_GET['action'] == "supervisar"){
+            $estado = "Finalizada";
+         }elseif($_GET['action'] == "revisarA"){
+            $estado = "Aprobada";
+         } elseif($_GET['action'] == "rechazarR"){
+            $estado = "Rechazada";
+         }else{
+         //No realizar ninguna acción
+         }
+      }
+      
+      
       //Obtención del ID y token de cada evaluador
-      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado='Finalizada' AND id_evaluado='".$id_evaluado."'";
+      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado='".$estado."' AND id_evaluado='".$id_evaluado."'";
       $atts = array("id_encuestado", "token_ls", "nombre", "re_competencia", "re_factor");
       $LISTA_EVALUADORES=obtenerDatos($sql, $conexion, $atts, "Eva");
       $PROMEDIO_EVALUADORES=array("re_competencia", "re_factor");//Arreglo donde se lleva la suma de los resultados de los evaluadores
@@ -216,6 +231,41 @@
      
     }//cierre del if
     
+    //Validación Resultados en caso de Supervisor
+    if(isset($_GET['action'])){
+    
+      //Consultar el estado 
+      $sql="SELECT * ";
+      $sql.="FROM PERSONA_ENCUESTA ";
+      $sql.="WHERE token_ls='".$_GET['token_ls']."'";
+      
+      $atts=array("token_ls");
+      
+      $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+    
+      if($_GET['action'] == "validar"){
+    
+         if ($aux['max_res']!==0) {
+            $sql = "UPDATE PERSONA_ENCUESTA SET ".
+            "estado='Aprobada' ".
+            "WHERE token_ls='$_GET[token_ls]'";
+            $resultado=ejecutarConsulta($sql, $conexion);
+         }
+         
+      } elseif($_GET['action'] == "rechazar"){
+      
+         if ($aux['max_res']!==0) {
+            $sql = "UPDATE PERSONA_ENCUESTA SET ".
+            "estado='Rechazada' ".
+            "WHERE token_ls='$_GET[token_ls]'";
+            $resultado=ejecutarConsulta($sql, $conexion);
+         }
+      
+      }else{
+         //No realizar ninguna acción
+      }
+    }//Cierre del if de Validación de Resultados
+    
     //Cierre conexión a la BD
     cerrarConexion($conexion);
 
@@ -226,6 +276,16 @@
                 $_SESSION['MSJ'] = "Se ha agregado un nuevo proceso de evaluación";
                 header("Location: ../vEvaluaciones.php?success"); 
                 break;
+                
+            case 'validar':
+               $_SESSION['MSJ'] = "Se ha aprobado la evaluación correspondiente";
+               header("Location: ../vSupervisar.php?success");
+               break;
+            
+            case 'rechazar':
+               $_SESSION['MSJ'] = "Se ha rechazado la evaluación correspondiente";
+               header("Location: ../vSupervisar.php?success");
+               break;
 		
             default:
                 # code...

@@ -22,7 +22,7 @@
       $('#example').dataTable( {
           "sDom": "<'row-fluid'<'span6'T><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
           "language": {
-            "emptyTable": "No existen evaluadores disponibles"
+            "emptyTable": "No se han asignado evaluadores"
           }
       });
       

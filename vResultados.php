@@ -358,6 +358,34 @@
     }?>  
     </div>
     
+    <? if(isset($_GET['action']) && $_GET['action'] == "supervisar") { ?>
+   
+      <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
+         <div class="row">
+            <div class="span3"></div>
+            <div class="span5">
+               <p>
+                  <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>
+                  <a class="btn" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=rechazar">Rechazar</a>
+               </p>
+            </div>
+         </div>
+      </div>
+      
+   <? }else{ ?>
+   
+<!--      <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
+         <div class="row">
+            <div class="span3"></div>
+            <div class="span5">
+               <p>
+                  <a class="btn" href="vListarEvaluaciones?view&id=<?echo $_GET['id']?>">Atr&aacute;s</a>
+               </p>
+            </div>
+         </div>
+      </div>-->
+      
+   <? } ?>
 
    
 <?

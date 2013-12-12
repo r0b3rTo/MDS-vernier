@@ -77,7 +77,23 @@
 	      <td class="center lsmallT" nowrap><small><? 
 		echo $LISTA_NOMBRE_ENCUESTADO[$i];
 	      ?></small></td>
-	      <? switch ($LISTA_SUPERVISION_ACTUAL['Sup']['estado'][$i]){ case 'Pendiente': $color='#ffe1d9'; break; case 'En proceso':$color='rgb(252,248,227)'; break; case 'Finalizada': $color='rgb(223,240,216)'; break;}?>
+	      <? switch ($LISTA_SUPERVISION_ACTUAL['Sup']['estado'][$i]){ 
+            case 'Pendiente': 
+               $color='#ffe1d9'; 
+               break;
+            case 'En proceso':
+               $color='rgb(252,248,227)'; 
+               break;
+            case 'Finalizada': 
+               $color='rgb(223,240,216)';
+               break;
+            case 'Aprobada':
+               $color='rgb(197,189,206)';
+               break;
+            case 'Rechazada':
+               $color='rgb(255,132,99)';
+               break;
+         }?>
 	      <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap><small><?
 		echo $LISTA_SUPERVISION_ACTUAL['Sup']['estado'][$i];
 	      ?></small></td>
@@ -92,6 +108,12 @@
 		case 'Finalizada': 
 		  echo "<a href='./vResultados.php?token_ls=".$LISTA_SUPERVISION_ACTUAL['Sup']['token_ls'][$i]."&action=supervisar' title='Supervisar evaluación'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
 		  break;
+		case 'Aprobada': 
+        echo "<a href='./vResultados.php?token_ls=".$LISTA_SUPERVISION_ACTUAL['Sup']['token_ls'][$i]."&action=revisarA' title='Visualizar evaluación'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+        break;
+      case 'Rechazada': 
+        echo "<a href='./vResultados.php?token_ls=".$LISTA_SUPERVISION_ACTUAL['Sup']['token_ls'][$i]."&action=revisarR' title='Visualizar evaluación'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+        break;  
 		}?>
 	      </td>
 	      

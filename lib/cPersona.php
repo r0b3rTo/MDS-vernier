@@ -51,7 +51,6 @@
                     "'t', ".  //id organizacion              
                     "'$_POST[fech]', ".  //id familia de cargo
                     "'$_POST[obs]' ".  //observacion
-                    //observacion
                     ")";
                 break;    
   
@@ -75,35 +74,45 @@
                     
                 break;  
                 
-            case 'update_eval':
-
-                $atts = array("id_per");
-
-                $sql1 ="SELECT * ";
-                $sql1.="FROM PERSONA_EVALUADOR ";
-                $sql1.="WHERE id_per='".$_POST['id']."'";
-
-                $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
-
-                if ($LISTA_PER_EVA['max_res']!==0) {
-                    $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_GET[fin]' WHERE id_per='$_GET[id]' AND id_eva='$_GET[id_eva]' AND actual='t'";
-                }
-                
-                break;  
-            
-            case 'delete_eval':
+            case 'set_eval':
 
                 $atts = array("id_per", "id_eva");
 
                 $sql1 ="SELECT * ";
                 $sql1.="FROM PERSONA_EVALUADOR ";
-                $sql1.="WHERE id_per='".$_GET['id']."' ";
-                $sql1.="AND id_eva='".$_GET['id_eva']."'";
+                $sql1.="WHERE id_per='".$_POST['id']."' ";
+                $sql1.="AND id_eva='".$_POST['id_eva']."'";
 
                 $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
 
                 if ($LISTA_PER_EVA['max_res']!==0) {
-                    $sql = "UPDATE PERSONA_EVALUADOR SET actual= 'f', fecha_fin='$_GET[fin]' WHERE id_per='$_GET[id]' AND id_eva='$_GET[id_eva]' AND actual='t'";
+                    $sql = "UPDATE PERSONA_EVALUADOR SET ".
+                    "fecha_ini='$_POST[fecha_ini]', fecha_fin='$_POST[fecha_fin]', observacion='$_POST[obs]' ".
+                    "WHERE id_per='$_POST[id]' ".
+                    "AND id_eva='$_POST[id_eva]' ".
+                    "AND actual='t'";
+                }
+                
+                break;  
+            
+            case 'remove_eval':
+
+                $atts = array("id_per", "id_eva");
+
+                $sql1 ="SELECT * ";
+                $sql1.="FROM PERSONA_EVALUADOR ";
+                $sql1.="WHERE id_per='".$_POST['id']."' ";
+                $sql1.="AND id_eva='".$_POST['id_eva']."'";
+
+                $LISTA_PER_EVA = obtenerDatos($sql1, $conexion, $atts, "Per_Eva"); 
+
+                if ($LISTA_PER_EVA['max_res']!==0) {
+                    $sql = "UPDATE PERSONA_EVALUADOR SET ".
+                    "actual= 'f', ".
+                    "fecha_fin='$_POST[fecha_fin]' ".
+                    "WHERE id_per='$_POST[id]' ".
+                    "AND id_eva='$_POST[id_eva]' ".
+                    "AND actual='t'";
                 }
                 
                 break;  
@@ -166,9 +175,21 @@
                 header("Location: ../vListarPersonas.php?success"); 
                 break;
                 
-            case 'delete_eval':
+            case 'add_eval':
+                $_SESSION['MSJ'] = "Los datos del evaluador fueron registrados";
+                $Location = "Location: ../vPersona.php?success&action=edit&id=".$_POST['id']."&tab=3";
+                header($Location); 
+                break;
+                
+            case 'set_eval':
+                $_SESSION['MSJ'] = "Los datos del evaluador fueron modificados";
+                $Location = "Location: ../vPersona.php?success&action=edit&id=".$_POST['id']."&tab=3";
+                header($Location); 
+                break;
+                
+            case 'remove_eval':
                 $_SESSION['MSJ'] = "Los datos del evaluador fueron eliminados";
-                $Location = "Location: ../vPersona.php?success&action=edit&id=".$_GET['id'];
+                $Location = "Location: ../vPersona.php?success&action=edit&id=".$_POST['id']."&tab=3";
                 header($Location); 
                 break;
                 

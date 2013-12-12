@@ -378,7 +378,9 @@
     $LISTA_EVALUACION= obtenerDatos($sql, $conexion, $atts, "Proc");
     
     for($i=0; $i<$LISTA_EVALUACION[max_res]; $i++){ 
+    
       $periodo= $LISTA_EVALUACION["Proc"]["id"][$i];//periodo de evaluación de la i-ésima iteración
+      
       //Obtención del número total de evaluaciones
       $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
       $sql.=$periodo;
@@ -386,26 +388,41 @@
       $atts= array("estado");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
       $LISTA_EVALUACION["Proc"]["total"][$i]=$aux[max_res];
+      
       //Obtención del número de evaluaciones pendientes
       $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
       $sql.=$periodo."' AND estado='Pendiente'";
       $atts= array("estado");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
       $LISTA_EVALUACION["Proc"]["pendiente"][$i]=$aux[max_res];
+      
       //Obtención del número de evaluaciones en proceso
       $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
       $sql.=$periodo."' AND estado='En proceso'";
       $atts= array("estado");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
       $LISTA_EVALUACION["Proc"]["en_proceso"][$i]=$aux[max_res];
+      
       //Obtención del número de evaluaciones finalizadas
       $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
       $sql.=$periodo."' AND estado='Finalizada'";
       $atts= array("estado");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
       $LISTA_EVALUACION["Proc"]["finalizada"][$i]=$aux[max_res];
-      //Obtención del número de evaluaciones supervisadas CAMBIAR!!!
-      $LISTA_EVALUACION["Proc"]["supervisada"][$i]=0;
+      
+      //Obtención del número de evaluaciones aprobadas
+      $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
+      $sql.=$periodo."' AND estado='Aprobada'";
+      $atts= array("estado");
+      $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+      $LISTA_EVALUACION["Proc"]["aprobada"][$i]=$aux[max_res];
+      
+      //Obtención del número de evaluaciones rechazadas
+      $sql="SELECT estado FROM PERSONA_ENCUESTA WHERE periodo='";
+      $sql.=$periodo."' AND estado='Rechazada'";
+      $atts= array("estado");
+      $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+      $LISTA_EVALUACION["Proc"]["rechazada"][$i]=$aux[max_res];
       
       // Obtención de la fecha fin del último proceso de evaluacion
       $ULTIMA_FECHA= $LISTA_EVALUACION["Proc"]["fecha_fin"][$i];

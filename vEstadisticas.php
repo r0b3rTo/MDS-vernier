@@ -223,7 +223,7 @@
 	  <div id="pendientes" align="center" style="display: none;" class="well">
 	  <?php 
 	    if (!(isset($LISTA_PENDIENTE))){
-	    echo "<br><br><br><br><br><br><p class='text-center text-info lsmall'>No hay evaluaciones pendientes.</p><br><br><br><br><br><br>";
+	    echo "<br><br><br><br><br><br><p class='text-center text-info lsmall'>Hasta el momento no hay ninguna evaluación pendiente.</p><br><br><br><br><br><br>";
 	    } else {
 	  ?>
 	  <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered lista" id="example" width="100%">
@@ -267,17 +267,22 @@
 	  </div> <!-- Fin de la tabla-->
 	  <!-- Fin sección: Evaluaciones pendientes -->
 	  
-	  <!-- Inicio sección: Evaluaciones supervisadas -->
-	  <p class="lsmall"> Porcentaje de evaluaciones supervisadas</p>
-	  <a title="20% (2 de 6 evaluaciones)" onclick="showDiv('supervisadas')" style="cursor: pointer; text-decoration: none;">
+	  <!-- Inicio sección: Evaluaciones aprobadas -->
+	  <p class="lsmall"> Porcentaje de evaluaciones aprobadas</p>
+	  <a title="20% (2 de 6 evaluaciones)" onclick="showDiv('aprobadas')" style="cursor: pointer; text-decoration: none;">
 	  <div class="progress" style="height: 20px;">
-	    <div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%; height: 100%;">
+	    <div class="progress-bar bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%; height: 100%;">
 	      <span class="sr-only">&nbsp;</span>
 	    </div>
 	  </div>
 	  </a>
-	  <!-- Tabla de evaluaciones supervisadas -->
-	  <div id="supervisadas" align="center" style="display: none;" class="well">
+	  <!-- Tabla de evaluaciones aprobadas -->
+	  <div id="aprobadas" align="center" style="display: none;" class="well">
+	  <?php 
+       if (!(isset($LISTA_APROBADA))){
+         echo "<br><br><br><br><br><br><p class='text-center text-info lsmall'>Hasta el momento no hay ninguna evaluación aprobada.</p><br><br><br><br><br><br>";
+       } else {
+     ?>
 	  <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered lista" id="example" width="100%">
 	    <thead>
 	      <tr>
@@ -300,10 +305,10 @@
 	      </tr>
 	    </tfoot>
 	    <tbody role="alert" aria-live="polite" aria-relevant="all">   
-	    <!-- Listado de evaluaciones supervisadas -->
+	    <!-- Listado de evaluaciones aprobadas -->
 	    <?php
 
-	      //for ($i=0;$i<count($LISTA_SUPERVISADA['nombre_supervisor']);$i++){
+	      //for ($i=0;$i<count($LISTA_APROBADA['nombre_supervisor']);$i++){
 	    ?>
 	      <tr class="<?php echo $color_tabla; ?>" >
 		<!--Nombre del supervisor-->
@@ -323,8 +328,78 @@
 	    ?>   
 	    </tbody>
 	  </table>
+	  <?
+      }
+	  ?>
 	  </div> <!-- Fin de la tabla-->
-	  <!-- Fin sección: Evaluaciones supervisadas -->
+	  <!-- Fin sección: Evaluaciones aprobadas -->
+	 
+     <!-- Inicio sección: Evaluaciones rechazadas -->
+     <p class="lsmall"> Porcentaje de evaluaciones rechazadas</p>
+     <a title="0% (0 de 6 evaluaciones)" onclick="showDiv('rechazadas')" style="cursor: pointer; text-decoration: none;">
+     <div class="progress" style="height: 20px;">
+       <div class="progress-bar bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%; height: 100%;">
+         <span class="sr-only">&nbsp;</span>
+       </div>
+     </div>
+     </a>
+     <!-- Tabla de evaluaciones rechazadas -->
+     <div id="rechazadas" align="center" style="display: none;" class="well">
+     <?php 
+       if (!(isset($LISTA_RECHAZADA))){
+         echo "<br><br><br><br><br><br><p class='text-center text-info lsmall'>Hasta el momento no hay ninguna evaluación rechazada.</p><br><br><br><br><br><br>";
+       } else {
+     ?>
+     <table align="center" cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered lista" id="example" width="100%">
+       <thead>
+         <tr>
+      <th class="lsmallT"><small>Nombre del supervisor</small></th>
+      <th class="lsmallT"><small>Nombre del evaluador</small></th>
+      <th class="lsmallT"><small>Nombre del evaluado</small></th>
+      <th class="lsmallT"><small>Unidad adscrita</small></th>
+      <th class="lsmallT"><small>Fecha de aceptación</small></th>
+      <th class="lsmallT"><small>Dirección IP</small></th>
+         </tr>
+       </thead>
+       <tfoot>
+         <tr>
+      <th class="lsmallT"><small>Nombre del supervisor</small></th>
+      <th class="lsmallT"><small>Nombre del evaluador</small></th>
+      <th class="lsmallT"><small>Nombre del evaluado</small></th>
+      <th class="lsmallT"><small>Unidad adscrita</small></th>
+      <th class="lsmallT"><small>Fecha de aceptación</small></th>
+      <th class="lsmallT"><small>Dirección IP</small></th>
+         </tr>
+       </tfoot>
+       <tbody role="alert" aria-live="polite" aria-relevant="all">   
+       <!-- Listado de evaluaciones rechazadas -->
+       <?php
+
+         //for ($i=0;$i<count($LISTA_RECHAZADA['nombre_supervisor']);$i++){
+       ?>
+         <tr class="<?php echo $color_tabla; ?>" >
+      <!--Nombre del supervisor-->
+      <td class="center lsmallT" nowrap><small>Campo 1</small></td>    
+      <!--Nombre del evaluador-->
+      <td class="center lsmallT" nowrap><small>Campo 2</small></td>
+      <!--Nombre del evaluado-->
+      <td class="center lsmallT" nowrap><small>Campo 3</small></td>
+      <!--Unidad adscrita-->
+      <td class="center lsmallT" nowrap><small>Campo 4</small></td>
+      <!--Fecha de aceptación-->
+      <td class="center lsmallT" nowrap><small>Campo 5</small></td>
+      <!--Dirección IP-->
+      <td class="center lsmallT" nowrap><small>Campo 6</small></td>
+         </tr>
+       <? //} //cierre del for
+       ?>   
+       </tbody>
+     </table>
+     <?
+      }
+     ?>
+     </div> <!-- Fin de la tabla-->
+     <!-- Fin sección: Evaluaciones rechazadas -->
 	  
 	<?php
 	}//cierra el else (periodo isset)

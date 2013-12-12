@@ -169,7 +169,8 @@
 		<th class="lsmallT"><small>Evaluaciones<br>pendientes</small></th>
 		<th class="lsmallT"><small>Evaluaciones<br>en proceso</small></th>
 		<th class="lsmallT"><small>Evaluaciones<br>finalizadas</small></th>
-		<th class="lsmallT"><small>Evaluaciones<br>supervisadas</small></th>
+		<th class="lsmallT"><small>Evaluaciones<br>aprobadas</small></th>
+		<th class="lsmallT"><small>Evaluaciones<br>rechazadas</small></th>
 		<th class="lsmallT"><small>Estado</small></th>
 		<th class="lsmallT"><small>Acción</small></th>
 	      </tr>
@@ -182,7 +183,8 @@
 		<th class="lsmallT"><small>Evaluaciones<br>pendientes</small></th>
 		<th class="lsmallT"><small>Evaluaciones<br>en proceso</small></th>
 		<th class="lsmallT"><small>Evaluaciones<br>finalizadas</small></th>
-		<th class="lsmallT"><small>Evaluaciones<br>supervisadas</small></th>
+		<th class="lsmallT"><small>Evaluaciones<br>aprobadas</small></th>
+      <th class="lsmallT"><small>Evaluaciones<br>rechazadas</small></th>
 		<th class="lsmallT"><small>Estado</small></th>
 		<th class="lsmallT"><small>Acción</small></th>
 	      </tr>
@@ -233,17 +235,28 @@
 		    ?>%
 		  </a></small>
 		</td> 
-		<!--Evaluaciones supervisadas-->
+		<!--Evaluaciones aprobadas-->
 		<td class="center lsmallT" nowrap><small>
-		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["supervisada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
+		  <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["aprobada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
 		    <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
-		      echo round((($LISTA_EVALUACION["Proc"]["supervisada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
+		      echo round((($LISTA_EVALUACION["Proc"]["aprobada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
 		    } else {
 		      echo 0;
 		    }
 		    ?>%
 		  </a></small>
-		</td>    
+		</td>
+		<!--Evaluaciones rechazadas-->
+      <td class="center lsmallT" nowrap><small>
+        <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="<? echo "".$LISTA_EVALUACION["Proc"]["rechazada"][$i]." de ".$LISTA_EVALUACION["Proc"]["total"][$i]." evaluaciones";?>">
+          <? if ($LISTA_EVALUACION["Proc"]["total"][$i]>0){
+            echo round((($LISTA_EVALUACION["Proc"]["rechazada"][$i]/$LISTA_EVALUACION["Proc"]["total"][$i])*100));
+          } else {
+            echo 0;
+          }
+          ?>%
+        </a></small>
+      </td>   
 		<!--Estado del proceso de evaluación-->
 		<td class="center lsmallT" nowrap><small>
 		  <? if ($LISTA_EVALUACION['Proc']['total'][$i]==0){

@@ -83,8 +83,8 @@
       if (isset($_GET['token_ls']) && isset($_GET['id_encuesta_ls'])) {
       
 	    //Determinar estado de la encuesta
-	    $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol'); //Crear un cliente para comunicarse con Limesurvey
-	    $session_key = $client_ls->get_session_key('admin', 'Segundo!!');//Pedir llave de acceso a Limesurvey
+	    $client_ls = XML_RPC2_Client::create(PATH_LS); //Crear un cliente para comunicarse con Limesurvey
+	    $session_key = $client_ls->get_session_key(USER_LS, PSWD_LS);//Pedir llave de acceso a Limesurvey
 	    $id_encuesta_ls=intval($_GET['id_encuesta_ls']);
 	    $token_ls=$_GET['token_ls'];
 	    //Hallar token ID

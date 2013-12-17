@@ -1,8 +1,14 @@
 <?
+//Constantes para la conexión con la BD
 define ("MANEJADOR_BD", "postgres");
-define ("NOMBRE_BD", "vernier"); //cambiar si cambia nombre Base de Datos
+define ("NOMBRE_BD", "vernier");
 define ("USER" , "root");
 define ("PASS" , "SistemaVernier!!");
+
+//Constantes para la conexión con LimeSurvey
+define ("PATH_LS", "http://localhost/limesurvey/index.php/admin/remotecontrol");
+define ("USER_LS", "admin");
+define ("PSWD_LS", "Segundo!!");
 
 require_once "cFunciones.php";
 

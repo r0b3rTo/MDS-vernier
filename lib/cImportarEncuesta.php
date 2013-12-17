@@ -15,8 +15,8 @@
     $UNIDAD_ID = obtenerIds($conexion, "ORGANIZACION", false);
     
     //Obtención de la lista de encuestas registradas en Limesurvey
-    $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol'); //Crear un cliente para comunicarse con Limesurvey
-    $session_key = $client_ls->get_session_key('admin', 'Segundo!!');//Pedir llave de acceso a Limesurvey
+    $client_ls = XML_RPC2_Client::create(PATH_LS); //Crear un cliente para comunicarse con Limesurvey
+    $session_key = $client_ls->get_session_key(USER_LS, PSWD_LS);//Pedir llave de acceso a Limesurvey
     $resultado = $client_ls->list_surveys($session_key);//Lista de encuestas registradas en Limesurvey
     $ENCUESTAS_LS=array();//Listado de encuestas
     for($i=0; $i<count($resultado); $i++){

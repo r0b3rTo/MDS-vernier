@@ -89,9 +89,9 @@
 	    $LISTA_ENCUESTA= obtenerDatos($sql, $conexion, $atts, "Enc");
 	    
 	    //Crear un cliente para comunicarse con Limesurvey
-	    $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol'); 
+	    $client_ls = XML_RPC2_Client::create(PATH_LS); 
 	    //Pedir llave de acceso a Limesurvey
-	    $session_key = $client_ls->get_session_key('admin', 'Segundo!!');
+	    $session_key = $client_ls->get_session_key(USER_LS, PSWD_LS);
 	    
 	    for($i=0; $i<$LISTA_ENCUESTA[max_res]; $i++){
 	      $id_encuesta=$LISTA_ENCUESTA["Enc"]["id"][$i];
@@ -276,8 +276,8 @@
 	      
 	      //Cambiar la fecha de expiración en Limesurvey
 	      //////////////////////////////////////////////
-	      $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol');//Crear un cliente para comunicarse con Limesurvey
-	      $session_key = $client_ls->get_session_key('admin', 'Segundo!!'); //Pedir llave de acceso a Limesurvey
+	      $client_ls = XML_RPC2_Client::create(PATH_LS);//Crear un cliente para comunicarse con Limesurvey
+	      $session_key = $client_ls->get_session_key(USER_LS, PSWD_LS); //Pedir llave de acceso a Limesurvey
 	      $fecha_fin_ls=date("Y-m-d", strtotime($_POST['nuevo_fin']));
 	      $properties=array("expires"=>$fecha_fin_ls);
 	     
@@ -336,8 +336,8 @@
 	      
 	      //Desactivar en Limesurvey
 	      //////////////////////////
-	      $client_ls = XML_RPC2_Client::create('http://localhost/limesurvey/index.php/admin/remotecontrol');//Crear un cliente para comunicarse con Limesurvey
-	      $session_key = $client_ls->get_session_key('admin', 'Segundo!!'); //Pedir llave de acceso a Limesurvey
+	      $client_ls = XML_RPC2_Client::create(PATH_LS);//Crear un cliente para comunicarse con Limesurvey
+	      $session_key = $client_ls->get_session_key(USER_LS, PSWD_LS); //Pedir llave de acceso a Limesurvey
 	      $fecha_fin_ls=date("Y-m-d");
 	      $properties=array("expires"=>$fecha_fin_ls);
 	      // Obtención de las encuestas definidas

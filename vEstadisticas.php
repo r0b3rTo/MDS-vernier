@@ -45,9 +45,11 @@
 	  
 	  
 	  <!-- Inicio sección: Evaluaciones finalizadas -->
-	  <p class="lsmall"> Porcentaje de evaluaciones finalizadas</p>
+	  <p class="lsmall"> Porcentaje de evaluaciones completadas</p>
 	  <?php
 	    $total = $LISTA_EVALUACION["max_res"];
+	    $aux= array_count_values($LISTA_EVALUACION['Aux']['tipo']);
+	    $total_evaluaciones = $aux['evaluador'];//corresponde al total de evaluaciones de supervisores inmediatos, no incliye las autoevaluaciones
 	    if (isset($LISTA_FINALIZADA)){
 	      $subtotal= count($LISTA_FINALIZADA['tipo']);
 	    } else {
@@ -269,12 +271,20 @@
 	  
 	  <!-- Inicio sección: Evaluaciones aprobadas -->
 	  <p class="lsmall"> Porcentaje de evaluaciones aprobadas</p>
-	  <a title="20% (2 de 6 evaluaciones)" onclick="showDiv('aprobadas')" style="cursor: pointer; text-decoration: none;">
-	  <div class="progress" style="height: 20px;">
-	    <div class="progress-bar bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%; height: 100%;">
-	      <span class="sr-only">&nbsp;</span>
+	  <?php
+	    if (isset($LISTA_APROBADA)){
+	      $subtotal_aprobada= count($LISTA_APROBADA['nombre_supervisor']);
+	    } else {
+	      $subtotal_aprobada= 0;
+	    }
+	    $porcentaje=round(($subtotal_aprobada/$total_evaluaciones)*100);
+	  ?>
+	  <a title="<? echo $porcentaje.'% ('.$subtotal_aprobada.' de '.$total_evaluaciones.' evaluaciones)';?>" onclick="showDiv('aprobadas')" style="cursor: pointer; text-decoration: none;">
+	    <div class="progress" style="height: 20px;">
+	      <div class="progress-bar bar-info" role="progressbar" aria-valuenow="<?echo $porcentaje?>" aria-valuemin="0" aria-valuemax="100" style="width: <?echo $porcentaje?>%; height: 100%;">
+		<span class="sr-only">&nbsp;</span>
+	      </div>
 	    </div>
-	  </div>
 	  </a>
 	  <!-- Tabla de evaluaciones aprobadas -->
 	  <div id="aprobadas" align="center" style="display: none;" class="well">
@@ -308,23 +318,23 @@
 	    <!-- Listado de evaluaciones aprobadas -->
 	    <?php
 
-	      //for ($i=0;$i<count($LISTA_APROBADA['nombre_supervisor']);$i++){
+	      for ($i=0;$i<count($LISTA_APROBADA['nombre_supervisor']);$i++){
 	    ?>
 	      <tr class="<?php echo $color_tabla; ?>" >
 		<!--Nombre del supervisor-->
-		<td class="center lsmallT" nowrap><small>Campo 1</small></td>    
+		<td class="center lsmallT" nowrap><small><?echo $LISTA_APROBADA['nombre_supervisor'][$i]?></small></td>    
 		<!--Nombre del evaluador-->
-		<td class="center lsmallT" nowrap><small>Campo 2</small></td>
+		<td class="center lsmallT" nowrap><small><?echo $LISTA_APROBADA['nombre_evaluador'][$i]?></small></td>
 		<!--Nombre del evaluado-->
-		<td class="center lsmallT" nowrap><small>Campo 3</small></td>
+		<td class="center lsmallT" nowrap><small><?echo $LISTA_APROBADA['nombre_evaluado'][$i]?></small></td>
 		<!--Unidad adscrita-->
-		<td class="center lsmallT" nowrap><small>Campo 4</small></td>
+		<td class="center lsmallT" nowrap><small><?echo $LISTA_APROBADA['unidad'][$i]?></small></td>
 		<!--Fecha de aceptación-->
-		<td class="center lsmallT" nowrap><small>Campo 5</small></td>
+		<td class="center lsmallT" nowrap><small><?echo $LISTA_APROBADA['fecha'][$i]?></small></td>
 		<!--Dirección IP-->
-		<td class="center lsmallT" nowrap><small>Campo 6</small></td>
-	      </tr>
-	    <? //} //cierre del for
+		<td class="center lsmallT" nowrap><small><?echo $LISTA_APROBADA['ip'][$i]?></small></td>
+			</tr>
+	    <? } //cierre del for
 	    ?>   
 	    </tbody>
 	  </table>
@@ -336,12 +346,20 @@
 	 
      <!-- Inicio sección: Evaluaciones rechazadas -->
      <p class="lsmall"> Porcentaje de evaluaciones rechazadas</p>
-     <a title="0% (0 de 6 evaluaciones)" onclick="showDiv('rechazadas')" style="cursor: pointer; text-decoration: none;">
-     <div class="progress" style="height: 20px;">
-       <div class="progress-bar bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 20%; height: 100%;">
-         <span class="sr-only">&nbsp;</span>
-       </div>
-     </div>
+     <?php
+      if (isset($LISTA_RECHAZADA)){
+	$subtotal_rechazada= count($LISTA_RECHAZADA['nombre_supervisor']);
+      } else {
+	$subtotal_rechazada= 0;
+      }
+      $porcentaje=round(($subtotal_rechazada/$total_evaluaciones)*100);
+     ?>
+     <a title="<? echo $porcentaje.'% ('.$subtotal_rechazada.' de '.$total_evaluaciones.' evaluaciones)';?>" onclick="showDiv('rechazadas')" style="cursor: pointer; text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-danger" role="progressbar" aria-valuenow="<?echo $porcentaje?>" aria-valuemin="0" aria-valuemax="100" style="width: <?echo $porcentaje?>%; height: 100%;">
+	    <span class="sr-only">&nbsp;</span>
+	  </div>
+	</div>
      </a>
      <!-- Tabla de evaluaciones rechazadas -->
      <div id="rechazadas" align="center" style="display: none;" class="well">
@@ -375,23 +393,23 @@
        <!-- Listado de evaluaciones rechazadas -->
        <?php
 
-         //for ($i=0;$i<count($LISTA_RECHAZADA['nombre_supervisor']);$i++){
+         for ($i=0;$i<count($LISTA_RECHAZADA['nombre_supervisor']);$i++){
        ?>
          <tr class="<?php echo $color_tabla; ?>" >
-      <!--Nombre del supervisor-->
-      <td class="center lsmallT" nowrap><small>Campo 1</small></td>    
-      <!--Nombre del evaluador-->
-      <td class="center lsmallT" nowrap><small>Campo 2</small></td>
-      <!--Nombre del evaluado-->
-      <td class="center lsmallT" nowrap><small>Campo 3</small></td>
-      <!--Unidad adscrita-->
-      <td class="center lsmallT" nowrap><small>Campo 4</small></td>
-      <!--Fecha de aceptación-->
-      <td class="center lsmallT" nowrap><small>Campo 5</small></td>
-      <!--Dirección IP-->
-      <td class="center lsmallT" nowrap><small>Campo 6</small></td>
+	  <!--Nombre del supervisor-->
+	  <td class="center lsmallT" nowrap><small><?echo $LISTA_RECHAZADA['nombre_supervisor'][$i]?></small></td>    
+	  <!--Nombre del evaluador-->
+	  <td class="center lsmallT" nowrap><small><?echo $LISTA_RECHAZADA['nombre_evaluador'][$i]?></small></td>
+	  <!--Nombre del evaluado-->
+	  <td class="center lsmallT" nowrap><small><?echo $LISTA_RECHAZADA['nombre_evaluado'][$i]?></small></td>
+	  <!--Unidad adscrita-->
+	  <td class="center lsmallT" nowrap><small><?echo $LISTA_RECHAZADA['unidad'][$i]?></small></td>
+	  <!--Fecha de aceptación-->
+	  <td class="center lsmallT" nowrap><small><?echo $LISTA_RECHAZADA['fecha'][$i]?></small></td>
+	  <!--Dirección IP-->
+	  <td class="center lsmallT" nowrap><small><?echo $LISTA_RECHAZADA['ip'][$i]?></small></td>
          </tr>
-       <? //} //cierre del for
+       <? } //cierre del for
        ?>   
        </tbody>
      </table>

@@ -7,7 +7,6 @@
     $_ERRORES = array();
     $_WARNING = array();
     $_SUCCESS = array();
-    require_once 'XML/RPC2/Client.php';
     
     // Obtención de las encuestas definidas
     $sql ="SELECT * ";
@@ -15,26 +14,19 @@
     $atts = array("id", "id_encuesta_ls", "id_fam", "id_unidad", "estado");
     $LISTA_ENCUESTA= obtenerDatos($sql, $conexion, $atts, "Enc");
     
-    if ($LISTA_ENCUESTA['max_res']>0) {
     // Obtención de las familias de cargos
-    $sql ="SELECT nombre FROM FAMILIA_CARGO WHERE id='";     
-    $sql_1 ="SELECT nombre FROM ORGANIZACION WHERE id='";     
     // Obtención de las unidades evaluadas
     for ($i=0;$i<$LISTA_ENCUESTA['max_res'];$i++){    
-      $sql.=$LISTA_ENCUESTA['Enc']['id_fam'][$i];
-      $sql_1.=$LISTA_ENCUESTA['Enc']['id_unidad'][$i];
-      if($i == $LISTA_ENCUESTA['max_res']-1) {
-	  $sql.="'";
-	  $sql_1.="'";
-      } else {
-	  $sql.="' OR id='";
-	  $sql_1.="' OR id='";
-      }
+      $sql ="SELECT nombre FROM FAMILIA_CARGO WHERE id='".$LISTA_ENCUESTA['Enc']['id_fam'][$i]."'";   
+      $sql_1 ="SELECT nombre FROM ORGANIZACION WHERE id='".$LISTA_ENCUESTA['Enc']['id_unidad'][$i]."'"; 
+      $atts = array("nombre"); 
+      $aux= obtenerDatos($sql, $conexion, $atts, "Car");
+      $LISTA_CARGOS[$i]=$aux['Car']['nombre'][0];
+      $aux= obtenerDatos($sql_1, $conexion, $atts, "Uni");
+      $LISTA_UNIDADES[$i]=$aux['Uni']['nombre'][0];
     }
-    $atts = array("nombre"); 
-    $LISTA_CARGOS = obtenerDatos($sql, $conexion, $atts, "Car");
-    $LISTA_UNIDADES = obtenerDatos($sql_1, $conexion, $atts, "Uni");
-    }
+
+    
     
     //Obtener las preguntas de la sección de factores de la encuesta
     if (isset($_GET['id_encuesta'])){

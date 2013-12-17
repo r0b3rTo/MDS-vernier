@@ -26,7 +26,7 @@
       
       //Sorting de las evaluaciones según su estado
       /////////////////////////////////////////////
-      $j=0; $k=0; $l=0;
+      $j=0; $k=0; $l=0; $m=0; $n=0;
       
       
       for ($i=0; $i<$LISTA_EVALUACION[max_res]; $i++){
@@ -59,14 +59,15 @@
 	$nombre_unidad=$aux["Uni"]["nombre"][0];
 
 	//Agregar a la lista correspondiente
-	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="Pendiente"){
+	switch($LISTA_EVALUACION["Aux"]["estado"][$i]){
+	  case 'Pendiente':
 	    $LISTA_PENDIENTE["tipo"][$j]= $LISTA_EVALUACION["Aux"]["tipo"][$i];
 	    $LISTA_PENDIENTE["nombre_evaluado"][$j]= $nombre_evaluado;
 	    $LISTA_PENDIENTE["nombre_evaluador"][$j]= $nombre_evaluador;
 	    $LISTA_PENDIENTE["unidad"][$j]=$nombre_unidad;
 	    $j++;
-	  }
-	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="En proceso"){
+	    break;
+	  case 'En proceso':
 	    $LISTA_EN_PROCESO["tipo"][$k]= $LISTA_EVALUACION["Aux"]["tipo"][$i];
 	    $LISTA_EN_PROCESO["nombre_evaluado"][$k]= $nombre_evaluado;
 	    $LISTA_EN_PROCESO["nombre_evaluador"][$k]= $nombre_evaluador;
@@ -74,19 +75,36 @@
 	    $LISTA_EN_PROCESO["ip"][$k]= $LISTA_EVALUACION["Aux"]["ip"][$i];
 	    $LISTA_EN_PROCESO["unidad"][$k]=$nombre_unidad;
 	    $k++;
-	  }
-	  if($LISTA_EVALUACION["Aux"]["estado"][$i]=="Finalizada"){
-	    $LISTA_FINALIZADA["tipo"][$l]= $LISTA_EVALUACION["Aux"]["tipo"][$i];
-	    $LISTA_FINALIZADA["nombre_evaluado"][$l]= $nombre_evaluado;
-	    $LISTA_FINALIZADA["nombre_evaluador"][$l]= $nombre_evaluador;
-	    $LISTA_FINALIZADA["fecha"][$l]= $LISTA_EVALUACION["Aux"]["fecha"][$i];
-	    $LISTA_FINALIZADA["ip"][$l]= $LISTA_EVALUACION["Aux"]["ip"][$i];
-	    $LISTA_FINALIZADA["token_ls"][$l]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
-	    $LISTA_FINALIZADA["unidad"][$l]=$nombre_unidad;
-	    $l++;  
-	  }
-      }
-    
+	    break;
+	  case 'Aprobada':
+	  case 'Rechazada':
+	  case 'Finalizada':
+	    $LISTA_FINALIZADA["tipo"][$n]= $LISTA_EVALUACION["Aux"]["tipo"][$i];
+	    $LISTA_FINALIZADA["nombre_evaluado"][$n]= $nombre_evaluado;
+	    $LISTA_FINALIZADA["nombre_evaluador"][$n]= $nombre_evaluador;
+	    $LISTA_FINALIZADA["fecha"][$n]= $LISTA_EVALUACION["Aux"]["fecha"][$i];
+	    $LISTA_FINALIZADA["ip"][$n]= $LISTA_EVALUACION["Aux"]["ip"][$i];
+	    $LISTA_FINALIZADA["token_ls"][$n]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
+	    $LISTA_FINALIZADA["unidad"][$n]=$nombre_unidad;
+	    $n++;  
+	    if($LISTA_EVALUACION["Aux"]["estado"][$i]=='Aprobada') {
+	      $LISTA_APROBADA["nombre_supervisor"][$l]= 'Por determinar';
+	      $LISTA_APROBADA["nombre_evaluado"][$l]= $nombre_evaluado;
+	      $LISTA_APROBADA["nombre_evaluador"][$l]= $nombre_evaluador;
+	      $LISTA_APROBADA["token_ls"][$l]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
+	      $LISTA_APROBADA["unidad"][$l]=$nombre_unidad;
+	      $l++;
+	    } else if($LISTA_EVALUACION["Aux"]["estado"][$i]=='Rechazada') {
+	      $LISTA_RECHAZADA["nombre_supervisor"][$m]= 'Por determinar';
+	      $LISTA_RECHAZADA["nombre_evaluado"][$m]= $nombre_evaluado;
+	      $LISTA_RECHAZADA["nombre_evaluador"][$m]= $nombre_evaluador;
+	      $LISTA_RECHAZADA["token_ls"][$m]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
+	      $LISTA_RECHAZADA["unidad"][$m]=$nombre_unidad;
+	      $m++;
+	    }
+	    break;
+	} //cierre del switch  
+      } //cierre de la iteración
     }
     
     //Cierre conexión a la BD

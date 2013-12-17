@@ -276,10 +276,12 @@
 		  <? if ($LISTA_EVALUACION['Proc']['total'][$i]!=0){ ?>
 		    <a href="./vEstadisticas?periodo=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Ver estadísticas" >
 		      <img src="./img/iconos/visible-16.png" style="margin-left:5px;"></a>
+		  <? } else { ?>
+		  <a href="?action=editar&element=<?echo $i; ?>" title="Editar periodo de duración" >
+		    <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a>
+		  <a href="./lib/cEvaluaciones?action=delete&proceso=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Eliminar" >
+		    <img src="./img/iconos/delete-16.png" style="margin-left:5px;"></a>
 		  <? } ?>
-		  <!--ARREGLAR!!! CUANDO LA EVALUACION ES ANTIGUA NO SE DEBE OFRECER LA OPCIÓN DE ELIMINAR. SOLO DEBE ESTAR DISPONIBLE PARA LAS DEL FUTURO!!!-->
-		    <a href="./lib/cEvaluaciones?action=delete&proceso=<?echo $LISTA_EVALUACION['Proc']['id'][$i]; ?>" title="Eliminar" >
-		      <img src="./img/iconos/delete-16.png" style="margin-left:5px;"></a>
 	      </td>
 	      </tr>
 	    <? } //cierre del for

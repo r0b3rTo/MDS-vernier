@@ -7,7 +7,6 @@
     $_ERRORES = array();
     $_WARNING = array();
     $_SUCCESS = array();
-    require_once 'XML/RPC2/Client.php';
     
     if(isset($_GET['token_ls'])){
       
@@ -257,11 +256,6 @@
 
     if (isset($_GET['action'])){
         switch ($_GET['action']) {
-        
-            case 'add':
-                $_SESSION['MSJ'] = "Se ha agregado un nuevo proceso de evaluación";
-                header("Location: ../vEvaluaciones.php?success"); 
-                break;
                 
             case 'validar':
                $_SESSION['MSJ'] = "Se ha aprobado la evaluación correspondiente";

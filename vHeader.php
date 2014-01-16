@@ -114,7 +114,7 @@
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones<b class='caret'></b></a>
             <ul class='dropdown-menu'>
               <li><a href='vEvaluaciones.php'>Administrar Evaluaciones</a></li>
-              <li><a href='vEstadisticasPrueba.php'>Ver Estadisticas</a></li>
+              <li><a href='vPrueba.php'>Ver Estadisticas</a></li>
               <li class='divider'></li>
               <li><a href='vEncuestas.php'>Administrar Encuestas Limesurvey</a></li>
               <li><a href='vImportarEncuesta.php'>Importar Encuesta Limesurvey</a></li>              

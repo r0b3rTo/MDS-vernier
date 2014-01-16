@@ -95,7 +95,7 @@
 	      <td class="center lsmallT" nowrap>
 		<? switch ($LISTA_EVALUACION_ACTUAL['Enc']['estado'][$i]){
 		case 'Pendiente': 
-		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
+		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>";
 		  break;
 		case 'En proceso': 
 		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 

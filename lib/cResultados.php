@@ -206,10 +206,8 @@
 	  $PUNTAJE_FACTORES+=($PROMEDIO_EVALUADORES['re_factor'][$i])/$n;
 	}
 	
-	//Indice aptitudinal (porcentaje)
-	$PUNTAJE=(($PUNTAJE_COMPETENCIAS+$PUNTAJE_FACTORES)/($PUNTAJE_COMPETENCIAS_MAX+$PUNTAJE_FACTORES_MAX))*100;
 	//Brecha del resultado (porcentaje)
-	$BRECHA=((($PUNTAJE_COMPETENCIAS_MAX+$PUNTAJE_FACTORES_MAX)-($PUNTAJE_COMPETENCIAS+$PUNTAJE_FACTORES))/($PUNTAJE_COMPETENCIAS_MAX+$PUNTAJE_FACTORES_MAX))*100;
+	$BRECHA=(($PUNTAJE_COMPETENCIAS_MAX-$PUNTAJE_COMPETENCIAS)/$PUNTAJE_COMPETENCIAS_MAX)*100;
       }
       
       
@@ -219,27 +217,61 @@
     //Validación Resultados en caso de Supervisor
     if(isset($_GET['action'])){
     
-      //Consultar el estado 
-      $sql="SELECT * ";
+      $token_ls=$_GET['token_ls'];
+      $ip=$_SERVER['REMOTE_ADDR']; //Dirección IP del usuario registrado
+      $fecha=date("d/m/Y.H:i"); //Fecha y hora de la supervisación
+	    
+      //Determinar el ID del supervisor jerárquico
+      $sql="SELECT id FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+      $atts=array("id");
+      $aux=obtenerDatos($sql, $conexion, $atts, "Sup");
+      $id_sup=$aux['Sup']['id'][0];
+      
+      //Determinar datos de la evaluación supervisada 
+      $sql="SELECT periodo, id_encuesta, id_evaluado, id_encuestado, token_ls ";
       $sql.="FROM PERSONA_ENCUESTA ";
-      $sql.="WHERE token_ls='".$_GET['token_ls']."'";
-      
-      $atts=array("token_ls");
-      
+      $sql.="WHERE token_ls='".$token_ls."'";
+      $atts=array("periodo", "id_encuesta", "id_evaluado", "id_encuestado","token_ls");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
     
       if($_GET['action'] == "validar"){
     
          if ($aux['max_res']!==0) {
+	    
+	    //Insertar en tabla de supervisaciones
+	    $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
+	    $sql.="'$id_sup', '$token_ls', 'TRUE', '$fecha', '$ip')";
+	    $resultado_sql=ejecutarConsulta($sql, $conexion);
+	    
+	    //Actualizar estado
             $sql = "UPDATE PERSONA_ENCUESTA SET ".
             "estado='Aprobada' ".
             "WHERE token_ls='$_GET[token_ls]'";
             $resultado=ejecutarConsulta($sql, $conexion);
+            
          }
          
       } elseif($_GET['action'] == "rechazar"){
       
          if ($aux['max_res']!==0) {
+	  
+	    //Insertar en tabla de supervisaciones
+	    $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
+	    $sql.="'$id_sup', '$token_ls', 'FALSE', '$fecha', '$ip')";
+	    $resultado_sql=ejecutarConsulta($sql, $conexion);
+	    
+	    //Determinar nombre del supervisor jerárquico
+	    $sql="SELECT nombre, apellido FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+	    $atts=array("nombre", "apellido");
+	    $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	    $nombre_supervisor=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	    
+	    //Agregar notificación al administrador
+	    $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per) VALUES (";
+	    $sql.="'0', '$nombre_supervisor', '$token_ls')";
+	    $resultado_sql=ejecutarConsulta($sql, $conexion);
+	    
+	    //Actualizar estado
             $sql = "UPDATE PERSONA_ENCUESTA SET ".
             "estado='Rechazada' ".
             "WHERE token_ls='$_GET[token_ls]'";

@@ -88,18 +88,45 @@
 	    $LISTA_FINALIZADA["unidad"][$n]=$nombre_unidad;
 	    $n++;  
 	    if($LISTA_EVALUACION["Aux"]["estado"][$i]=='Aprobada') {
-	      $LISTA_APROBADA["nombre_supervisor"][$l]= 'Por determinar';
+	    
+	      $sql ="SELECT id_sup, fecha, ip FROM SUPERVISOR_ENCUESTA WHERE token_ls_eva='".$LISTA_EVALUACION["Aux"]["token_ls"][$i]."'";
+	      $atts = array("id_sup", "fecha", "ip");
+	      $aux= obtenerDatos($sql, $conexion, $atts, "Sup");
+	      echo "EL SQL: ".$sql;
+	      echo "EL RESULTADO: ";
+	      print_r($aux);
+	      
+	      $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$aux['Sup']['id_sup'][0]."'";
+	      $atts = array("nombre", "apellido");
+	      $aux_1= obtenerDatos($sql, $conexion, $atts, "Nom");
+	      $nombre_supervisor=$aux_1["Nom"]["nombre"][0]." ".$aux_1["Nom"]["apellido"][0];
+	      
+	      $LISTA_APROBADA["nombre_supervisor"][$l]= $nombre_supervisor;
 	      $LISTA_APROBADA["nombre_evaluado"][$l]= $nombre_evaluado;
 	      $LISTA_APROBADA["nombre_evaluador"][$l]= $nombre_evaluador;
 	      $LISTA_APROBADA["token_ls"][$l]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
 	      $LISTA_APROBADA["unidad"][$l]=$nombre_unidad;
+	      $LISTA_APROBADA["ip"][$l]=$aux['Sup']['ip'][0];
+	      $LISTA_APROBADA["fecha"][$l]=$aux['Sup']['fecha'][0];
 	      $l++;
 	    } else if($LISTA_EVALUACION["Aux"]["estado"][$i]=='Rechazada') {
-	      $LISTA_RECHAZADA["nombre_supervisor"][$m]= 'Por determinar';
+	    
+	      $sql ="SELECT id_sup, fecha, ip FROM SUPERVISOR_ENCUESTA WHERE token_ls_eva='".$LISTA_EVALUACION["Aux"]["token_ls"][$i]."'";
+	      $atts = array("id_sup", "fecha", "ip");
+	      $aux= obtenerDatos($sql, $conexion, $atts, "Sup");
+	      
+	      $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$aux['Sup']['id_sup'][0]."'";
+	      $atts = array("nombre", "apellido");
+	      $aux_1= obtenerDatos($sql, $conexion, $atts, "Nom");
+	      $nombre_supervisor=$aux_1["Nom"]["nombre"][0]." ".$aux_1["Nom"]["apellido"][0];
+	      
+	      $LISTA_RECHAZADA["nombre_supervisor"][$m]= $nombre_supervisor;
 	      $LISTA_RECHAZADA["nombre_evaluado"][$m]= $nombre_evaluado;
 	      $LISTA_RECHAZADA["nombre_evaluador"][$m]= $nombre_evaluador;
 	      $LISTA_RECHAZADA["token_ls"][$m]= $LISTA_EVALUACION["Aux"]["token_ls"][$i];
 	      $LISTA_RECHAZADA["unidad"][$m]=$nombre_unidad;
+	      $LISTA_RECHAZADA["ip"][$m]=$aux['Sup']['ip'][0];
+	      $LISTA_RECHAZADA["fecha"][$m]=$aux['Sup']['fecha'][0];
 	      $m++;
 	    }
 	    break;

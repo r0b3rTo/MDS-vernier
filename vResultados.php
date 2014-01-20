@@ -182,7 +182,7 @@
     
     <!--Estadísticas-->
     <div class="well" style="padding:8px;">
-      <p style="font-size:11px"><b>Puntaje obtenido en la sección de competencias</b></p>
+      <p style="font-size:11px"><b>Puntaje obtenido en la sección de competencias (índice aptitudinal)</b></p>
       <?if ($EVALUADOR_OK){?>
       <a title="<?echo (round(($PUNTAJE_COMPETENCIAS/$PUNTAJE_COMPETENCIAS_MAX)*100)).'%'?> (<?echo $PUNTAJE_COMPETENCIAS?> de <?echo $PUNTAJE_COMPETENCIAS_MAX?> puntos)" style="text-decoration: none;">
       <div class="progress" style="height: 20px;">
@@ -191,6 +191,16 @@
 	</div>
       </div>
       </a>
+      
+      <p style="font-size:11px"><b>Brecha del resultado</b></p>
+      <a title="<?echo round($BRECHA).'% ('.($PUNTAJE_COMPETENCIAS_MAX-$PUNTAJE_COMPETENCIAS).' de '.$PUNTAJE_COMPETENCIAS_MAX.' puntos)'?>" style="text-decoration: none;">
+      <div class="progress" style="height: 20px;">
+	<div class="progress-bar bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($BRECHA,2).'%'?>; height: 100%;">
+	  <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($BRECHA).'%'?></span>
+	</div>
+      </div>
+      </a>
+      
       <?} else {
 	echo "<p align='center' style='font-size:11px;'>No hay resultados disponibles para la evaluación del trabajador</p>";
       }?>
@@ -330,60 +340,30 @@
     </div>
     <!--FIN DE LA SECCION DE FACTORES-->
     
-    <!--SECCION DE PUNTAJE-->
-    
-    <p class="lead"><small>Síntesis de resultados</small></p>
-    <p class="lsmall muted"> Resultados obtenidos a partir de la evaluación del supervisor inmediato o el grupo de supervisores inmediatos</p>
-    <div class="well" style="padding:8px; background-color: #fff">
-    <?if($EVALUADOR_OK){?>
-      <p style="font-size:11px"><b>Indice aptitudinal</b></p>
-      <a title="<?echo round($PUNTAJE,2).'%'?> (<?echo ($PUNTAJE_COMPETENCIAS+$PUNTAJE_FACTORES)?> de <?echo ($PUNTAJE_COMPETENCIAS_MAX+$PUNTAJE_FACTORES_MAX)?> puntos)" style="text-decoration: none;">
-      <div class="progress" style="height: 20px;">
-	<div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($PUNTAJE,2).'%'?>; height: 100%;">
-	  <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($PUNTAJE,2).'%'?></span>
-	</div>
-      </div>
-      </a>
-      
-      <p style="font-size:11px"><b>Brecha del resultado</b></p>
-      <a title="<?echo round($BRECHA,2).'%'?>" style="text-decoration: none;">
-      <div class="progress" style="height: 20px;">
-	<div class="progress-bar bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($BRECHA,2).'%'?>; height: 100%;">
-	  <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($BRECHA,2).'%'?></span>
-	</div>
-      </div>
-      </a>
-    <?} else {
-      echo "<br><br><p align='center' style='font-size:11px;'>No hay resultados disponibles para la evaluación del trabajador</p><br><br>";
-    }?>  
-    </div>
-    
-    <? if(isset($_GET['action']) && $_GET['action'] == "supervisar") { ?>
+    <? if(isset($_GET['action']) ) {
+	switch($_GET['action']){
+	  case 'supervisar':?>
+	  <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
+	    <div class="row">
+		<div class="span3"></div>
+		<div class="span5">
+		  <p>
+		      <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>
+		      <a class="btn" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=rechazar">Rechazar</a>
+		  </p>
+		</div>
+	    </div>
+	  </div>
+	  <? break;
+	  case 'revisarR': ?>
+	  <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
+	    <p class="lsmall less">Actualmente la evaluación se encuentra rechazada, <i>haga click</i> en el siguiente botón si desea validarla ahora</p><br>
+	    <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>		  
+	  </div>
+	  <? break;
+	}?>
    
-      <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
-         <div class="row">
-            <div class="span3"></div>
-            <div class="span5">
-               <p>
-                  <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>
-                  <a class="btn" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=rechazar">Rechazar</a>
-               </p>
-            </div>
-         </div>
-      </div>
       
-   <? }else{ ?>
-   
-<!--      <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
-         <div class="row">
-            <div class="span3"></div>
-            <div class="span5">
-               <p>
-                  <a class="btn" href="vListarEvaluaciones?view&id=<?/*echo $_GET['id']*/?>">Atr&aacute;s</a>
-               </p>
-            </div>
-         </div>
-      </div>-->
       
    <? } ?>
 

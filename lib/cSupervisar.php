@@ -33,7 +33,7 @@
 	$LISTA_SUPERVISADOS= obtenerDatos($sql, $conexion, $atts, "Sup");
 	
 	// Obtención del identificador, tipo, estado, periodo y token de Limesurvey de las encuestas de los supervisados
-	$sql ="SELECT id_encuesta_ls, id_evaluado, id_encuestado, token_ls, tipo, estado, periodo FROM PERSONA_ENCUESTA WHERE actual='t' AND ("; 
+	$sql ="SELECT id_encuesta_ls, id_evaluado, id_encuestado, token_ls, tipo, estado, periodo FROM PERSONA_ENCUESTA WHERE actual='t' AND tipo='evaluador' AND ("; 
 	for($i=0; $i<$LISTA_SUPERVISADOS[max_res]; $i++){
 	  $sql.="id_evaluado='".$LISTA_SUPERVISADOS['Sup']['id_per'][$i]."'";
 	  if($i<$LISTA_SUPERVISADOS[max_res]-1){

@@ -283,6 +283,18 @@ function isSupervisor ($conexion){
   }
 }
 
+/*
+    countNotifications. Determina el número de notificaciones al administrador
+    del sistema que aún no se han revisado
+    ---------------------------------------------------------------------------
+    $conexion - conexión a la base de datos
+*/
+function countNotifications ($conexion){
+    $sql= "SELECT id FROM NOTIFICACION WHERE revisado=FALSE";
+    $atts= array("id");
+    $resultado=obtenerDatos($sql, $conexion, $atts, 'Res');
+    return $resultado['max_res'];
+}
 
 /*
     isEvaluador. Determina si el identificador suministrado pertenece o no a un

@@ -120,6 +120,9 @@
               <li><a href='vImportarEncuesta.php'>Importar Encuesta Limesurvey</a></li>              
             </ul>
           </li>
+          <li>
+            <a href='vNotificaciones.php'>Notificaciones&nbsp;"; if($notificaciones){echo "<span class='badge'>".$notificaciones."</span>";} 
+    echo "</a></li>
         </ul>
         <ul class='nav pull-right' id='main-menu-right'>
           <li><a class='dropdown-toggle' data-toggle='dropdown' href='#'>";mostrarDatosUsuario(); echo "<b class='caret'></b></a>

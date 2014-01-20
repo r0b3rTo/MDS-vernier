@@ -83,10 +83,10 @@
                $color='rgb(223,240,216)'; 
                break;
             case 'Aprobada':
-               $color='rgb(197,189,206)';
+               $color='rgb(204,229,255)';
                break;
             case 'Rechazada':
-               $color='rgb(255,132,99)';
+               $color='rgb(255,229,209)';
                break;
          }?>
 	      <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap><small><?
@@ -101,15 +101,18 @@
 		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
 		  break;  
 		case 'Finalizada': 
-		  echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		  echo "<small>No hay acciones disponibles</small>";
+		  //echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
 		  break;
 		case 'Aprobada': 
-        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarA' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
-        break;
-      case 'Rechazada': 
-        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarR' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
-        break;
-		}?>
+		  echo "<small>No hay acciones disponibles</small>";
+		//echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarA' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		break;
+		case 'Rechazada':
+		  echo "<small>No hay acciones disponibles</small>";
+		//echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarR' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		break;
+			}?>
 	      </td>
 	      
           </tr>
@@ -179,11 +182,11 @@
                $mensaje='Se realizó'; 
                break;
             case 'Aprobada':
-               $color='rgb(197,189,206)';
+               $color='rgb(166,197,243)';
                $mensaje='Se aprobó';
                break;
             case 'Rechazada':
-               $color='rgb(255,132,99)';
+               $color='rgb(255,229,204)';
                $mensaje='Se rechazó';
                break;
          }?>

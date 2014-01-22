@@ -107,7 +107,7 @@
   ?>
   
   <!--PASO 3/3: Seleccionar el proceso de evaluación-->
-  <? if (isset($_GET['action']) && $_GET['action']=='stats_persona' && isset($_GET['step']) && $_GET['step']==2) {?>
+  <? if (isset($_GET['action']) && $_GET['action']=='stats_persona' && isset($_GET['step']) && $_GET['step']==2) { ?>
       <form class="form-horizontal" method="post" action="lib/cPrueba.php?action=stats_persona&input=3&id=<?echo $_GET['id'];?>&car=<?echo $_GET['car'];?>">
 	<div class="control-group well" style="width:350px">
 	  <span class="label label-primary">Paso 3/3</span><br><br>
@@ -176,6 +176,9 @@
 if(isset($_GET['action'])) {
   switch($_GET['action']){
     case 'view_uni':
+    //-------------------------------------
+    //MUESTRA DE RESULTADOS: UNIDADxPROCESO
+    //-------------------------------------
 ?>
       <!--ENCABEZADO REPORTE DE RESULTADOS-->
       <br><p class="lsmall muted"> Datos de la unidad</p><br>
@@ -272,7 +275,7 @@ if(isset($_GET['action'])) {
 	?>
 	  <tr class="<?php echo $color_tabla; ?>" >
 	    <!--Trabajador-->
-	    <td class="center lsmallT"><small><? echo $LISTA_EVALUADOS['Eva']['nombre'][$i]." (T".($i+1).")";?></small></td>  
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación en detalle" href="./vResultados.php?token_ls=<? echo $LISTA_EVALUADOS['Eva']['token_ls'][$i]?>"><? echo $LISTA_EVALUADOS['Eva']['nombre'][$i]." (T".($i+1).")";?></a></small></td>  
 	    <!--Resultado auto-evaluación-->
 	    <? if($LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$i]){?>
 		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$i]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['maximo'][$i])*100)?>%</small></td>   
@@ -398,7 +401,7 @@ if(isset($_GET['action'])) {
 	?>
 	  <tr class="<?php echo $color_tabla; ?>" >
 	    <!--Trabajador-->
-	    <td class="center lsmallT"><small><? echo $LISTA_EVALUADOS['Eva']['nombre'][$i]." (T".($i+1).")";?></small></td>  
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación en detalle" href="./vResultados.php?token_ls=<? echo $LISTA_EVALUADOS['Eva']['token_ls'][$i]?>"><? echo $LISTA_EVALUADOS['Eva']['nombre'][$i]." (T".($i+1).")";?></a></small></td>  
 	    <!--Resultado auto-evaluación-->
 	    <? if($LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$i]){?>
 		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$i]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$i])*100)?>%</small></td>   
@@ -407,7 +410,7 @@ if(isset($_GET['action'])) {
 	    <? } ?>
 	    <!--Resultado de las evaluaciones-->
 	    <? if($LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$i]){?>
-		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$i]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$i])*100)?>%</small></td>
+		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$i]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$i])*100)?>%</small></td>
 	    <? } else {?>
 		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
 	    <? } ?>
@@ -435,17 +438,551 @@ if(isset($_GET['action'])) {
       </div>
       <!--FIN DE RESULTADOS PARA LA SECCION DE FACTORES-->
       
-      <?break;?>
-	  
+<? 
+    break;
+    //-----------------------------------------------
+    //FIN DE LA MUESTRA DE RESULTADOS: UNIDADxPROCESO
+    //-----------------------------------------------
 
-<?
     case 'hist_per':
+    //----------------------------------------
+    //MUESTRA DE RESULTADOS: PERSONAxHISTORICO
+    //----------------------------------------
+?>
+      <!--ENCABEZADO REPORTE DE RESULTADOS-->
+      <br>
+      <p class="lsmall muted"> Datos del trabajador evaluado</p>
+      <br>
+      <div class="row">
+	<div class="span1" align="right">
+	  <img src="./img/iconos/user-new.jpg" class="img-circle">
+	</div>
+	<div class="span11">
+	<blockquote>
+	  <p><?echo $NOMBRE?></p>
+	  <p class="lsmall">C.I. <? echo $CEDULA?></p>
+	  <p class="lsmall"><? echo $CARGO['nombre']." (<i>".$CARGO['fecha_ini']." - "; if($CARGO['fecha_fin']) {echo $CARGO['fecha_fin']."</i>)";} else {echo "actualidad</i>)";}?></p>
+	  <p class="lsmall"><? echo $UNIDAD?></p>
+
+	</blockquote>
+	</div>
+      </div>
+
+      <!--RESULTADOS PARA LA SECCION DE COMPETENCIAS-->
+      <br>
+      <p class="lead"><small>Evaluación de competencias</small></p>
+      <p class="lsmall muted"> Resultados obtenidos para la evaluación de competencias</p>
+      <br>
+      
+      <div class="row">
+      <div class="span1"></div>
+      <div class="span10"><br>
+	<!--Tabla para el gŕafico-->
+	<table class="tabla_factores" style="display: none">
+	  <caption>Gráfico de los resultados</caption>
+	  <thead>
+	    <tr>
+	      <td></td>
+	      <?php 
+		for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		  echo '<th scope="row">Proceso '.($i+1).'</th>';
+		}
+	      ?>
+	    </tr>
+	  </thead>
+	  <tbody>
+	      <tr>
+		  <th scope="col">Auto-evaluación</th>
+		  <?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['puntaje'][$i]){
+			echo  '<td>'.(($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['maximo'][$i])*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      </tr>
+
+	      <tr>
+		<th scope="col">Evaluación del supervisor inmediato</th>
+		<?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]!=0){
+			echo  '<td>'.(($LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['maximo'][$i])*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      <td>100</td><!--Truco para definir el máximo-->
+	      </tr>
+
+	  </tbody>
+	</table><br><br>
+	<!--Fin de la tabla para el gŕafico-->
+      </div> <!--Cierre del span10-->
+      </div> <!--Cierre del row-->
+      
+      <!--Tabla de detalles-->
+      <table class="table table-hover" style="margin-left: 0;">
+	<thead>
+	  <tr>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Proceso de evaluación</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd">
+	      <small>Resultado auto-evaluación</small>
+	      <span style="font-size:8px; padding-left:8px; background:#62c462;">&nbsp;</span>
+	    </th>
+	    <th class='lsmallT' style='border-top: 1px solid #dddddd'>
+	      <small>Resultado evaluación</small>
+	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
+	    </th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	  </tr>
+	</thead>
+	
+	<tbody role="alert" aria-live="polite" aria-relevant="all">   
+
+	<?php
+	  for ($i=0;$i<$LISTA_PROCESOS['max_res'];$i++){
+	?>
+	  <tr>
+	    <!--Proceso-->
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación en detalle" href="./vResultados.php?token_ls=<? echo $LISTA_PROCESOS['Proc']['token_ls'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
+	    <!--Resultado auto-evaluación-->
+	    <? if($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['puntaje'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['maximo'][$i])*100)?>%</small></td>   
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado de las evaluaciones-->
+	    <? if($LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['maximo'][$i])*100)?>%</small></td>
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado esperado-->
+	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	  </tr>
+	<? } //cierre del for
+	?>   
+	</tbody>
+      </table>
+      <!--Fin de la tabla de detalles-->
+      
+      <!--Estadísticas-->
+      <div class="well" style="padding:8px;">
+      
+	<p style="font-size:11px"><b>Porcentaje promedio obtenido por la persona en la sección de competencias</b></p>
+	<a title="<?echo round($PROMEDIO_COMPETENCIAS*100).'% de la evaluación'?>" style="text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($PROMEDIO_COMPETENCIAS*100).'%'?>; height: 100%;">
+	    <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($PROMEDIO_COMPETENCIAS*100).'%'?></span>
+	  </div>
+	</div>
+	</a>
+	
+	<p style="font-size:11px"><b>Brecha promedio del resultado</b></p>
+	<a title="<?echo (100-round($PROMEDIO_COMPETENCIAS*100))?>% de la evaluación" style="text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo (100-round($PROMEDIO_COMPETENCIAS*100)).'%'?>; height: 100%;">
+	    <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo (100-round($PROMEDIO_COMPETENCIAS*100)).'%'?></span>
+	  </div>
+	</div>
+	</a>
+	
+      </div>
+      <!--FIN DE RESULTADOS PARA LA SECCION DE COMPETENCIAS--> 
+      
+      <!--RESULTADOS PARA LA SECCION DE FACTORES-->
+      <br>
+      <p class="lead"><small>Evaluación de factores</small></p>
+      <p class="lsmall muted"> Resultados obtenidos para la evaluación de factores desempeño</p>
+      <br>
+      
+      <div class="row">
+      <div class="span1"></div>
+      <div class="span10"><br>
+	<!--Tabla para el gŕafico-->
+	<table class="tabla_factores" style="display: none">
+	  <caption>Gráfico de los resultados</caption>
+	  <thead>
+	    <tr>
+	      <td></td>
+	      <?php 
+		for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		  echo '<th scope="row">Proceso '.($i+1).'</th>';
+		}
+	      ?>
+	    </tr>
+	  </thead>
+	  <tbody>
+	      <tr>
+		  <th scope="col">Auto-evaluación</th>
+		  <?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['puntaje'][$i]!=0){
+			echo  '<td>'.(($LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['maximo'][$i])*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      </tr>
+
+	      <tr>
+		<th scope="col">Evaluación del supervisor inmediato</th>
+		<?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['evaluacion']['factores']['puntaje'][$i]!=0){
+			echo  '<td>'.(($LISTA_PROCESOS['Proc']['evaluacion']['factores']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['maximo'][$i])*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      <td>100</td><!--Truco para definir el máximo-->
+	      </tr>
+
+	  </tbody>
+	</table><br><br>
+	<!--Fin de la tabla para el gŕafico-->
+      </div> <!--Cierre del span10-->
+      </div> <!--Cierre del row-->
+      
+      <!--Tabla de detalles-->
+      <table class="table table-hover" style="margin-left: 0;">
+	<thead>
+	  <tr>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Proceso de evaluación</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd">
+	      <small>Resultado auto-evaluación</small>
+	      <span style="font-size:8px; padding-left:8px; background:#62c462;">&nbsp;</span>
+	    </th>
+	    <th class='lsmallT' style='border-top: 1px solid #dddddd'>
+	      <small>Resultado evaluación</small>
+	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
+	    </th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	  </tr>
+	</thead>
+	
+	<tbody role="alert" aria-live="polite" aria-relevant="all">   
+
+	<?php
+	  for ($i=0;$i<$LISTA_PROCESOS['max_res'];$i++){
+	?>
+	  <tr class="<?php echo $color_tabla; ?>" >
+	    <!--Proceso de evaluación-->
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación en detalle" href="./vResultados.php?token_ls=<? echo $LISTA_PROCESOS['Proc']['token_ls'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
+	    <!--Resultado auto-evaluación-->
+	    <? if($LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['puntaje'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['maximo'][$i])*100)?>%</small></td>   
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado de las evaluaciones-->
+	    <? if($LISTA_PROCESOS['Proc']['evaluacion']['factores']['puntaje'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round(($LISTA_PROCESOS['Proc']['evaluacion']['factores']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['maximo'][$i])*100)?>%</small></td>
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado esperado-->
+	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	  </tr>
+	<? } //cierre del for
+	?>   
+	</tbody>
+      </table>
+      <!--Fin de la tabla de detalles-->
+      
+      <!--Estadísticas-->
+      <div class="well" style="padding:8px;">
+      
+	<p style="font-size:11px"><b>Porcentaje promedio obtenido por la persona en la sección de factores</b></p>
+	<a title="<?echo round($PROMEDIO_FACTORES*100).'% de la evaluación'?>" style="text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($PROMEDIO_FACTORES*100).'%'?>; height: 100%;">
+	    <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($PROMEDIO_FACTORES*100).'%'?></span>
+	  </div>
+	</div>
+	</a>
+	
+      </div>
+      <!--FIN DE RESULTADOS PARA LA SECCION DE FACTORES-->
+      
+<?
+    //--------------------------------------------------
+    //FIN DE LA MUESTRA DE RESULTADOS: PERSONAxHISTORICO
+    //--------------------------------------------------
+    break;
+
+    //--------------------------------------------------
+    //MUESTRA DE RESULTADOS: UNIDADxHISTORICO
+    //--------------------------------------------------
     case 'hist_uni':
 ?>
-      <div class="well" align="center" style="background-color: #fff">
-	<div class="lead">En construcción</div>
+      <!--ENCABEZADO REPORTE DE RESULTADOS-->
+      <br><p class="lsmall muted"> Datos de la unidad</p><br>
+      <div class="row">
+	<div class="span1" align="right">
+	  <img src="./img/iconos/unidad.png" class="img-circle">
+	</div>
+	<div class="span10">
+	<blockquote>
+	  <p><?echo $UNIDAD['Uni']['nombre'][0]?></p>
+	  <p class="lsmall"><? echo $UNIDAD['Uni']['descripcion'][0]?></p>
+	</blockquote>
+	</div>
       </div>
+      
+      <!--RESULTADOS PARA LA SECCION DE COMPETENCIAS-->
+      <br>
+      <p class="lead"><small>Evaluación de competencias</small></p>
+      <p class="lsmall muted"> Resultados obtenidos para la evaluación de competencias</p>
+      <br>
+      
+      <div class="row">
+      <div class="span1"></div>
+      <div class="span10"><br>
+	<!--Tabla para el gŕafico-->
+	<table class="tabla_factores" style="display: none">
+	  <caption>Gráfico de los resultados</caption>
+	  <thead>
+	    <tr>
+	      <td></td>
+	      <?php 
+		for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		  echo '<th scope="row">Proceso '.($i+1).'</th>';
+		}
+	      ?>
+	    </tr>
+	  </thead>
+	  <tbody>
+	      <tr>
+		  <th scope="col">Auto-evaluación</th>
+		  <?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]){
+			echo  '<td>'.($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      </tr>
+
+	      <tr>
+		<th scope="col">Evaluación del supervisor inmediato</th>
+		<?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i]){
+			echo  '<td>'.($LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i]*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      <td>100</td><!--Truco para definir el máximo-->
+	      </tr>
+
+	  </tbody>
+	</table><br><br>
+	<!--Fin de la tabla para el gŕafico-->
+      </div> <!--Cierre del span10-->
+      </div> <!--Cierre del row-->
+      
+      <!--Tabla de detalles-->
+      <table class="table table-hover" style="margin-left: 0;">
+	<thead>
+	  <tr>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Proceso de evaluación</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd">
+	      <small>Resultado auto-evaluación</small>
+	      <span style="font-size:8px; padding-left:8px; background:#62c462;">&nbsp;</span>
+	    </th>
+	    <th class='lsmallT' style='border-top: 1px solid #dddddd'>
+	      <small>Resultado evaluación</small>
+	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
+	    </th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	  </tr>
+	</thead>
+	
+	<tbody role="alert" aria-live="polite" aria-relevant="all">   
+
+	<?php
+	  for ($i=0;$i<$LISTA_PROCESOS['max_res'];$i++){
+	?>
+	  <tr>
+	    <!--Proceso-->
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación la unidad en detalle" href="./vPrueba.php?action=view_uni&id=<?echo $_GET['id']?>&proc=<? echo $LISTA_PROCESOS['Proc']['periodo'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
+	    <!--Resultado auto-evaluación-->
+	    <? if($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]*100)?>%</small></td>   
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado de las evaluaciones-->
+	    <? if($LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round($LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i]*100)?>%</small></td>
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado esperado-->
+	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	  </tr>
+	<? } //cierre del for
+	?>   
+	</tbody>
+      </table>
+      <!--Fin de la tabla de detalles-->
+      
+      <!--Estadísticas-->
+      <div class="well" style="padding:8px;">
+      
+	<p style="font-size:11px"><b>Promedio del histórico de porcentajes obtenidos por la unidad en la sección de competencias</b></p>
+	<a title="<?echo round($PROMEDIO_COMPETENCIAS*100).'% de la evaluación'?>" style="text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($PROMEDIO_COMPETENCIAS*100).'%'?>; height: 100%;">
+	    <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($PROMEDIO_COMPETENCIAS*100).'%'?></span>
+	  </div>
+	</div>
+	</a>
+	
+	<p style="font-size:11px"><b>Brecha promedio del resultado</b></p>
+	<a title="<?echo (100-round($PROMEDIO_COMPETENCIAS*100))?>% de la evaluación" style="text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo (100-round($PROMEDIO_COMPETENCIAS*100)).'%'?>; height: 100%;">
+	    <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo (100-round($PROMEDIO_COMPETENCIAS*100)).'%'?></span>
+	  </div>
+	</div>
+	</a>
+	
+      </div>
+      <!--FIN DE RESULTADOS PARA LA SECCION DE COMPETENCIAS--> 
+      
+      <!--RESULTADOS PARA LA SECCION DE FACTORES-->
+      <br>
+      <p class="lead"><small>Evaluación de factores</small></p>
+      <p class="lsmall muted"> Resultados obtenidos para la evaluación de factores desempeño</p>
+      <br>
+      
+      <div class="row">
+      <div class="span1"></div>
+      <div class="span10"><br>
+	<!--Tabla para el gŕafico-->
+	<table class="tabla_factores" style="display: none">
+	  <caption>Gráfico de los resultados</caption>
+	  <thead>
+	    <tr>
+	      <td></td>
+	      <?php 
+		for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		  echo '<th scope="row">Proceso '.($i+1).'</th>';
+		}
+	      ?>
+	    </tr>
+	  </thead>
+	  <tbody>
+	      <tr>
+		  <th scope="col">Auto-evaluación</th>
+		  <?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]){
+			echo  '<td>'.($LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      </tr>
+
+	      <tr>
+		<th scope="col">Evaluación del supervisor inmediato</th>
+		<?php
+		    for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+		      if($LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i]!=0){
+			echo  '<td>'.($LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i]*100).'</td>';
+		      } else {
+			echo  '<td>0</td>';
+		      }
+		    }//cierra iteración
+		  ?>
+	      <td>100</td><!--Truco para definir el máximo-->
+	      </tr>
+
+	  </tbody>
+	</table><br><br>
+	<!--Fin de la tabla para el gŕafico-->
+      </div> <!--Cierre del span10-->
+      </div> <!--Cierre del row-->
+      
+      <!--Tabla de detalles-->
+      <table class="table table-hover" style="margin-left: 0;">
+	<thead>
+	  <tr>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Proceso de evaluación</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd">
+	      <small>Resultado auto-evaluación</small>
+	      <span style="font-size:8px; padding-left:8px; background:#62c462;">&nbsp;</span>
+	    </th>
+	    <th class='lsmallT' style='border-top: 1px solid #dddddd'>
+	      <small>Resultado evaluación</small>
+	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
+	    </th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	  </tr>
+	</thead>
+	
+	<tbody role="alert" aria-live="polite" aria-relevant="all">   
+
+	<?php
+	  for ($i=0;$i<$LISTA_PROCESOS['max_res'];$i++){
+	?>
+	  <tr class="<?php echo $color_tabla; ?>" >
+	    <!--Proceso de evaluación-->
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación de la unidad en detalle" href="./vPrueba.php?action=view_uni&id=<?echo $_GET['id']?>&proc=<? echo $LISTA_PROCESOS['Proc']['periodo'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
+	    <!--Resultado auto-evaluación-->
+	    <? if($LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round($LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]*100)?>%</small></td>   
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado de las evaluaciones-->
+	    <? if($LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i]){?>
+		<td class="center lsmallT" nowrap><small><? echo round($LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i]*100)?>%</small></td>
+	    <? } else {?>
+		<td class="center lsmallT" nowrap><small>La evaluación no fue realizada</small></td>   
+	    <? } ?>
+	    <!--Resultado esperado-->
+	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	  </tr>
+	<? } //cierre del for
+	?>   
+	</tbody>
+      </table>
+      <!--Fin de la tabla de detalles-->
+      
+      <!--Estadísticas-->
+      <div class="well" style="padding:8px;">
+      
+	<p style="font-size:11px"><b>Promedio del histórico de porcentajes obtenidos por la unidad en la sección de factores</b></p>
+	<a title="<?echo round($PROMEDIO_FACTORES*100).'% de la evaluación'?>" style="text-decoration: none;">
+	<div class="progress" style="height: 20px;">
+	  <div class="progress-bar bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round($PROMEDIO_FACTORES*100).'%'?>; height: 100%;">
+	    <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round($PROMEDIO_FACTORES*100).'%'?></span>
+	  </div>
+	</div>
+	</a>
+	
+      </div>
+      <!--FIN DE RESULTADOS PARA LA SECCION DE FACTORES-->
 <?
+    //--------------------------------------------------
+    //FIN DE LA MUESTRA DE RESULTADOS: UNIDADxHISTORICO
+    //--------------------------------------------------
+    break;
   }//cierre del switch
 } //cierre condicional (vista de resultados)
 ?>

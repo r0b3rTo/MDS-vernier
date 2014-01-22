@@ -368,6 +368,67 @@ function determinarPeriodo ($month, $year){
   return $periodo;
 }
 
+/*
+    calcularPuntaje. Determina el puntaje máximo y el puntaje obtenido de una evaluación
+    -------------------------------------------------------------------------------------
+    $id_encuesta - (integer) identificador de la encuesta correspondiente a la evaluación
+    $seccion - (string) sección de la evaluación a analizar
+    $token_ls - (string) token de Limesurvey de la persona encuestada
+*/
+function calcularPuntaje ($id_encuesta, $seccion, $token_ls){
+  $resultado= array('maximo','puntaje');
+  switch($seccion){
+    case 'competencia': 
+      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL";
+      $atts= array("id_pregunta", "respuesta");
+      $LISTA_COMPETENCIAS=obtenerDatos($sql, $conexion, $atts, "Comp");     
+      $resultado['maximo']=$LISTA_COMPETENCIAS['max_res']*3;//puntaje máximo en la sección de competencias
+      $resultado['puntaje']=0; //inicialización
+      for($j=0; $j<$LISTA_COMPETENCIAS['max_res']; $j++){
+	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_COMPETENCIAS['Comp']['id_pregunta'][$j]."' AND token_ls='".$token_ls."'";
+	$atts= array("respuesta");
+	$aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	$LISTA_COMPETENCIAS['Comp']['respuesta'][$j]=$aux['Aux']['respuesta'][0];
+	switch($LISTA_COMPETENCIAS['Comp']['respuesta'][$j]){
+	  case 'Siempre':
+	    $resultado['puntaje']+=3;
+	  break;
+	  case 'Casi siempre':
+	    $resultado['puntaje']+=2;
+	  break;
+	  case 'Pocas veces':
+	    $resultado['puntaje']+=1;
+	  break;
+	} //Fin del switch
+      }//Cierre del ciclo sobre las preguntas de competencias
+      break; //Fin del case (competencia)
+    case 'factor':
+      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL";
+      $atts= array("id_pregunta", "respuesta");
+      $LISTA_FACTORES=obtenerDatos($sql, $conexion, $atts, "Fac");     
+      $resultado['maximo']=$LISTA_FACTORES['max_res']*3;//puntaje máximo en la sección de factores
+      $resultado['puntaje']=0; //inicialización
+      for($j=0; $j<$LISTA_FACTORES['max_res']; $j++){
+	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_FACTORES['Fac']['id_pregunta'][$j]."' AND token_ls='".$token_ls."'";
+	$atts= array("respuesta");
+	$aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	$LISTA_FACTORES['Fac']['respuesta'][$j]=$aux['Aux']['respuesta'][0];
+	switch($LISTA_FACTORES['Fac']['respuesta'][$j]){
+	  case 'Excelente':
+	    $resultado['puntaje']+=3;
+	  break;
+	  case 'Sobre lo esperado':
+	    $resultado['puntaje']+=2;
+	  break;
+	  case 'En lo esperado':
+	    $resultado['puntaje']+=1;
+	  break;
+	} //Fin del switch
+      }//Cierre del ciclo sobre las preguntas de factores
+      break; //Fin del case (competencia)
+  }
+  return $resultado;
+}
 
 /*
 function handleError($errno, $errstr, $errfile, $errline, array $errcontext)

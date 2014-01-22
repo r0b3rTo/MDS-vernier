@@ -38,8 +38,8 @@
       }
       
       //Obtención del ID para: encuesta, usuario evaluador, cargo evaluado, unidad asociada
-      $sql="SELECT id_encuesta, id_evaluado, id_car, id_unidad FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls_evaluado."'";
-      $atts = array("id_encuesta", "id_evaluado", "id_car", "id_unidad");
+      $sql="SELECT id_encuesta, id_evaluado, id_car, id_unidad, periodo FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls_evaluado."'";
+      $atts = array("id_encuesta", "id_evaluado", "id_car", "id_unidad", "periodo");
       $resultado= obtenerDatos($sql, $conexion, $atts, "Enc"); 
      
       $id_evaluado=$resultado['Enc']['id_evaluado'][0];//ID del usuario evaluado
@@ -65,6 +65,7 @@
       $UNIDAD=$aux['Org']['nombre'][0]; //Nombre de la unidad
       
       $id_encuesta=$resultado['Enc']['id_encuesta'][0];//ID de la encuesta para el token del usuario
+      $id_proceso=$resultado['Enc']['periodo'][0];//ID del proceso de evaluación correspondiente al token del usuario
       
       //Obtención de las preguntas de la encuesta
       $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
@@ -94,7 +95,7 @@
       
       
       //Obtención del ID y token de cada evaluador
-      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado!='En proceso' AND estado!='Pendiente' AND id_evaluado='".$id_evaluado."'";
+      $sql="SELECT id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE periodo='".$id_proceso."' AND id_encuesta='".$id_encuesta."' AND tipo='evaluador' AND estado!='En proceso' AND estado!='Pendiente' AND id_evaluado='".$id_evaluado."'";
       $atts = array("id_encuestado", "token_ls", "nombre", "re_competencia", "re_factor");
       $LISTA_EVALUADORES=obtenerDatos($sql, $conexion, $atts, "Eva");
       $PROMEDIO_EVALUADORES=array("re_competencia", "re_factor");//Arreglo donde se lleva la suma de los resultados de los evaluadores

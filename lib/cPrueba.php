@@ -236,8 +236,103 @@
 	//----------------------------------------
 	case 'hist_per':
 	  
-	  #...code
+	  //Determinar datos de la persona seleccionada
+	  $sql="SELECT nombre, apellido, cedula FROM PERSONA WHERE id='".$_GET['id']."'";
+	  $atts= array("nombre", "apellido", "cedula");
+	  $aux=obtenerDatos($sql, $conexion, $atts, "Nom");
+	  $NOMBRE=$aux['Nom']['nombre'][0].' '.$aux['Nom']['apellido'][0];
+	  $CEDULA=$aux['Nom']['cedula'][0];
 	  
+	  //Determinar datos del cargo seleccionado
+	  $sql="SELECT nombre FROM CARGO WHERE id='".$_GET['car']."'";
+	  $atts= array("nombre");
+	  $aux_1=obtenerDatos($sql, $conexion, $atts, "Car");
+	  $sql="SELECT fecha_ini, fecha_fin FROM PERSONA_CARGO WHERE id_car='".$_GET['car']."' AND id_per='".$_GET['id']."'";
+	  $atts= array("fecha_ini", "fecha_fin");
+	  $aux_2=obtenerDatos($sql, $conexion, $atts, "Fech");
+	  $CARGO['nombre']=$aux_1['Car']['nombre'][0];
+	  $CARGO['fecha_ini']=$aux_2['Fech']['fecha_ini'][0];
+	  $CARGO['fecha_fin']=$aux_2['Fech']['fecha_fin'][0];
+	  
+	  //Obtener datos de las procesos en los que ha participado la persona para el cargo seleccionado
+	  $sql="SELECT id_encuesta, token_ls, estado, id_unidad, periodo FROM PERSONA_ENCUESTA WHERE id_evaluado='".$_GET['id']."' AND id_car='".$_GET['car']."' AND tipo='autoevaluacion'";
+	  $atts= array("id_encuesta", "token_ls", "estado", "nombre", "id_unidad", "periodo");
+	  $LISTA_PROCESOS=obtenerDatos($sql, $conexion, $atts, "Proc");
+	  
+	  //Obtener nombres de los procesos
+	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+	    $sql="SELECT periodo FROM EVALUACION WHERE id='".$LISTA_PROCESOS['Proc']['periodo'][$i]."'";
+	    $atts= array("periodo");
+	    $aux=obtenerDatos($sql, $conexion, $atts, "Per");
+	    $LISTA_PROCESOS['Proc']['nombre'][$i]=$aux['Per']['periodo'][0];
+	  }
+	  
+	  //Determinar nombre de la unidad a la que está adscrita el trabajador
+	  $sql="SELECT nombre FROM ORGANIZACION WHERE id='".$LISTA_PROCESOS['Proc']['id_unidad'][0]."'";
+	  $atts=array("nombre");
+	  $aux= obtenerDatos($sql, $conexion, $atts, "Org");
+	  $UNIDAD=$aux['Org']['nombre'][0]; //Nombre de la unidad
+	  
+	  //Iteración sobre las evaluaciones por proceso
+	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+	  
+	    //--------------------------------------------------------------------
+	    //CALCULO DE RESULTADOS PARA LA AUTOEVALUACIÓN DEL TRABAJADOR EVALUADO
+	    //--------------------------------------------------------------------
+	    
+	    //Cálculo de resultados para la sección de competencias      
+	    $resultado= calcularPuntaje($LISTA_PROCESOS['Proc']['id_encuesta'][$i], 'competencia', $LISTA_PROCESOS['Proc']['token_ls'][$i]);
+	    $LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['maximo'][$i]=$resultado['maximo'];//puntaje máximo en la sección de competencias
+	    $LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['puntaje'][$i]=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+
+	    //Cálculo de resultados para la sección de factores
+	    $resultado= calcularPuntaje($LISTA_PROCESOS['Proc']['id_encuesta'][$i], 'factor', $LISTA_PROCESOS['Proc']['token_ls'][$i]);
+	    $LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['maximo'][$i]=$resultado['maximo'];//puntaje máximo en la sección de factores
+	    $LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['puntaje'][$i]=$resultado['puntaje'];//puntaje obtenido en la sección de factores
+	    
+	    //----------------------------------------------------------
+	    //CALCULO DE RESULTADOS PARA LAS EVALUACIONES DEL TRABAJADOR
+	    //----------------------------------------------------------
+	    
+	    //Obtener datos de las evaluaciones de los supervisores inmediatos del trabajador evaluado
+	    $sql="SELECT id_encuesta, token_ls, estado FROM PERSONA_ENCUESTA WHERE id_evaluado='".$_GET['id']."' AND periodo='".$LISTA_PROCESOS['Proc']['periodo'][$i]."' AND tipo='evaluador'";
+	    $atts= array("id_encuesta", "token_ls", "estado");
+	    $LISTA_EVALUACIONES=obtenerDatos($sql, $conexion, $atts, "Eva");
+	    
+	    $numero_evaluadores=0;
+	    $competencias_total=0;
+	    $factores_total=0;
+	    for($j=0; $j<$LISTA_EVALUACIONES['max_res']; $j++){
+	      
+	      if($LISTA_EVALUACIONES['Eva']['estado'][$j]!='Pendiente' && $LISTA_EVALUACIONES['Eva']['estado'][$j]!='En proceso'){
+		//Cálculo de resultados para la sección de competencias      
+		$resultado= calcularPuntaje($LISTA_EVALUACIONES['Eva']['id_encuesta'][$j], 'competencia', $LISTA_EVALUACIONES['Eva']['token_ls'][$j]);
+		$competencias_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		//Cálculo de resultados para la sección de factores
+		$resultado= calcularPuntaje($LISTA_EVALUACIONES['Eva']['id_encuesta'][$j], 'factor', $LISTA_EVALUACIONES['Eva']['token_ls'][$j]);
+		$factores_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		$numero_evaluadores++;
+	      } //Fin del condicional (evaluación finalizada)
+	      
+	    }//Fin del ciclo sobre evaluaciones de los supervisores inmediatos
+	    
+	    $LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]=$competencias_total/$numero_evaluadores;
+	    $LISTA_PROCESOS['Proc']['evaluacion']['factores']['puntaje'][$i]=$factores_total/$numero_evaluadores;
+	    
+	  }//Fin de la iteración (procesos)
+	  
+	  $PROMEDIO_COMPETENCIAS=0;
+	  $PROMEDIO_FACTORES=0;
+	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+	    if($LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]){
+	      $PROMEDIO_COMPETENCIAS+=$LISTA_PROCESOS['Proc']['evaluacion']['competencias']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['competencias']['maximo'][$i];
+	      $PROMEDIO_FACTORES+=$LISTA_PROCESOS['Proc']['evaluacion']['factores']['puntaje'][$i]/$LISTA_PROCESOS['Proc']['autoevaluacion']['factores']['maximo'][$i];
+	      $trabajadores_evaluados++;
+	    }
+	  }
+	  $PROMEDIO_COMPETENCIAS=$PROMEDIO_COMPETENCIAS/$trabajadores_evaluados;
+	  $PROMEDIO_FACTORES=$PROMEDIO_FACTORES/$trabajadores_evaluados;
+
 	break;
 	//-----------------------------------------------
 	//-----------------------------------------------
@@ -262,12 +357,11 @@
 	  $atts= array("periodo");
 	  $PROCESO=obtenerDatos($sql, $conexion, $atts, "Proc");
 	  
-	  
 	  //Obtener datos de las evaluaciones de la unidad para el proceso seleccionado
 	  $sql="SELECT id_encuesta, id_evaluado, token_ls, estado FROM PERSONA_ENCUESTA WHERE id_unidad='".$_GET['id']."' AND periodo='".$_GET['proc']."' AND tipo='autoevaluacion'";
 	  $atts= array("id_encuesta", "id_evaluado", "token_ls", "estado", "nombre");
 	  $LISTA_EVALUADOS=obtenerDatos($sql, $conexion, $atts, "Eva");
-	  	  
+  
 	  //Obtener nombres de los evaluados
 	  for($i=0; $i<$LISTA_EVALUADOS['max_res']; $i++){
 	    $sql="SELECT nombre, apellido FROM PERSONA WHERE id='".$LISTA_EVALUADOS['Eva']['id_evaluado'][$i]."'";
@@ -275,97 +369,28 @@
 	    $aux=obtenerDatos($sql, $conexion, $atts, "Nom");
 	    $LISTA_EVALUADOS['Eva']['nombre'][$i]=$aux['Nom']['nombre'][0].' '.$aux['Nom']['apellido'][0];
 	  }
-	  
-	  
+
 	  //Obtener los resultados para cada evaluado
 	  for($i=0; $i<$LISTA_EVALUADOS['max_res']; $i++){
 	  
-	      //--------------------------------------------------------------------
-	      //CALCULO DE RESULTADOS PARA LA AUTOEVALUACIÓN DEL TRABAJADOR EVALUADO
-	      //--------------------------------------------------------------------
-	      
-	      //-----------------------------------------------------
-	      //CALCULO DE RESULTADOS PARA LA SECCIÓN DE COMPETENCIAS
-	      //-----------------------------------------------------
-	      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$LISTA_EVALUADOS['Eva']['id_encuesta'][$i]."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL";
-	      $atts= array("id_pregunta", "respuesta");
-	      $LISTA_COMPETENCIAS=obtenerDatos($sql, $conexion, $atts, "Comp");
-	      
-	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['maximo'][$i]=$LISTA_COMPETENCIAS['max_res']*3;//puntaje máximo en la sección de competencias
-	      
-	      $puntaje=0; //Inicialización
-	      if($LISTA_EVALUADOS['Eva']['estado'][$i]!='Pendiente' && $LISTA_EVALUADOS['Eva']['estado'][$i]!='En proceso') {
-		
-		for($j=0; $j<$LISTA_COMPETENCIAS['max_res']; $j++){
+	    //--------------------------------------------------------------------
+	    //CALCULO DE RESULTADOS PARA LA AUTOEVALUACIÓN DEL TRABAJADOR EVALUADO
+	    //--------------------------------------------------------------------
+	    
+	    //Cálculo de resultados para la sección de competencias      
+	    $resultado= calcularPuntaje($LISTA_EVALUADOS['Eva']['id_encuesta'][$i], 'competencia', $LISTA_EVALUADOS['Eva']['token_ls'][$i]);
+	    $LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['maximo'][$i]=$resultado['maximo'];//puntaje máximo en la sección de competencias
+	    $LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$i]=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
 
-		  $sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_COMPETENCIAS['Comp']['id_pregunta'][$j]."' AND token_ls='".$LISTA_EVALUADOS['Eva']['token_ls'][$i]."'";
-		  $atts= array("respuesta");
-		  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-		  $LISTA_COMPETENCIAS['Comp']['respuesta'][$j]=$aux['Aux']['respuesta'][0];
-		  
-		  
-		   switch($LISTA_COMPETENCIAS['Comp']['respuesta'][$j]){
-		    case 'Siempre':
-		      $puntaje+=3;
-		    break;
-		    case 'Casi siempre':
-		      $puntaje+=2;
-		    break;
-		    case 'Pocas veces':
-		      $puntaje+=1;
-		    break;
-		  } //Fin del switch
-		  
-		}//Cierre del ciclo sobre las preguntas de competencias
-	      }//Fin del condicional (evaluación completada)
-	      
-	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$i]=$puntaje;
-	      //---------------------------
-	      //FIN RESULTADOS COMPETENCIAS
-	      //---------------------------
-	      
-	      //-------------------------------------------------
-	      //CALCULO DE RESULTADOS PARA LA SECCIÓN DE FACTORES
-	      //-------------------------------------------------
-	      
-	      //Respuestas para la sección de factores
-	      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$LISTA_EVALUADOS['Eva']['id_encuesta'][$i]."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL";
-	      $atts= array("id_pregunta", "respuesta");
-	      $LISTA_FACTORES=obtenerDatos($sql, $conexion, $atts, "Fac");
-	
-	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$i]=$LISTA_FACTORES['max_res']*3;//puntaje máximo en la sección de factores
-
-	      
-	      if($LISTA_EVALUADOS['Eva']['estado'][$i]!='Pendiente' && $LISTA_EVALUADOS['Eva']['estado'][$i]!='En proceso') {
-		
-		$puntaje=0; //Inicialización
-		for($j=0; $j<$LISTA_FACTORES['max_res']; $j++){
-		
-		  $sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_FACTORES['Fac']['id_pregunta'][$j]."' AND token_ls='".$LISTA_EVALUADOS['Eva']['token_ls'][$i]."'";
-		  $atts= array("respuesta");
-		  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-		  $LISTA_FACTORES['Fac']['respuesta'][$j]=$aux['Aux']['respuesta'][0];
-		  
-		   switch($LISTA_FACTORES['Fac']['respuesta'][$j]){
-		    case 'Excelente':
-		      $puntaje+=3;
-		    break;
-		    case 'Sobre lo esperado':
-		      $puntaje+=2;
-		    break;
-		    case 'En lo esperado':
-		      $puntaje+=1;
-		    break;
-		  } //Fin del switch
-		  
-		}//Cierre del ciclo sobre las preguntas de competencias
-		
-	      }//Fin del condicional (evaluación completada)
-	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$i]=$puntaje;
-	      //-----------------------
-	      //FIN RESULTADOS FACTORES
-	      //-----------------------
-	      
+	    //Cálculo de resultados para la sección de factores
+	    $resultado= calcularPuntaje($LISTA_EVALUADOS['Eva']['id_encuesta'][$i], 'factor', $LISTA_EVALUADOS['Eva']['token_ls'][$i]);
+	    $LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$i]=$resultado['maximo'];//puntaje máximo en la sección de factores
+	    $LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$i]=$resultado['puntaje'];//puntaje obtenido en la sección de factores
+	    
+	    //----------------------------------------------------------
+	    //CALCULO DE RESULTADOS PARA LAS EVALUACIONES DEL TRABAJADOR
+	    //----------------------------------------------------------
+	    
 	    //Obtener datos de las evaluaciones de los supervisores inmediatos del trabajador evaluado
 	    $sql="SELECT id_encuesta, id_encuestado, token_ls, estado FROM PERSONA_ENCUESTA WHERE id_unidad='".$_GET['id'];
 	    $sql.="' AND periodo='".$_GET['proc']."' AND tipo='evaluador' AND id_evaluado='".$LISTA_EVALUADOS['Eva']['id_evaluado'][$i]."'";
@@ -379,70 +404,20 @@
 	    for($j=0; $j<$LISTA_EVALUADORES['max_res']; $j++){
 	      
 	      if($LISTA_EVALUADORES['Eva']['estado'][$j]!='Pendiente' && $LISTA_EVALUADORES['Eva']['estado'][$j]!='En proceso'){
-		
-		//CALCULO DE RESULTADOS PARA LA SECCIÓN DE COMPETENCIAS
-		$sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$LISTA_EVALUADORES['Eva']['id_encuesta'][$j]."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL";
-		$atts= array("id_pregunta");
-		$LISTA_COMPETENCIAS=obtenerDatos($sql, $conexion, $atts, "Comp");
-		
-		$puntaje=0; //Inicialización
-		for($k=0; $k<$LISTA_COMPETENCIAS['max_res']; $k++){
-		  $sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_COMPETENCIAS['Comp']['id_pregunta'][$k]."' AND token_ls='".$LISTA_EVALUADORES['Eva']['token_ls'][$j]."'";
-		  $atts= array("respuesta");
-		  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-		  
-		  switch($aux['Aux']['respuesta'][0]){
-		    case 'Siempre':
-		      $puntaje+=3;
-		    break;
-		    case 'Casi siempre':
-		      $puntaje+=2;
-		    break;
-		    case 'Pocas veces':
-		      $puntaje+=1;
-		    break;
-		  } //Fin del switch 
-		}//Cierre del ciclo sobre las preguntas de competencias
-		
-		$competencias_total+=$puntaje;
-		//FIN RESULTADOS COMPETENCIAS
-		
-		//CALCULO DE RESULTADOS PARA LA SECCIÓN DE FACTORES
-		$sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$LISTA_EVALUADORES['Eva']['id_encuesta'][$j]."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL";
-		$atts= array("id_pregunta");
-		$LISTA_FACTORES=obtenerDatos($sql, $conexion, $atts, "Fac");
-		
-		$puntaje=0; //Inicialización
-		for($k=0; $k<$LISTA_FACTORES['max_res']; $k++){
-		  $sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_FACTORES['Fac']['id_pregunta'][$k]."' AND token_ls='".$LISTA_EVALUADORES['Eva']['token_ls'][$j]."'";
-		  $atts= array("respuesta");
-		  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-		  switch($aux['Aux']['respuesta'][0]){
-		    case 'Excelente':
-		      $puntaje+=3;
-		    break;
-		    case 'Sobre lo esperado':
-		      $puntaje+=2;
-		    break;
-		    case 'En lo esperado':
-		      $puntaje+=1;
-		    break;
-		  } //Fin del switch 
-		}//Cierre del ciclo sobre las preguntas de competencias
-		
-		$factores_total+=$puntaje;
-		//FIN RESULTADOS FACTORES
-		
-	      $numero_evaluadores++;
+		//Cálculo de resultados para la sección de competencias      
+		$resultado= calcularPuntaje($LISTA_EVALUADORES['Eva']['id_encuesta'][$j], 'competencia', $LISTA_EVALUADORES['Eva']['token_ls'][$j]);
+		$competencias_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		//Cálculo de resultados para la sección de factores
+		$resultado= calcularPuntaje($LISTA_EVALUADORES['Eva']['id_encuesta'][$j], 'factor', $LISTA_EVALUADORES['Eva']['token_ls'][$j]);
+		$factores_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		$numero_evaluadores++;
 	      } //Fin del condicional (evaluación finalizada)
 	      
 	    }//Fin del ciclo sobre supervisores inmediatos
 	 
-	    $competencias_promedio=$competencias_total/$numero_evaluadores;
-	    $factores_promedio=$factores_total/$numero_evaluadores;
+	    $LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$i]=$competencias_total/$numero_evaluadores;
+	    $LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$i]=$factores_total/$numero_evaluadores;
 	    
-	    $LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$i]=$competencias_promedio;
-	    $LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$i]=$factores_promedio;
 	  }//Fin del ciclo sobre los evaluados 
 	  
 	  $PROMEDIO_COMPETENCIAS=0;
@@ -470,9 +445,115 @@
 	//---------------------------------------
 	//---------------------------------------
 	case 'hist_uni':
-	
-	  #...code
-	
+		  
+	  //Determinar datos de la unidad seleccionada
+	  $sql="SELECT nombre, descripcion FROM ORGANIZACION WHERE id='".$_GET['id']."'";
+	  $atts= array("nombre", "descripcion");
+	  $UNIDAD=obtenerDatos($sql, $conexion, $atts, "Uni");
+	  
+	  //Obtener datos de las procesos en los que ha sido evaluada la unidad seleccionada
+	  $sql="SELECT DISTINCT periodo FROM PERSONA_ENCUESTA WHERE id_unidad='".$_GET['id']."'";
+	  $atts= array("periodo", "nombre");
+	  $LISTA_PROCESOS=obtenerDatos($sql, $conexion, $atts, "Proc");
+	  
+	  //Obtener nombres de los procesos
+	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+	    $sql="SELECT periodo FROM EVALUACION WHERE id='".$LISTA_PROCESOS['Proc']['periodo'][$i]."'";
+	    $atts= array("periodo");
+	    $aux=obtenerDatos($sql, $conexion, $atts, "Per");
+	    $LISTA_PROCESOS['Proc']['nombre'][$i]=$aux['Per']['periodo'][0];
+	  }
+	  
+	  //Iteración sobre la lista de procesos de evaluación
+	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+	  
+	    //Obtener datos de los evaluados de la unidad para el proceso de la iteración
+	    $sql="SELECT id_encuesta, id_evaluado, token_ls, estado FROM PERSONA_ENCUESTA WHERE id_unidad='".$_GET['id']."' AND periodo='".$LISTA_PROCESOS['Proc']['periodo'][$i]."' AND tipo='autoevaluacion'";
+	    $atts= array("id_encuesta", "id_evaluado", "token_ls", "estado", "nombre");
+	    $LISTA_EVALUADOS=obtenerDatos($sql, $conexion, $atts, "Eva");
+	    
+	    //Obtener los resultados para cada evaluado
+	    for($j=0; $j<$LISTA_EVALUADOS['max_res']; $j++){
+	   
+	      //--------------------------------------------------------------------
+	      //CALCULO DE RESULTADOS PARA LA AUTOEVALUACIÓN DEL TRABAJADOR EVALUADO
+	      //--------------------------------------------------------------------
+	      
+	      //Cálculo de resultados para la sección de competencias      
+	      $resultado= calcularPuntaje($LISTA_EVALUADOS['Eva']['id_encuesta'][$j], 'competencia', $LISTA_EVALUADOS['Eva']['token_ls'][$j]);
+	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['maximo'][$j]=$resultado['maximo'];//puntaje máximo en la sección de competencias
+	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$j]=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+
+	      //Cálculo de resultados para la sección de factores
+	      $resultado= calcularPuntaje($LISTA_EVALUADOS['Eva']['id_encuesta'][$j], 'factor', $LISTA_EVALUADOS['Eva']['token_ls'][$j]);
+	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$j]=$resultado['maximo'];//puntaje máximo en la sección de factores
+	      $LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$j]=$resultado['puntaje'];//puntaje obtenido en la sección de factores
+	      
+	      //----------------------------------------------------------
+	      //CALCULO DE RESULTADOS PARA LAS EVALUACIONES DEL TRABAJADOR
+	      //----------------------------------------------------------
+	      
+	      //Obtener datos de las evaluaciones de los supervisores inmediatos del trabajador evaluado
+	      $sql="SELECT id_encuesta, id_encuestado, token_ls, estado FROM PERSONA_ENCUESTA WHERE id_unidad='".$_GET['id'];
+	      $sql.="' AND periodo='".$LISTA_PROCESOS['Proc']['periodo'][$i]."' AND tipo='evaluador' AND id_evaluado='".$LISTA_EVALUADOS['Eva']['id_evaluado'][$j]."'";
+	      $atts= array("id_encuesta", "id_encuestado", "token_ls", "estado");
+	      $LISTA_EVALUADORES=obtenerDatos($sql, $conexion, $atts, "Eva");
+	      
+	      $numero_evaluadores=0;
+	      $competencias_total=0;
+	      $factores_total=0;	      
+	      for($k=0; $k<$LISTA_EVALUADORES['max_res']; $k++){
+		if($LISTA_EVALUADORES['Eva']['estado'][$k]!='Pendiente' && $LISTA_EVALUADORES['Eva']['estado'][$k]!='En proceso'){
+		  //Cálculo de resultados para la sección de competencias      
+		  $resultado= calcularPuntaje($LISTA_EVALUADORES['Eva']['id_encuesta'][$k], 'competencia', $LISTA_EVALUADORES['Eva']['token_ls'][$k]);
+		  $competencias_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		  //Cálculo de resultados para la sección de factores
+		  $resultado= calcularPuntaje($LISTA_EVALUADORES['Eva']['id_encuesta'][$k], 'factor', $LISTA_EVALUADORES['Eva']['token_ls'][$k]);
+		  $factores_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		  $numero_evaluadores++;
+		} //Fin del condicional (evaluación finalizada)
+		
+	      }//Fin del ciclo sobre supervisores inmediatos
+	      $LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$j]=$competencias_total/$numero_evaluadores;
+	      $LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$j]=$factores_total/$numero_evaluadores;
+	     
+	    }//Fin del ciclo sobre los evaluados
+	    	    
+	    $PROMEDIO_COMPETENCIAS_1=0; $PROMEDIO_FACTORES_1=0;
+	    $PROMEDIO_COMPETENCIAS_2=0; $PROMEDIO_FACTORES_2=0;
+	    $trabajadores_evaluados_1=0; $trabajadores_evaluados_2=0;
+	    for($j=0; $j<$LISTA_EVALUADOS['max_res']; $j++){
+
+	      if($LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$j]){
+		$PROMEDIO_COMPETENCIAS_1+=$LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['puntaje'][$j]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['maximo'][$j];
+		$PROMEDIO_FACTORES_1+=$LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['puntaje'][$j]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$j];
+		$trabajadores_evaluados_1++;
+	      }
+	      if($LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$j]){
+		$PROMEDIO_COMPETENCIAS_2+=$LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$j]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['competencias']['maximo'][$j];
+		$PROMEDIO_FACTORES_2+=$LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$j]/$LISTA_EVALUADOS['Eva']['autoevaluacion']['factores']['maximo'][$j];
+		$trabajadores_evaluados_2++;
+	      }
+	    }
+	    $LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]=$PROMEDIO_COMPETENCIAS_1/$trabajadores_evaluados_1;
+	    $LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]=$PROMEDIO_FACTORES_1/$trabajadores_evaluados_1;
+	    $LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i]=$PROMEDIO_COMPETENCIAS_2/$trabajadores_evaluados_2;
+	    $LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i]=$PROMEDIO_FACTORES_2/$trabajadores_evaluados_2;
+	    
+	  }//Fin de la iteración (procesos)
+	  
+	  $PROMEDIO_COMPETENCIAS=0;
+	  $PROMEDIO_FACTORES=0;
+	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){
+	    if($LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i]){
+	      $PROMEDIO_COMPETENCIAS+=$LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i];
+	      $PROMEDIO_FACTORES+=$LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i];
+	      $trabajadores_evaluados++;
+	    }
+	  }
+	  $PROMEDIO_COMPETENCIAS=$PROMEDIO_COMPETENCIAS/$trabajadores_evaluados;
+	  $PROMEDIO_FACTORES=$PROMEDIO_FACTORES/$trabajadores_evaluados;
+	  
 	break;
 	//----------------------------------------------
 	//----------------------------------------------
@@ -482,9 +563,6 @@
 	
       } //cierre del switch 
     } //cierre del condicional
-
-    
-   
 
     //Cierre conexión a la BD
     cerrarConexion($conexion);

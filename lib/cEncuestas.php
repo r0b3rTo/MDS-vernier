@@ -64,10 +64,6 @@
 	      $resultado_sql=ejecutarConsulta($sql,$conexion);
 	      break;
 	      
-	   case 'download':
-       
-         break;
-	      
 	    default:
 	      # code...
 	      break;
@@ -87,12 +83,7 @@
                 $_SESSION['MSJ'] = "La encuesta fue eliminada";
                 header("Location: ../vEncuestas.php?success"); 
                 break;
-                
-            case 'download':
-                $_SESSION['MSJ'] = "La encuesta fue descargada";
-                header("Location: ../vEncuestas.php?success"); 
-                break;
-                
+               
             default:
                 # code...
                 break;            

@@ -77,9 +77,9 @@ if (isset($_GET['action'])) {
 	    for($i=0; $i<count($resultado); $i++){
 	    
 	      if ($i==0){
-		$seccion="competencia";
+            $seccion="competencia";
 	      } else {
-		$seccion="factor";
+            $seccion="factor";
 	      }
 	  
 	      $group_id=intval($resultado[$i]['id']['gid']); //ID de la sección de preguntas

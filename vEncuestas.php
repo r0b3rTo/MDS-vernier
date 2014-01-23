@@ -76,12 +76,10 @@
       <td class="center lsmallT" nowrap><small><? 
 	if (($LISTA_ENCUESTA['Enc']['estado'][$i])=='f') {
 	  echo '<a href="?action=modificar&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i];echo '" title="Editar pesos de la encuesta"> <img src="./img/iconos/edit-16.png" style="margin-left:5px;"></a></a>';
-	  echo '<a href="lib/cEncuestas?action=delete&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i];echo '" title="Eliminar encuesta"><img src="./img/iconos/delete-16.png" style="margin-left:7px;"></a>';
-// 	  echo '<a href="lib/cEncuestas?action=download&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i];echo '" title="Descargar encuesta en PDF"><img src="./img/iconos/pdf-16.png" style="margin-left:9px;"></a>';
-	  echo '<a href="lib/tcpdf/examples/example_001.php" title="Descargar encuesta en PDF"><img src="./img/iconos/pdf-16.png" style="margin-left:9px;"></a>';
+	  echo '<a href="lib/cEncuestas?action=delete&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i]; echo '" title="Eliminar encuesta"><img src="./img/iconos/delete-16.png" style="margin-left:7px;"></a>';
+	  echo '<a href="lib/cDescargarEncuesta?id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i]; echo '&id_fam='; echo $LISTA_ENCUESTA['Enc']['id_fam'][$i]; echo '" title="Descargar encuesta en PDF"><img src="./img/iconos/pdf-16.png" style="margin-left:9px;"></a>';
 	  } else {
-// 	  echo '<a href="lib/cEncuestas?action=download&id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i];echo '" title="Descargar encuesta en PDF"><img src="./img/iconos/pdf-16.png" style="margin-left:5px;"></a>';
-	  echo '<a href="lib/tcpdf/examples/example_001.php" title="Descargar encuesta en PDF"><img src="./img/iconos/pdf-16.png" style="margin-left:5px;"></a>';
+	  echo '<a href="lib/cDescargarEncuesta?id_encuesta='; echo $LISTA_ENCUESTA['Enc']['id'][$i]; echo '&id_fam='; echo $LISTA_ENCUESTA['Enc']['id_fam'][$i]; echo '" title="Descargar encuesta en PDF"><img src="./img/iconos/pdf-16.png" style="margin-left:5px;"></a>';
 	  }
 	  ?></small></td>
     </tr>

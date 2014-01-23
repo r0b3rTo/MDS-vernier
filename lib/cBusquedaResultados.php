@@ -31,7 +31,7 @@
 		if ($_POST['per']==0) {
 		
 		  $_SESSION['MSJ']="Por favor seleccione una persona o unidad valida";
-		  header("Location: ../vPrueba.php?error");
+		  header("Location: ../vBusquedaResultados.php?error");
 		  
 		} else {
 		
@@ -43,9 +43,9 @@
 		  //La persona no tiene ningún cargo registrado
 		  if(!count($LISTA_CARGO['Car']['id_car'])){
 		    $_SESSION['MSJ']="La persona seleccionada no tiene un histórico de cargos registrado en el sistema";
-		    header("Location: ../vPrueba.php?error");
+		    header("Location: ../vBusquedaResultados.php?error");
 		  } else {
-		    header("Location: ../vPrueba.php?action=stats_persona&step=1&id=".$_POST['per']);
+		    header("Location: ../vBusquedaResultados.php?action=stats_persona&step=1&id=".$_POST['per']);
 		  }
 		  
 		}//Fin del condicional (persona válida)
@@ -60,10 +60,10 @@
 		$LISTA_ENCUESTA=obtenerDatos($sql, $conexion, $atts, "Enc");
 	    
 		if(count($LISTA_ENCUESTA['Enc']['periodo'])){
-		  header("Location: ../vPrueba.php?action=stats_persona&step=2&id=".$_GET['id'].'&car='.$_POST['car']);
+		  header("Location: ../vBusquedaResultados.php?action=stats_persona&step=2&id=".$_GET['id'].'&car='.$_POST['car']);
 		} else {
 		  $_SESSION['MSJ']="No se han registrado en el sistema resultados para la evaluación del cargo seleccionado";
-		  header("Location: ../vPrueba.php?error");
+		  header("Location: ../vBusquedaResultados.php?error");
 		}
 	      //Fin case input=1
 	      break;
@@ -84,7 +84,7 @@
 		
 		  //Escogió la opción de histórico de resultados
 		  //Mostrar vista de histórico de resultados
-		  header("Location: ../vPrueba.php?action=hist_per&id=".$_GET['id']."&car=".$_GET['car']."&proc=".$_POST['proc']);
+		  header("Location: ../vBusquedaResultados.php?action=hist_per&id=".$_GET['id']."&car=".$_GET['car']."&proc=".$_POST['proc']);
 		  
 		}	
 		
@@ -165,7 +165,7 @@
 	      
 		if ($_POST['uni']==0) {
 		  $_SESSION['MSJ']="Por favor seleccione una persona o unidad valida";
-		  header("Location: ../vPrueba.php?error");
+		  header("Location: ../vBusquedaResultados.php?error");
 		} else {
 		  //Determinar si la unidad ha sido evaluada
 		  $sql="SELECT DISTINCT periodo FROM PERSONA_ENCUESTA WHERE id_unidad='".$_POST['uni']."' AND estado!='Pendiente' AND estado!='En proceso'";
@@ -173,10 +173,10 @@
 		  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
 		
 		  if(count($aux['Aux']['periodo'])){
-		    header("Location: ../vPrueba.php?action=stats_unidad&step=1&id=".$_POST['uni']);
+		    header("Location: ../vBusquedaResultados.php?action=stats_unidad&step=1&id=".$_POST['uni']);
 		  } else {
 		    $_SESSION['MSJ']="No se han registrado en el sistema resultados para la evaluación de la unidad seleccionada";
-		    header("Location: ../vPrueba.php?error");
+		    header("Location: ../vBusquedaResultados.php?error");
 		  }
 		}
 	      //Fin case input=1
@@ -186,10 +186,10 @@
 	      
 		if($_POST['proc']){
 		  //Escogió un proceso de evaluación en particular
-		  header("Location: ../vPrueba.php?action=view_uni&id=".$_GET['id']."&proc=".$_POST['proc']);
+		  header("Location: ../vBusquedaResultados.php?action=view_uni&id=".$_GET['id']."&proc=".$_POST['proc']);
 		} else {
 		  //Mostrar vista de resultados
-		  header("Location: ../vPrueba.php?action=hist_uni&id=".$_GET['id']."&proc=".$_POST['proc']);
+		  header("Location: ../vBusquedaResultados.php?action=hist_uni&id=".$_GET['id']."&proc=".$_POST['proc']);
 		}
 		
 		

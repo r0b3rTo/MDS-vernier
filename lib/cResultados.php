@@ -279,8 +279,29 @@
             $resultado=ejecutarConsulta($sql, $conexion);
          }
       
-      }else{
-         //No realizar ninguna acción
+      }elseif($_GET['action'] == "notificarE"){
+      
+	 $mensaje=$_POST['msg'];
+	 $token_ls=$_GET['token_ls'];
+	 
+	 //Determinar nombre del evaluado
+	 $sql="SELECT id_evaluado FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls."'";
+	 $atts=array("id_evaluado");
+	 $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	 $id_evaluado=$aux['Aux']['id_evaluado'][0];
+	 $sql="SELECT nombre, apellido FROM PERSONA WHERE id='".$id_evaluado."'";
+	 $atts=array("nombre", "apellido");
+	 $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	 $nombre_evaluado=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	 
+	 //Agregar notificación al administrador
+	 $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per, mensaje) VALUES (";
+	 $sql.="'1', '$nombre_evaluado', '$token_ls', '$mensaje')";
+	 $resultado_sql=ejecutarConsulta($sql, $conexion);
+	 $_SESSION['MSJ'] = "Se ha notificado su caso a la DGCH, el personla iniciará el estudio del mismo. Podrá ser contactado próximamente";
+         header("Location: ../vListarEvaluaciones.php?warning");
+	 
+	 
       }
     }//Cierre del if de Validación de Resultados
     

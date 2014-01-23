@@ -14,7 +14,7 @@
       <div align="center">
 	
 	        <!--Tabla de notificaciones-->
-		<table class="table table-hover" style="margin-left: 0; max-width: 300px;">
+		<table class="table table-hover" style="margin-left: 0; max-width: 900px;">
 		  <thead>
 		    <tr>
 		      <th class="lsmallT"><small>Notificación</small></th>
@@ -29,9 +29,9 @@
 		  ?>
 		    <tr class="<?php echo $color_tabla; ?>" >
 		      <!--Notificación-->
-		      <td class="center lsmallT" nowrap><small><? echo $LISTA_NOTIFICACIONES['Not']['notificacion'][$i];?></small></td>  
+		      <td class="center lsmallT" ><small><? echo $LISTA_NOTIFICACIONES['Not']['notificacion'][$i];?></small></td>  
 		      <!--Mensaje-->
-		      <td class="center lsmallT" nowrap><small><? echo $LISTA_NOTIFICACIONES['Not']['mensaje'][$i];?></small></td>   
+		      <td class="center lsmallT" ><small><? echo $LISTA_NOTIFICACIONES['Not']['mensaje'][$i];?></small></td>   
 		      <!--Acción-->
 		      <td class="center lsmallT" nowrap>
 			<a href='./vResultados.php?token_ls=<? echo $LISTA_NOTIFICACIONES['Not']['token_ls_per'][$i];?>' title='Revisar evaluación' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>

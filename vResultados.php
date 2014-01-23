@@ -343,25 +343,38 @@
     <? if(isset($_GET['action']) ) {
 	switch($_GET['action']){
 	  case 'supervisar':?>
-	  <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
-	    <div class="row">
-		<div class="span3"></div>
-		<div class="span5">
-		  <p>
-		      <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>
-		      <a class="btn" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=rechazar">Rechazar</a>
-		  </p>
-		</div>
-	    </div>
+	  <div class="well" style="padding:8px; background-color: #fff; box-shadow:none" align="center">
+	    <br><small>Haga click en el botón <i>Validar</i> para aprobar la evaluación del supervisor inmediato o en el botón <i>Rechazar</i> para rechazar la misma</small><br><br>
+	    <p>
+		<a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>
+		<a class="btn" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=rechazar">Rechazar</a>
+	    </p><br> 
 	  </div>
 	  <? break;
 	  case 'revisarR': ?>
-	  <div class="well" style="padding:8px; background-color: #fff; border:none; box-shadow:none" align="center">
+	  <div class="well" style="padding:8px; background-color: #fff; box-shadow:none" align="center">
+	    <br>
 	    <p class="lsmall less">Actualmente la evaluación se encuentra rechazada, <i>haga click</i> en el siguiente botón si desea validarla ahora</p><br>
-	    <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>		  
+	    <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>	
+	    <br>
 	  </div>
 	  <? break;
-	}?>
+	  case 'revisarE': ?>
+	  <form id="newCar" class="form-horizontal" method="post" action="lib/cResultados.php?action=notificarE&token_ls=<?echo $_GET['token_ls']?>" >
+	    <div class="well" style="padding:8px; background-color: #fff; box-shadow:none" align="center">
+	      <br><small>Si no se encuentra conforme con los resultados de su evaluación explique sus razones en el siguiente recuadro y <i>haga click</i> en el botón <i>Notificar</i></small><br><br>
+	      <div class="control-group">
+		    <div class="input-prepend">
+			  <textarea class="input-xlarge" rows="6" id="msg" name="msg" placeholder="Justifique aquí..." style="width:500px"></textarea>
+		    </div>
+	      </div>
+	      <div class="well well-small" align="justify" style="max-width:500px">
+		<small class="muted"><img src="./img/iconos/help-16.png"> Al notificar su disconformidad con los resultados de su evaluación se iniciará el estudio de su caso por parte de la <i>Dirección de Gestión de Capital Humano</i>. Se recomienda explicar los motivos por los cuales no se encuentra conforme de forma clara y precisa para facilitar la gestión de su caso</small>
+	      </div>
+	      <button type="submit" class="btn btn-warning">Notificar</button><br><br>
+	    </div>
+	  </form>
+	<?}?>
    
       
       

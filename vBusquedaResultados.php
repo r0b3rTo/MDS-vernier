@@ -1,7 +1,7 @@
 <?php
     session_start();
-    $Legend = "Estadísticas de resultados";
-    include "lib/cPrueba.php";
+    $Legend = "Búsqueda avanzada de resultados";
+    include "lib/cBusquedaResultados.php";
     include "vHeader.php";
     extract($_GET);
     extract($_POST);
@@ -51,7 +51,7 @@
 <div class="well" align="center" style="background-color: #fff">
 
   <!--INICIO: Resultados por persona o por unidad-->
-  <br><p class="lsmall"> Por favor seleccione los criterios correspondientes a las estadísticas que desea visualizar. <i>Haga click</i> en el atributo de su interés y siga las instrucciones.</p><br>
+  <br><p class="lsmall"> Para realizar una búsqueda <i>haga click</i> en el tipo de resultados de su interés y siga las instrucciones.</p><br>
   <div class="btn-group">
 	<button type="button" class="btn btn-default <?if (isset($_GET['action']) && $_GET['action']=='stats_persona') echo 'active';?>" id="persona" onclick="showDiv('statsPersona')">Persona</button>
 	<button type="button" class="btn btn-default <?if (isset($_GET['action']) && $_GET['action']=='stats_unidad') echo 'active';?>" id="unidad" onclick="showDiv('statsUnidad')">Unidad</button>
@@ -60,7 +60,7 @@
   <!--BÚSQUEDA DE RESULTADOS POR PERSONA-->
   
   <!--PASO 1/3: Seleccionar el nombre de la persona-->
-  <form id="statsPersona" class="form-horizontal" method="post" style="display: none" action="lib/cPrueba.php?action=stats_persona&input=1" >
+  <form id="statsPersona" class="form-horizontal" method="post" style="display: none" action="lib/cBusquedaResultados.php?action=stats_persona&input=1" >
     <br><br>
     <div class="control-group well" style="width:300px">
       <span class="label label-primary">Paso 1/3</span><br><br>
@@ -84,7 +84,7 @@
   
   <!--PASO 2/3: Seleccionar el cargo de la persona-->
   <? if (isset($_GET['action']) && $_GET['action']=='stats_persona' && isset($_GET['step']) && $_GET['step']==1) {?>
-      <form class="form-horizontal" method="post" action="lib/cPrueba.php?action=stats_persona&input=2&id=<?echo $_GET['id'];?>">
+      <form class="form-horizontal" method="post" action="lib/cBusquedaResultados.php?action=stats_persona&input=2&id=<?echo $_GET['id'];?>">
 	<div class="control-group well" style="width:300px">
 	  <span class="label label-primary">Paso 2/3</span><br><br>
 	  <p class="lsmall"> Seleccione el cargo evaluado</p>
@@ -108,7 +108,7 @@
   
   <!--PASO 3/3: Seleccionar el proceso de evaluación-->
   <? if (isset($_GET['action']) && $_GET['action']=='stats_persona' && isset($_GET['step']) && $_GET['step']==2) { ?>
-      <form class="form-horizontal" method="post" action="lib/cPrueba.php?action=stats_persona&input=3&id=<?echo $_GET['id'];?>&car=<?echo $_GET['car'];?>">
+      <form class="form-horizontal" method="post" action="lib/cBusquedaResultados.php?action=stats_persona&input=3&id=<?echo $_GET['id'];?>&car=<?echo $_GET['car'];?>">
 	<div class="control-group well" style="width:350px">
 	  <span class="label label-primary">Paso 3/3</span><br><br>
 	  <p class="lsmall"> Seleccione el proceso de evaluación para el que desea visualizar los resultados</p>
@@ -118,7 +118,7 @@
 	    }?>
 	  </select><br><br>
 	  <p class="lsmall muted"><i>Atención: al seleccionar la opción 'Histórico' se mostrará una síntesis de los resultados de la persona en los procesos de evaluación en los que ha participado</i></p>
-	  <button type="submit" id="confirmButton" class="btn btn-default" >Ver estadísticas&nbsp;&nbsp;<span class="icon-signal"></span></button>
+	  <button type="submit" id="confirmButton" class="btn btn-default" >Ver resultados&nbsp;&nbsp;<span class="icon-signal"></span></button>
 	</div>
       </form>
   <? } ?>
@@ -128,7 +128,7 @@
   <!--BÚSQUEDA DE RESULTADOS POR UNIDAD-->
   
   <!--PASO 1/2: Seleccionar el nombre de la unidad-->
-  <form id="statsUnidad" class="form-horizontal" method="post" style="display: none" action="lib/cPrueba.php?action=stats_unidad&input=1">
+  <form id="statsUnidad" class="form-horizontal" method="post" style="display: none" action="lib/cBusquedaResultados.php?action=stats_unidad&input=1">
     <br><br>
     <div class="control-group well" style="width:300px">
       <span class="label label-primary">Paso 1/2</span><br><br>
@@ -152,7 +152,7 @@
   
   <!--PASO 2/2: Seleccionar el proceso de evaluación-->
   <? if (isset($_GET['action']) && $_GET['action']=='stats_unidad' && isset($_GET['step']) && $_GET['step']==1) {?>
-      <form class="form-horizontal" method="post" action="lib/cPrueba.php?action=stats_unidad&input=2&id=<?echo $_GET['id'];?>">
+      <form class="form-horizontal" method="post" action="lib/cBusquedaResultados.php?action=stats_unidad&input=2&id=<?echo $_GET['id'];?>">
 	<div class="control-group well" style="width:350px">
 	  <span class="label label-primary">Paso 2/2</span><br><br>
 	  <p class="lsmall"> Seleccione el proceso de evaluación para el que desea visualizar los resultados</p>
@@ -162,7 +162,7 @@
 	    }?>
 	  </select><br><br>
 	  <p class="lsmall muted"><i>Atención: al seleccionar la opción 'Histórico' se mostrará una síntesis de los resultados de la persona en los procesos de evaluación en los que ha participado</i></p>
-	  <button type="submit" id="confirmButton" class="btn btn-default" >Ver estadísticas&nbsp;&nbsp;<span class="icon-signal"></span></button>
+	  <button type="submit" id="confirmButton" class="btn btn-default" >Ver resultados&nbsp;&nbsp;<span class="icon-signal"></span></button>
 	</div>
       </form>
   <? } ?>
@@ -816,7 +816,7 @@ if(isset($_GET['action'])) {
 	?>
 	  <tr>
 	    <!--Proceso-->
-	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación la unidad en detalle" href="./vPrueba.php?action=view_uni&id=<?echo $_GET['id']?>&proc=<? echo $LISTA_PROCESOS['Proc']['periodo'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación la unidad en detalle" href="./vBusquedaResultados.php?action=view_uni&id=<?echo $_GET['id']?>&proc=<? echo $LISTA_PROCESOS['Proc']['periodo'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
 	    <!--Resultado auto-evaluación-->
 	    <? if($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]){?>
 		<td class="center lsmallT" nowrap><small><? echo round($LISTA_PROCESOS['Proc']['autoevaluacion']['competencias'][$i]*100)?>%</small></td>   
@@ -942,7 +942,7 @@ if(isset($_GET['action'])) {
 	?>
 	  <tr class="<?php echo $color_tabla; ?>" >
 	    <!--Proceso de evaluación-->
-	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación de la unidad en detalle" href="./vPrueba.php?action=view_uni&id=<?echo $_GET['id']?>&proc=<? echo $LISTA_PROCESOS['Proc']['periodo'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
+	    <td class="center lsmallT"><small><a title="Haga click para ver los resultados de la evaluación de la unidad en detalle" href="./vBusquedaResultados.php?action=view_uni&id=<?echo $_GET['id']?>&proc=<? echo $LISTA_PROCESOS['Proc']['periodo'][$i]?>"><? echo $LISTA_PROCESOS['Proc']['nombre'][$i]." (Proceso ".($i+1).")";?></a></small></td>  
 	    <!--Resultado auto-evaluación-->
 	    <? if($LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]){?>
 		<td class="center lsmallT" nowrap><small><? echo round($LISTA_PROCESOS['Proc']['autoevaluacion']['factores'][$i]*100)?>%</small></td>   

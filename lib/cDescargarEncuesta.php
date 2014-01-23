@@ -26,7 +26,7 @@
         // Add new line
         $this->Ln('', false);
         // Title
-        $this->Cell(0, 30, 'Sistema Vernier', 0, 1, 'C', false, '', 0, false, 'T', 'C');
+        $this->Cell(0, 25, 'Sistema Vernier', 0, 1, 'C', false, '', 0, false, 'T', 'C');
     }
 
     // Page footer
@@ -145,12 +145,38 @@
          
          $pdf->SetFont('helvetica', '', 10);         
          
-         for($j=0; $j<$LISTA_SUBPREGUNTAS[max_res]; $j++){
-            $htmlSubPregunta =$LISTA_SUBPREGUNTAS['Preg']['titulo'][$j];
-            $pdf->writeHTML($htmlSubPregunta, true, false, true, true, '');
-            $pdf->Ln(2, false);
-         }
+         if($LISTA_SUBPREGUNTAS[max_res]>0){
+            $tbl ='
+            <table border="1" cellpadding="2" cellspacing="2" align="center">
+               <tr nobr="true">
+                  <th colspan="5"></th>
+               </tr>
+               <tr nobr="true">
+                  <td></td>
+                  <td>Nunca</td>
+                  <td>Pocas veces</td>
+                  <td>Casi siempre</td>
+                  <td>Siempre</td>
+               </tr>';
          
+            for($j=0; $j<$LISTA_SUBPREGUNTAS[max_res]; $j++){
+               $htmlSubPregunta =$LISTA_SUBPREGUNTAS['Preg']['titulo'][$j];
+               
+               $tbl.='
+                  <tr nobr="true">
+                     <td>'.$LISTA_SUBPREGUNTAS['Preg']['titulo'][$j].'</td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                     <td></td>
+                  </tr>';
+            }
+            
+            $tbl.='</table>';
+            
+            $pdf->writeHTML($tbl, true, false, false, true, '');
+         
+         }
       }
       
       

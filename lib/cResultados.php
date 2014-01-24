@@ -235,74 +235,82 @@
       $atts=array("periodo", "id_encuesta", "id_evaluado", "id_encuestado","token_ls");
       $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
     
-      if($_GET['action'] == "validar"){
-    
-         if ($aux['max_res']!==0) {
-	    
-	    //Insertar en tabla de supervisaciones
-	    $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
-	    $sql.="'$id_sup', '$token_ls', 'TRUE', '$fecha', '$ip')";
-	    $resultado_sql=ejecutarConsulta($sql, $conexion);
-	    
-	    //Actualizar estado
-            $sql = "UPDATE PERSONA_ENCUESTA SET ".
-            "estado='Aprobada' ".
-            "WHERE token_ls='$_GET[token_ls]'";
-            $resultado=ejecutarConsulta($sql, $conexion);
-            
-         }
-         
-      } elseif($_GET['action'] == "rechazar"){
+      switch($_GET['action']){
+	case 'validar':
+	  if ($aux['max_res']) {
+	      //Insertar en tabla de supervisaciones
+	      $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
+	      $sql.="'$id_sup', '$token_ls', 'TRUE', '$fecha', '$ip')";
+	      $resultado_sql=ejecutarConsulta($sql, $conexion);
+	      //Actualizar estado
+	      $sql = "UPDATE PERSONA_ENCUESTA SET ".
+	      "estado='Aprobada' ".
+	      "WHERE token_ls='$_GET[token_ls]'";
+	      $resultado=ejecutarConsulta($sql, $conexion);
+	  }
+	  break;
+         case 'rechazar':
+	  if ($aux['max_res']){
+	      //Insertar en tabla de supervisaciones
+	      $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
+	      $sql.="'$id_sup', '$token_ls', 'FALSE', '$fecha', '$ip')";
+	      $resultado_sql=ejecutarConsulta($sql, $conexion);
+	      //Determinar nombre del supervisor jerárquico
+	      $sql="SELECT nombre, apellido FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+	      $atts=array("nombre", "apellido");
+	      $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	      $nombre_supervisor=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	      //Agregar notificación al administrador
+	      $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per) VALUES (";
+	      $sql.="'0', '$nombre_supervisor', '$token_ls')";
+	      $resultado_sql=ejecutarConsulta($sql, $conexion);
+	      //Actualizar estado
+	      $sql = "UPDATE PERSONA_ENCUESTA SET ".
+	      "estado='Rechazada' ".
+	      "WHERE token_ls='$_GET[token_ls]'";
+	      $resultado=ejecutarConsulta($sql, $conexion);
+	  }
+	  break;
+         case 'notificarE':      
+	  $mensaje=$_POST['msg'];
+	  $token_ls=$_GET['token_ls'];
+	  //Determinar nombre del evaluado
+	  $sql="SELECT id_evaluado FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls."'";
+	  $atts=array("id_evaluado");
+	  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	  $id_evaluado=$aux['Aux']['id_evaluado'][0];
+	  $sql="SELECT nombre, apellido FROM PERSONA WHERE id='".$id_evaluado."'";
+	  $atts=array("nombre", "apellido");
+	  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	  $nombre_evaluado=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	  //Agregar notificación al administrador
+	  $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per, mensaje) VALUES (";
+	  $sql.="'1', '$nombre_evaluado', '$token_ls', '$mensaje')";
+	  $resultado_sql=ejecutarConsulta($sql, $conexion);
+	  $_SESSION['MSJ'] = "Se ha notificado su caso a la DGCH, el personla iniciará el estudio del mismo. Podrá ser contactado próximamente";
+	  header("Location: ../vListarEvaluaciones.php?warning");
+	  break;
+	 case 'validarR':
+	  //Insertar en tabla de supervisaciones
+	  $sql="UPDATE aprobado=TRUE WHERE token_ls_eva='".$_GET['token_ls']."'";
+	  //Determinar nombre del supervisor jerárquico
+	  $sql="SELECT nombre, apellido FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+	  $atts=array("nombre", "apellido");
+	  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+	  $nombre_supervisor=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	  //Agregar notificación al administrador
+	  $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per) VALUES (";
+	  $sql.="'2', '$nombre_supervisor', '$token_ls')";
+	  $resultado_sql=ejecutarConsulta($sql, $conexion);
+	  //Actualizar estado
+	  $sql = "UPDATE PERSONA_ENCUESTA SET ".
+	  "estado='Aprobada' ".
+	  "WHERE token_ls='$_GET[token_ls]'";
+	  $resultado=ejecutarConsulta($sql, $conexion);
+	  break;
+	 }//cierre del switch
+	 
       
-         if ($aux['max_res']!==0) {
-	  
-	    //Insertar en tabla de supervisaciones
-	    $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
-	    $sql.="'$id_sup', '$token_ls', 'FALSE', '$fecha', '$ip')";
-	    $resultado_sql=ejecutarConsulta($sql, $conexion);
-	    
-	    //Determinar nombre del supervisor jerárquico
-	    $sql="SELECT nombre, apellido FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
-	    $atts=array("nombre", "apellido");
-	    $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-	    $nombre_supervisor=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
-	    
-	    //Agregar notificación al administrador
-	    $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per) VALUES (";
-	    $sql.="'0', '$nombre_supervisor', '$token_ls')";
-	    $resultado_sql=ejecutarConsulta($sql, $conexion);
-	    
-	    //Actualizar estado
-            $sql = "UPDATE PERSONA_ENCUESTA SET ".
-            "estado='Rechazada' ".
-            "WHERE token_ls='$_GET[token_ls]'";
-            $resultado=ejecutarConsulta($sql, $conexion);
-         }
-      
-      }elseif($_GET['action'] == "notificarE"){
-      
-	 $mensaje=$_POST['msg'];
-	 $token_ls=$_GET['token_ls'];
-	 
-	 //Determinar nombre del evaluado
-	 $sql="SELECT id_evaluado FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls."'";
-	 $atts=array("id_evaluado");
-	 $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-	 $id_evaluado=$aux['Aux']['id_evaluado'][0];
-	 $sql="SELECT nombre, apellido FROM PERSONA WHERE id='".$id_evaluado."'";
-	 $atts=array("nombre", "apellido");
-	 $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-	 $nombre_evaluado=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
-	 
-	 //Agregar notificación al administrador
-	 $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per, mensaje) VALUES (";
-	 $sql.="'1', '$nombre_evaluado', '$token_ls', '$mensaje')";
-	 $resultado_sql=ejecutarConsulta($sql, $conexion);
-	 $_SESSION['MSJ'] = "Se ha notificado su caso a la DGCH, el personla iniciará el estudio del mismo. Podrá ser contactado próximamente";
-         header("Location: ../vListarEvaluaciones.php?warning");
-	 
-	 
-      }
     }//Cierre del if de Validación de Resultados
     
     //Cierre conexión a la BD
@@ -313,6 +321,11 @@
                 
             case 'validar':
                $_SESSION['MSJ'] = "Se ha aprobado la evaluación correspondiente";
+               header("Location: ../vSupervisar.php?success");
+               break;
+               
+            case 'validarR':
+               $_SESSION['MSJ'] = "Se ha aprobado la evaluación previamente rechazada";
                header("Location: ../vSupervisar.php?success");
                break;
             

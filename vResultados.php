@@ -355,7 +355,7 @@
 	  <div class="well" style="padding:8px; background-color: #fff; box-shadow:none" align="center">
 	    <br>
 	    <p class="lsmall less">Actualmente la evaluación se encuentra rechazada, <i>haga click</i> en el siguiente botón si desea validarla ahora</p><br>
-	    <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validar">Validar</a>	
+	    <a class="btn btn-success" href="lib/cResultados.php?token_ls=<?echo $_GET['token_ls']?>&action=validarR">Validar</a>	
 	    <br>
 	  </div>
 	  <? break;

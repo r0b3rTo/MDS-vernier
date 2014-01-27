@@ -359,7 +359,7 @@
 	  
 	  //Obtener datos de las evaluaciones de la unidad para el proceso seleccionado
 	  $sql="SELECT id_encuesta, id_evaluado, token_ls, estado FROM PERSONA_ENCUESTA WHERE id_unidad='".$_GET['id']."' AND periodo='".$_GET['proc']."' AND tipo='autoevaluacion'";
-	  $atts= array("id_encuesta", "id_evaluado", "token_ls", "estado", "nombre");
+	  $atts= array("id_encuesta", "id_evaluado", "token_ls", "estado", "nombre", "deficiencia");
 	  $LISTA_EVALUADOS=obtenerDatos($sql, $conexion, $atts, "Eva");
   
 	  //Obtener nombres de los evaluados
@@ -407,9 +407,11 @@
 		//Cálculo de resultados para la sección de competencias      
 		$resultado= calcularPuntaje($LISTA_EVALUADORES['Eva']['id_encuesta'][$j], 'competencia', $LISTA_EVALUADORES['Eva']['token_ls'][$j]);
 		$competencias_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		//$LISTA_EVALUADORES['Eva']['competencias']['deficiencia'][$j]=$resultado['deficiencia'];
 		//Cálculo de resultados para la sección de factores
 		$resultado= calcularPuntaje($LISTA_EVALUADORES['Eva']['id_encuesta'][$j], 'factor', $LISTA_EVALUADORES['Eva']['token_ls'][$j]);
 		$factores_total+=$resultado['puntaje'];//puntaje obtenido en la sección de competencias
+		//$LISTA_EVALUADORES['Eva']['factores']['deficiencia']=$resultado['respuestas'];
 		$numero_evaluadores++;
 	      } //Fin del condicional (evaluación finalizada)
 	      
@@ -417,9 +419,13 @@
 	 
 	    $LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$i]=$competencias_total/$numero_evaluadores;
 	    $LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$i]=$factores_total/$numero_evaluadores;
-	    
+    
 	  }//Fin del ciclo sobre los evaluados 
 	  
+	  //Determinar deficiencias en la unidad
+	  $DEFICIENCIAS=determinarDeficiencias($_GET['id'], $_GET['proc']);
+	  
+	  //Cálculo del promedio de los resultados
 	  $PROMEDIO_COMPETENCIAS=0;
 	  $PROMEDIO_FACTORES=0;
 	  for($i=0; $i<$LISTA_EVALUADOS['max_res']; $i++){
@@ -542,6 +548,10 @@
 	    
 	  }//Fin de la iteración (procesos)
 	  
+	  //Determinar deficiencias de la unidad
+	  $DEFICIENCIAS=historicoDeficiencias($_GET['id']);
+	  
+	  //Cálculo del promedio del histórico de resultados
 	  $PROMEDIO_COMPETENCIAS=0;
 	  $PROMEDIO_FACTORES=0;
 	  for($i=0; $i<$LISTA_PROCESOS['max_res']; $i++){

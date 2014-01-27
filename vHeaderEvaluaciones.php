@@ -87,10 +87,10 @@
           <li class='dropdown'>
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones <b class='caret'></b></a>
             <ul class='dropdown-menu' id='swatch-menu'>
-              <li><a href='vListarEvaluaciones.php?view&id=<? echo $cedula ?>'>Listar Evaluaciones</a></li>
-              <li><a href='vListarResultados.php'>Ver Resultados</a></li>
               <? if($is_supervisor) { ?>
 	      <li><a href='vSupervisar.php'>Supervisar Evaluaciones</a></li>
+	      <? } else { ?>
+	      <li><a href='vListarEvaluaciones.php?view&id=<? echo $cedula ?>'>Listar Evaluaciones</a></li>
 	      <? } ?>
             </ul>
           </li>

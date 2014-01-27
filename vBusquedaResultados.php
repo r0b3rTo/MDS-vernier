@@ -265,6 +265,7 @@ if(isset($_GET['action'])) {
 	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
 	    </th>
 	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Competencias deficientes</small></th>
 	  </tr>
 	</thead>
 	
@@ -290,6 +291,30 @@ if(isset($_GET['action'])) {
 	    <? } ?>
 	    <!--Resultado esperado-->
 	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	    <!--Competencias deficientes-->
+	    <td class="center lsmallT" style="min-width: 400px"><small>
+	    <? if(!($LISTA_EVALUADOS['Eva']['evaluacion']['competencias']['puntaje'][$i])){
+		  echo "No aplica";
+	       } else {
+		  if(count($DEFICIENCIAS['individual']['competencias'][$i]['puntaje'])){
+		    echo "El trabajador presentó las siguientes deficiencias:<br>";
+		    for($j=0; $j<count($DEFICIENCIAS['individual']['competencias'][$i]['puntaje']) && $j<3; $j++){
+		      $aux=each($DEFICIENCIAS['individual']['competencias'][$i]['puntaje']);
+		      if($j<2){
+			echo "&nbsp;&nbsp;- ".$DEFICIENCIAS['individual']['competencias'][$i]['competencia'][$aux['key']]."<br>";
+		      } else {
+			echo "&nbsp;&nbsp;- ".$DEFICIENCIAS['individual']['competencias'][$i]['competencia'][$aux['key']];
+			if(count($DEFICIENCIAS['individual']['competencias'][$i]['puntaje'])>$j){
+			echo "<br>&nbsp;&nbsp;- Entre otras";
+			}
+		      }
+		    }
+		  } else {
+		    echo "El trabajador no presentó competencias deficientes";
+		  }
+	       }      
+	    ?>
+	    </small></td>
 	  </tr>
 	<? } //cierre del for
 	?>   
@@ -317,6 +342,43 @@ if(isset($_GET['action'])) {
 	  </div>
 	</div>
 	</a>
+	
+	<p style="font-size:11px"><b>Competencias deficientes en la unidad</b></p>
+	<? if($DEFICIENCIAS['grupal']['competencias'][0]['count'] && $DEFICIENCIAS['grupal']['competencias'][4]['count']){?>
+	    <table class="table table-hover" style="margin-left: 0; background-color: #fff">
+	      <thead>
+		<tr>
+		  <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Descripción</small></th>
+		  <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Porcentaje de deficiencia</small></th>
+		</tr>
+	      </thead>	
+	      <tbody role="alert" aria-live="polite" aria-relevant="all">   
+	      <?php
+		for ($i=0;$i<count($DEFICIENCIAS['grupal']['competencias']);$i++){
+	      ?>
+		<tr>
+		  <!--Competencia-->
+		  <td class="center lsmallT"><small><? echo $DEFICIENCIAS['grupal']['competencias'][$i]['competencia'];?></a></small></td>  
+		  <!--Porcentaje de deficiencia-->
+		  <td class="center lsmallT" nowrap>
+		    <small>
+		      <a title="<?echo $DEFICIENCIAS['grupal']['competencias'][$i]['count']?> de <?echo $LISTA_EVALUADOS['max_res']?> trabajadores" style="text-decoration: none;">
+		      <div class="progress" style="height: 20px;">
+			<div class="progress-bar bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round(($DEFICIENCIAS['grupal']['competencias'][$i]['count']/$LISTA_EVALUADOS['max_res'])*100).'%'?>; height: 100%;">
+			  <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round(($DEFICIENCIAS['grupal']['competencias'][$i]['count']/$LISTA_EVALUADOS['max_res'])*100).'%'?></span>
+			</div>
+		      </div>
+		      </a>
+		    </small>
+		  </td>
+		</tr>
+	      <? } //cierre del for
+	      ?>   
+	      </tbody>
+	    </table>
+	<? } else {
+	      echo "<p align='center' style='font-size:11px;'>La unidad no presentó competencias deficientes en este proceso de evaluación</p>";
+	}?>
 	
       </div>
       <!--FIN DE RESULTADOS PARA LA SECCION DE COMPETENCIAS--> 
@@ -391,6 +453,7 @@ if(isset($_GET['action'])) {
 	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
 	    </th>
 	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Factores deficientes</small></th>
 	  </tr>
 	</thead>
 	
@@ -416,6 +479,30 @@ if(isset($_GET['action'])) {
 	    <? } ?>
 	    <!--Resultado esperado-->
 	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	    <!--Factores deficientes-->
+	    <td class="center lsmallT" style="min-width: 400px"><small>
+	    <? if(!($LISTA_EVALUADOS['Eva']['evaluacion']['factores']['puntaje'][$i])){
+		  echo "No aplica";
+	       } else {
+		  if(count($DEFICIENCIAS['individual']['factores'][$i]['puntaje'])){
+		  echo "El trabajador presentó las siguientes deficiencias:<br>";
+		  for($j=0; $j<count($DEFICIENCIAS['individual']['factores'][$i]['puntaje']) && $j<3; $j++){
+		    $aux=each($DEFICIENCIAS['individual']['factores'][$i]['puntaje']);
+		    if($j<2){
+		      echo "&nbsp;&nbsp;- ".$DEFICIENCIAS['individual']['factores'][$i]['factor'][$aux['key']]."<br>";
+		    } else {
+		      echo "&nbsp;&nbsp;- ".$DEFICIENCIAS['individual']['factores'][$i]['factor'][$aux['key']];
+		      if(count($DEFICIENCIAS['individual']['factores'][$i]['puntaje'])>$j){
+		      echo "<br>&nbsp;&nbsp;- Entre otras";
+		      }
+		    }
+		  }
+		} else {
+		  echo "El trabajador no presentó factores de desempeño deficientes";
+		}
+	      } 
+	    ?>
+	    </small></td>
 	  </tr>
 	<? } //cierre del for
 	?>   
@@ -434,6 +521,43 @@ if(isset($_GET['action'])) {
 	  </div>
 	</div>
 	</a>
+	
+	<p style="font-size:11px"><b>Factores de desempeño deficientes en la unidad</b></p>
+	<? if($DEFICIENCIAS['grupal']['factores'][0]['count'] && $DEFICIENCIAS['grupal']['factores'][4]['count']){?>
+	      <table class="table table-hover" style="margin-left: 0; background-color: #fff">
+	      <thead>
+		<tr>
+		  <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Descripción</small></th>
+		  <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Porcentaje de deficiencia</small></th>
+		</tr>
+	      </thead>	
+	      <tbody role="alert" aria-live="polite" aria-relevant="all">   
+	      <?php
+		for ($i=0;$i<count($DEFICIENCIAS['grupal']['factores']);$i++){
+	      ?>
+		<tr>
+		  <!--Competencia-->
+		  <td class="center lsmallT"><small><? echo $DEFICIENCIAS['grupal']['factores'][$i]['factor'];?></a></small></td>  
+		  <!--Porcentaje de deficiencia-->
+		  <td class="center lsmallT" nowrap>
+		    <small>
+		      <a title="<?echo $DEFICIENCIAS['grupal']['factores'][$i]['count']?> de <?echo $LISTA_EVALUADOS['max_res']?> trabajadores" style="text-decoration: none;">
+		      <div class="progress" style="height: 20px;">
+			<div class="progress-bar bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: <?echo round(($DEFICIENCIAS['grupal']['factores'][$i]['count']/$LISTA_EVALUADOS['max_res'])*100).'%'?>; height: 100%;">
+			  <span class="sr-only" style="font-size:11px; color:#fff; line-height: 175%; font-weight: bold;">&nbsp;<?echo round(($DEFICIENCIAS['grupal']['factores'][$i]['count']/$LISTA_EVALUADOS['max_res'])*100).'%'?></span>
+			</div>
+		      </div>
+		      </a>
+		    </small>
+		  </td>
+		</tr>
+	      <? } //cierre del for
+	      ?>   
+	      </tbody>
+	    </table>
+      <? } else {
+	    echo "<p align='center' style='font-size:11px;'>La unidad no presentó factores de desempeño deficientes en este proceso de evaluación</p>";
+	 } ?>
 	
       </div>
       <!--FIN DE RESULTADOS PARA LA SECCION DE FACTORES-->
@@ -806,6 +930,7 @@ if(isset($_GET['action'])) {
 	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
 	    </th>
 	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Competencias deficientes</small></th>
 	  </tr>
 	</thead>
 	
@@ -831,6 +956,29 @@ if(isset($_GET['action'])) {
 	    <? } ?>
 	    <!--Resultado esperado-->
 	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	    <!--Competencias deficientes-->
+	    <td class="center lsmallT" style="min-width: 400px"><small>
+	    <? if(!($LISTA_PROCESOS['Proc']['evaluacion']['competencias'][$i])){
+		  echo "No aplica";
+	       } else {
+		  if($DEFICIENCIAS[$i]['competencias'][0]['count'] && $DEFICIENCIAS[$i]['competencias'][4]['count']){
+		  echo "La unidad presentó las siguientes deficiencias:<br>";
+		  for($j=0; $j<count($DEFICIENCIAS[$i]['competencias']) && $j<3; $j++){
+		    if($j<2){
+		      echo "&nbsp;&nbsp;- ".$DEFICIENCIAS[$i]['competencias'][$j]['competencia']."<br>";
+		    } else {
+		      echo "&nbsp;&nbsp;- ".$DEFICIENCIAS[$i]['competencias'][$j]['competencia'];
+		      if(count($DEFICIENCIAS[$i]['competencias'])>$j){
+		      echo "<br>&nbsp;&nbsp;- Entre otras";
+		      }
+		    }
+		  }
+		} else {
+		  echo "La unidad no presentó competencias deficientes";
+		}
+	      } 
+	    ?>
+	    </small></td>
 	  </tr>
 	<? } //cierre del for
 	?>   
@@ -932,6 +1080,7 @@ if(isset($_GET['action'])) {
 	      <span style='font-size:8px; padding-left:8px; background:#0088cc;'>&nbsp;</span>
 	    </th>
 	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Resultado esperado</small></th>
+	    <th class="lsmallT" style="border-top: 1px solid #dddddd"><small>Factores deficientes</small></th>
 	  </tr>
 	</thead>
 	
@@ -957,6 +1106,29 @@ if(isset($_GET['action'])) {
 	    <? } ?>
 	    <!--Resultado esperado-->
 	    <td class="center lsmallT" nowrap><small>100%</small></td>
+	    <!--Factores deficientes-->
+	    <td class="center lsmallT" style="min-width: 400px"><small>
+	    <? if(!($LISTA_PROCESOS['Proc']['evaluacion']['factores'][$i])){
+		  echo "No aplica";
+	       } else {
+		  if($DEFICIENCIAS[$i]['factores'][0]['count'] && $DEFICIENCIAS[$i]['factores'][4]['count']){
+		  echo "La unidad presentó las siguientes deficiencias:<br>";
+		  for($j=0; $j<count($DEFICIENCIAS[$i]['factores']) && $j<3; $j++){
+		    if($j<2){
+		      echo "&nbsp;&nbsp;- ".$DEFICIENCIAS[$i]['factores'][$j]['factor']."<br>";
+		    } else {
+		      echo "&nbsp;&nbsp;- ".$DEFICIENCIAS[$i]['factores'][$j]['factor'];
+		      if(count($DEFICIENCIAS[$i]['factores'])>$j){
+		      echo "<br>&nbsp;&nbsp;- Entre otras";
+		      }
+		    }
+		  }
+		} else {
+		  echo "La unidad no presentó factores de desempeño deficientes";
+		}
+	      } 
+	    ?>
+	    </small></td>
 	  </tr>
 	<? } //cierre del for
 	?>   

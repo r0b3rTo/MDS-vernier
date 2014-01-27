@@ -60,16 +60,24 @@
 	$sql.="FROM PERSONA_ENCUESTA ";
 	$sql.="WHERE id_encuestado='".$id_usuario."' AND actual='f'";
 	    
-	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre_periodo", "nombre", "apellido");
+	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre_periodo", "nombre", "apellido","periodo_quejas");
 	$LISTA_EVALUACION_PASADA= obtenerDatos($sql, $conexion, $atts, "Enc");
 	
 	//Obtención de los nombres de los evaluados
 	for ($i=0; $i<$LISTA_EVALUACION_PASADA[max_res]; $i++){
-	  $sql ="SELECT periodo FROM EVALUACION WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["periodo"][$i]."'";
-	  $atts = array("periodo");
+	  $sql ="SELECT periodo, fecha_fin FROM EVALUACION WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["periodo"][$i]."'";
+	  $atts = array("periodo", "fecha_fin");
 	  $NOMBRE_PERIODO= obtenerDatos($sql, $conexion, $atts, "Nom");
 	  $LISTA_EVALUACION_PASADA["Enc"]["nombre_periodo"][$i]=$NOMBRE_PERIODO["Nom"]["periodo"][0];
 	  
+	  $fecha_fin=$NOMBRE_PERIODO['Nom']['fecha_fin'][0];
+	  $fecha_actual=date("d-m-Y");
+	  $diferencia=obtenerDiferenciaDias($fecha_actual, $fecha_fin);
+	  if($diferencia>7){
+	    $LISTA_EVALUACION_PASADA['Enc']['periodo_quejas'][$i]=FALSE;
+	  } else {
+	    $LISTA_EVALUACION_PASADA['Enc']['periodo_quejas'][$i]=TRUE;
+	  }
 	  $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$LISTA_EVALUACION_PASADA["Enc"]["id_evaluado"][$i]."'";
 	  $atts = array("nombre", "apellido");
 	  $NOMBRE= obtenerDatos($sql, $conexion, $atts, "Nom");

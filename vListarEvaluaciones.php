@@ -195,15 +195,27 @@
 	      ?></small></td>
 	      <td class="center lsmallT" nowrap><small>
 		<? switch ($LISTA_EVALUACION_PASADA['Enc']['estado'][$i]){
-		case 'Finalizada': 
-		  echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		case 'Finalizada':
+		  if ($LISTA_EVALUACION_PASADA['Enc']['tipo'][$i]=="autoevaluacion" && $LISTA_EVALUACION_PASADA['Enc']['periodo_quejas'][$i]==TRUE){
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."&action=revisarE' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  } else {
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  }
 		  break;
-	   case 'Aprobada': 
-        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
-        break; 
-      case 'Rechazada': 
-        echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
-        break; 
+		case 'Aprobada': 
+		  if ($LISTA_EVALUACION_PASADA['Enc']['tipo'][$i]=="autoevaluacion" && $LISTA_EVALUACION_PASADA['Enc']['periodo_quejas'][$i]==TRUE){
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."&action=revisarE' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  } else {
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  }
+		  break; 
+		case 'Rechazada': 
+		  if ($LISTA_EVALUACION_PASADA['Enc']['tipo'][$i]=="autoevaluacion" && $LISTA_EVALUACION_PASADA['Enc']['periodo_quejas'][$i]==TRUE){
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."&action=revisarE' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  } else {
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_PASADA['Enc']['token_ls'][$i]."' title='Ver resultados' ><img src='./img/iconos/visible-16.png' style='margin-left:5px;'></a>"; 
+		  }
+		  break; 
 		default: 
 		  echo "No hay acciones disponibles"; 
 		  break;

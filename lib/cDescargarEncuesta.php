@@ -18,15 +18,15 @@
 
     //Page header
     public function Header() {
-        // Logo
-        $image_file = K_PATH_IMAGES.PDF_HEADER_LOGO;
-        $this->Image($image_file, 10, 10, 190, 25, 'PNG', '', 'T', true, 300, '', false, false, 0, false, false, false);
-        // Set font
-        $this->SetFont('helvetica', 'B', 20);
-        // Add new line
-        $this->Ln('', false);
-        // Title
-        $this->Cell(0, 25, 'Sistema Vernier', 0, 1, 'C', false, '', 0, false, 'T', 'C');
+         // Logo
+         $image_file = K_PATH_IMAGES.PDF_HEADER_LOGO;
+         $this->Image($image_file, 10, 10, 190, 25, 'PNG', '', 'T', true, 300, '', false, false, 0, false, false, false);
+         // Set font
+         $this->SetFont('helvetica', 'B', 20);
+         // Add new line
+         $this->Ln('', false);
+         // Title
+         $this->Cell(0, 25, 'Sistema Vernier', 0, 1, 'C', false, '', 0, false, 'T', 'C');
     }
 
     // Page footer
@@ -103,8 +103,49 @@
       $sql ="SELECT nombre ";
       $sql.="FROM FAMILIA_CARGO WHERE id='".$_GET['id_fam']."'";
       $atts = array("nombre");
-      $FAMILIA_CARGO_EVALUADO= obtenerDatos($sql, $conexion, $atts, "Fam");
+      $FAMILIA_CARGO_EVALUADO= obtenerDatos($sql, $conexion, $atts, "Fam");   
       
+      //-----------------------------------------------------------------------------------------
+      // Añade una página
+      $pdf->AddPage();
+      
+      $pdf->SetFont('helvetica', 'BI', 12);
+         
+      $pdf->Cell('', '', 'EVALUACIÓN DEL DESEMPEÑO', 0, 1, 'C', false, '', 0, false, 'T', 'C');       
+      $pdf->Cell('', '', 'PERSONAL SUPERVISADO', 0, 1, 'C', false, '', 0, false, 'T', 'C');  
+        
+      $texto_encuesta=$FAMILIA_CARGO_EVALUADO['Fam']['nombre'][0];
+      $pdf->Cell('', '', $texto_encuesta, 0, 1, 'C', false, '', 0, false, 'T', 'C'); 
+         
+      $pdf->Cell('', '', 'PROCESO DE EVALUACIÓN DEFINITIVO __________________', 0, 1, 'C', false, '', 0, false, 'T', 'C');  
+      
+      $pdf->Ln(5, false);
+      
+      $pdf->SetFont('helvetica', '', 12);
+      
+      //Tabla de Datos del Trabajador
+      $tbl ='
+         <table border="1" cellpadding="4" cellspacing="2" align="center">
+            <tr nobr="true">
+               <th colspan="2" bgcolor="#cccccc"> DATOS DEL TRABAJADOR</th>
+            </tr>
+            <tr nobr="true" align="left">
+               <td><small>1.1 Apellidos y Nombres:</small></td>
+               <td><small>1.2 No. Cédula de Identidad:</small></td>
+            </tr>
+            <tr nobr="true" align="left">
+               <td><small>1.3 Cargo:</small></td>
+               <td><small>1.4 Ubicación:</small></td>
+            </tr>
+         </table>';
+         
+      $pdf->writeHTML($tbl, true, false, false, true, '');
+      
+      $pdf->Ln(10, false);
+      
+      //-----------------------------------------------------------------------------------------
+   
+   
       //Lista de preguntas
       $sql ="SELECT id_encuesta, id_encuesta_ls, id_pregunta, id_pregunta_ls, titulo, peso, seccion ";
       $sql.="FROM PREGUNTA WHERE id_encuesta='".$_GET['id_encuesta']."' AND id_pregunta_root_ls IS NULL";        
@@ -120,28 +161,74 @@
          
          $LISTA_SUBPREGUNTAS= obtenerDatos($sql, $conexion, $atts, "Preg");
          
-         // Add a page
-         // This method has several options, check the source code documentation for more information.
-         $pdf->AddPage();
-         
-         $pdf->Ln(10, false);
-         $pdf->SetFont('helvetica', 'BI', 12);
-         $texto_encuesta="ENCUESTA PARA ".$FAMILIA_CARGO_EVALUADO['Fam']['nombre'][0];
-         $pdf->Cell(10, '', $texto_encuesta, 0, 1, '');
          
          $pdf->SetFont('helvetica', '', 12);
+      
          
-         if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"competencia")==0){
-            $texto_seccion="Sección de Competencias";
+         if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"competencia")==0 && $instruc_comp!=1){
+            $texto_seccion="I. INSTRUCCIÓN GENERAL<br/>
+                           <br/>
+                           El propósito principal de esta parte de la evaluación es recolectar evidencias sobre conductas asociadas al desempeño
+                           profesional de una persona, con la intención de construir un juicio constructivo sobre su nivel de desarrollo en relación con un
+                           perfil profesional. Al mismo tiempo, identificar aquellas áreas de desempeño que deban ser fortalecidas, utilizando programas
+                           de formación y adiestramiento para llegar al nivel de competencia requerido.";
+                           
+            $texto_seccion.="Si usted está realizando su auto-evaluación, construya mentalmente las oraciones en primera persona. por ejemplo, si la
+                           conducta es: &quot;Aplicar normas y procedimientos&quot; al hacer el trabajo, en primera persona diría: &quot;¿Yo aplico normas y
+                           procedimientos al hacer el trabajo?&quot;. Lo mismo hará cuando evalúe a terceros, por ejemplo, diría: &quot;¿él o ella
+                           aplica normas y procedimientos al hacer el trabajo?&quot;.<br/>
+                           <br/>
+                           <br/>
+                           II. ESCALA DE EVALUACIÓN DE COMPETENCIAS<br/>
+                           <br/>
+                           Para evaluar aparece una lista de conductas relacionadas a cada competencia. Usted deberá marcar el nivel de frecuencia
+                           que ha observado dicha conducta para el período de evaluación. Utilice la siguiente escala:<br/><br/> 
+                           Nunca: No se observa, no se aplica o no se pone en práctica una conducta requerida. <br/>
+                           Pocas veces: La conducta evaluada se pone en práctica ocasionalmente y se observan largos períodos de ausencia de la misma,
+                           en los momentos en que requiere ser observada o es pertinente. <br/>
+                           Casi siempre: La conducta se observa casi continuamente en los momentos requeridos.<br/>
+                           Siempre: La conducta se observa fija, estable y el individuo la realiza todo el tiempo que se requiere.
+                           <br/><br/>
+                           <br/><br/>
+                           III. EVALUACIÓN DE COMPETENCIAS";
+            $instruc_comp = 1;
+            
+            $pdf->writeHTML($texto_seccion, true, false, true, true, '');
+            
+            $pdf->Ln(5, false); 
+            
          }else{
-            $texto_seccion="Sección de Factores";
-         }
-         $pdf->Cell(10, '', $texto_seccion, 0, 1, '');
+            if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"factor")==0 && $instruc_fac!=1){
+               $texto_seccion="IV. INSTRUCCIÓN GENERAL<br/>
+                           <br/>
+                           El propósito principal de esta parte de la evaluación es el de recolectar evidencias sobre factores o acciones que influyen en el
+                           desempeño profesional de una persona, con la intención de construir un juicio constructivo sobre la percepción que se tiene del
+                           trabajador sobre su rol y perfil profesional.<br/>
+                           <br/>
+                           <br/>
+                           V. ESCALA DE EVALUACIÓN DE DESEMPEÑO<br/>
+                           <br/>
+                           Para evaluar utilice la siguiente escala:<br/><br/> 
+                           Excelente: Es una persona que además de superar las expectativas, plantea acciones innovadoras que van mas allá de lo que el rol le exige.<br/>
+                           Sobre lo esperado: Cuando supera las expectativas en congruencia con lo que se espera para ese rol.<br/> 
+                           En lo esperado: Es cuando la persona es congruente con lo que se espera de sus acciones, dentro del promedio.<br/> 
+                           Por debajo de lo esperado: Es cuando la persona no alcanza el mínimo requerido para el rol que esta desempeñando junto con las expectativas 
+                           del supervisor inmediato. 
+                           <br/><br/>
+                           VI. EVALUACIÓN DE FACTORES DE DESEMPEÑO";
+               $instruc_fac = 1;
+               
+               // Añade una página
+               $pdf->AddPage();
+               
+               $pdf->writeHTML($texto_seccion, true, false, true, true, '');
+               
+               $pdf->Ln(5, false); 
+               
+            }
+         }  
          
-         $pdf->Ln(5, false);        
          $htmlPregunta =$LISTA_PREGUNTAS['Preg']['titulo'][$i];
-         $pdf->writeHTML($htmlPregunta, true, false, true, true, '');
-         $pdf->Ln(5, false);
          
          $pdf->SetFont('helvetica', '', 10);         
          
@@ -149,10 +236,7 @@
             $tbl ='
             <table border="1" cellpadding="2" cellspacing="2" align="center">
                <tr nobr="true">
-                  <th colspan="5"></th>
-               </tr>
-               <tr nobr="true">
-                  <td></td>
+                  <td>'.$htmlPregunta.'</td>
                   <td>Nunca</td>
                   <td>Pocas veces</td>
                   <td>Casi siempre</td>
@@ -175,17 +259,38 @@
             $tbl.='</table>';
             
             $pdf->writeHTML($tbl, true, false, false, true, '');
+            
+            // Añade una página
+            $pdf->AddPage();
          
+         }else{
+               $pdf->SetFont('helvetica', '', 12);
+               
+               if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"competencia")==0 && $texto_impreso1!=1){
+                  $texto_subseccion = "PERCEPCIÓN GLOBAL DE LA EVALUACIÓN DE COMPETENCIAS";
+                  $pdf->writeHTML($texto_subseccion, true, false, true, true, '');
+                  $pdf->Ln(10, false); 
+                  $texto_impreso1 = 1;
+               }else{
+                  if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"factor")==0 && $texto_impreso2!=1){
+                     $texto_subseccion = "PERCEPCIÓN GLOBAL DE LA EVALUACIÓN DE DESEMPEÑO";
+                     $pdf->writeHTML($texto_subseccion, true, false, true, true, '');
+                     $pdf->Ln(10, false); 
+                     $texto_impreso2 = 1;
+                  }
+               }
+                
+               $pdf->writeHTML($htmlPregunta, true, false, true, true, '');
+               
+               $pdf->Ln(20, false); 
          }
+         
       }
       
       
       
    }
-   
-
-   
-   
+    
    //----------------------------------------------------------------------
 
    // cleaning the buffer before Output()

@@ -31,11 +31,11 @@
       ///////////////////////
       
 	// Obtención del identificador, tipo, estado, periodo y token de Limesurvey de las encuestas del usuario
-	$sql ="SELECT id_encuesta_ls, id_evaluado, token_ls, tipo, estado, periodo ";
+	$sql ="SELECT id_encuesta_ls, id_evaluado, token_ls, tipo, estado, periodo, id_encuesta ";
 	$sql.="FROM PERSONA_ENCUESTA ";
 	$sql.="WHERE id_encuestado='".$id_usuario."' AND actual='t'";
 	    
-	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "nombre_periodo", "nombre", "apellido");
+	$atts = array("id_encuesta_ls", "id_evaluado", "token_ls", "tipo", "estado", "periodo", "id_encuesta","nombre_periodo", "nombre", "apellido", "id_fam");
 	$LISTA_EVALUACION_ACTUAL= obtenerDatos($sql, $conexion, $atts, "Enc");
 
 	//Obtención de los nombres de los evaluados y el nombre del proceso de evaluación
@@ -50,6 +50,11 @@
 	  $NOMBRE= obtenerDatos($sql, $conexion, $atts, "Nom");
 	  $LISTA_EVALUACION_ACTUAL["Enc"]["nombre"][$i]=$NOMBRE["Nom"]["nombre"][0];//Nombre del evaluado
 	  $LISTA_EVALUACION_ACTUAL["Enc"]["apellido"][$i]=$NOMBRE["Nom"]["apellido"][0];//Apellido del evaluado
+	  
+	  $sql ="SELECT id_fam FROM ENCUESTA WHERE id='".$LISTA_EVALUACION_ACTUAL["Enc"]["id_encuesta"][$i]."'";
+	  $atts = array("id_fam");
+	  $FAMILIA_CARGOS= obtenerDatos($sql, $conexion, $atts, "Fam");
+	  $LISTA_EVALUACION_ACTUAL["Enc"]["id_fam"][$i]=$FAMILIA_CARGOS["Fam"]["id_fam"][0];//Familia de cargos asociada a la encuesta
 	}
 	
       //Evaluaciones pasadas

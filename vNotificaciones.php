@@ -63,7 +63,7 @@
 	  
 	  <tbody role="alert" aria-live="polite" aria-relevant="all">   
 	  <?php
-	    for ($i=0;$i<$HISTORIAL_NOTIFICACIONES['max_res'];$i++){
+	    for ($i=0;$i<$HISTORIAL_NOTIFICACIONES['max_res'] && $i<10;$i++){
 	  ?>
 	    <tr class="<?php echo $color_tabla; ?>" >
 	      <!--Notificación-->

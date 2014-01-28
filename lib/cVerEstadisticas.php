@@ -92,9 +92,6 @@
 	      $sql ="SELECT id_sup, fecha, ip FROM SUPERVISOR_ENCUESTA WHERE token_ls_eva='".$LISTA_EVALUACION["Aux"]["token_ls"][$i]."'";
 	      $atts = array("id_sup", "fecha", "ip");
 	      $aux= obtenerDatos($sql, $conexion, $atts, "Sup");
-	      echo "EL SQL: ".$sql;
-	      echo "EL RESULTADO: ";
-	      print_r($aux);
 	      
 	      $sql ="SELECT nombre, apellido FROM PERSONA WHERE id='".$aux['Sup']['id_sup'][0]."'";
 	      $atts = array("nombre", "apellido");

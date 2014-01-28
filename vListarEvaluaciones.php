@@ -94,25 +94,40 @@
 	      ?></small></td>
 	      <td class="center lsmallT" nowrap>
 		<? switch ($LISTA_EVALUACION_ACTUAL['Enc']['estado'][$i]){
-		case 'Pendiente': 
+		case 'Pendiente':
 		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>";
+		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="evaluacion"){
+		    echo "<a href='./lib/cDescargarEncuesta.php?id_encuesta=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta'][$i]."&id_fam=".$LISTA_EVALUACION_ACTUAL['Enc']['id_fam'][$i]."' title='Descargar encuesta en PDF'><img src='./img/iconos/pdf-16.png' style='margin-left:5px;'></a>"; 
+		  }
 		  break;
 		case 'En proceso': 
-		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>"; 
+		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>";
+		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="evaluacion"){
+		    echo "<a href='./lib/cDescargarEncuesta.php?id_encuesta=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta'][$i]."&id_fam=".$LISTA_EVALUACION_ACTUAL['Enc']['id_fam'][$i]."' title='Descargar encuesta en PDF'><img src='./img/iconos/pdf-16.png' style='margin-left:5px;'></a>"; 
+		  }
 		  break;  
-		case 'Finalizada': 
-		  echo "<small>No hay acciones disponibles</small>";
-		  //echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		case 'Finalizada':
+		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="autoevaluacion"){
+		    echo "<small>No hay acciones disponibles</small>";
+		  }else{
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		  }
 		  break;
 		case 'Aprobada': 
-		  echo "<small>No hay acciones disponibles</small>";
-		//echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarA' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
-		break;
+		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="autoevaluacion"){
+		    echo "<small>No hay acciones disponibles</small>";
+		  }else{
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		  }
+		  break;
 		case 'Rechazada':
-		  echo "<small>No hay acciones disponibles</small>";
-		//echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&action=revisarR' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
-		break;
-			}?>
+		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="autoevaluacion"){
+		    echo "<small>No hay acciones disponibles</small>";
+		  }else{
+		    echo "<a href='./vResultados.php?token_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."' title='Ver resultados'><img src='./img/iconos/visible-16.png' style=' margin-left:5px;'></a>"; 
+		  }
+		  break;
+		}?>
 	      </td>
 	      
           </tr>

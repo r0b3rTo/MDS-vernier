@@ -26,7 +26,7 @@
          // Add new line
          $this->Ln('', false);
          // Title
-         $this->Cell(0, 25, 'Sistema Vernier', 0, 1, 'C', false, '', 0, false, 'T', 'C');
+//          $this->Cell(0, 25, 'Sistema Vernier', 0, false, 'C', 0, '', 0, false, 'T', 'M');
     }
 
     // Page footer
@@ -148,7 +148,8 @@
    
       //Lista de preguntas
       $sql ="SELECT id_encuesta, id_encuesta_ls, id_pregunta, id_pregunta_ls, titulo, peso, seccion ";
-      $sql.="FROM PREGUNTA WHERE id_encuesta='".$_GET['id_encuesta']."' AND id_pregunta_root_ls IS NULL";        
+      $sql.="FROM PREGUNTA WHERE id_encuesta='".$_GET['id_encuesta']."' AND id_pregunta_root_ls IS NULL ";
+      $sql.="ORDER BY seccion, id_pregunta_ls";
       $atts = array("id_encuesta", "id_encuesta_ls", "id_pregunta", "id_pregunta_ls", "titulo", "peso", "seccion");
       
       $LISTA_PREGUNTAS= obtenerDatos($sql, $conexion, $atts, "Preg");
@@ -236,11 +237,11 @@
             $tbl ='
             <table border="1" cellpadding="2" cellspacing="2" align="center">
                <tr nobr="true">
-                  <td>'.$htmlPregunta.'</td>
-                  <td>Nunca</td>
-                  <td>Pocas veces</td>
-                  <td>Casi siempre</td>
-                  <td>Siempre</td>
+                  <td width="60%">'.$htmlPregunta.'</td>
+                  <td width="10%">Nunca</td>
+                  <td width="10%">Pocas veces</td>
+                  <td width="10%">Casi siempre</td>
+                  <td width="10%">Siempre</td>
                </tr>';
          
             for($j=0; $j<$LISTA_SUBPREGUNTAS[max_res]; $j++){
@@ -269,29 +270,95 @@
                if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"competencia")==0 && $texto_impreso1!=1){
                   $texto_subseccion = "PERCEPCIÓN GLOBAL DE LA EVALUACIÓN DE COMPETENCIAS";
                   $pdf->writeHTML($texto_subseccion, true, false, true, true, '');
-                  $pdf->Ln(10, false); 
+                  $pdf->Ln(5, false); 
                   $texto_impreso1 = 1;
                }else{
                   if(strcmp($LISTA_PREGUNTAS['Preg']['seccion'][$i],"factor")==0 && $texto_impreso2!=1){
                      $texto_subseccion = "PERCEPCIÓN GLOBAL DE LA EVALUACIÓN DE DESEMPEÑO";
                      $pdf->writeHTML($texto_subseccion, true, false, true, true, '');
-                     $pdf->Ln(10, false); 
+                     $pdf->Ln(5, false); 
                      $texto_impreso2 = 1;
                   }
                }
                 
                $pdf->writeHTML($htmlPregunta, true, false, true, true, '');
                
-               $pdf->Ln(20, false); 
+               $pdf->Ln(5, false);
+               
+               $pdf->writeHTMLCell(0, 20, '', '', '', 1, 1, 0, true, '', true);
+               
+               $pdf->Ln(5, false);
          }
          
       }
       
+      //-----------------------------------------------------------------------------------------
       
+      $pdf->Ln(10, false);
+      
+      $pdf->Cell('', '', 'CONFORMACIÓN DEL PROCESO DE EVALUACIÓN', 0, 1, 'L', false, '', 0, false, 'T', 'C');
+      
+      $pdf->Ln(5, false);
+      
+      //Tabla de Datos del Supervisor Inmediato
+      $tbl ='
+         <table border="1" cellpadding="4" cellspacing="2" align="center">
+            <tr nobr="true" align="left">
+               <th colspan="2" bgcolor="#cccccc">Supervisor Inmediato</th>
+            </tr>
+            <tr nobr="true" align="left">
+               <td><small>Nombre y Apellidos:</small>
+                  <br/>
+                  <small>Cargo:</small>
+                  <br/>
+                  <small>Ubicación:</small>
+                  <br/><br/>
+                  __________________
+                  <br/>
+                  <small >Firma y Sello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Fecha &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/
+                  </small>
+               </td>
+               <td><small>Comentarios:</small></td>
+            </tr>
+         </table>';
+         
+      $pdf->writeHTML($tbl, true, false, false, true, '');
+      
+      $pdf->Ln(10, false);
+      
+            //Tabla de Datos del Supervisor Jerárquico
+      $tbl ='
+         <table border="1" cellpadding="4" cellspacing="2" align="center">
+            <tr nobr="true" align="left">
+               <th colspan="2" bgcolor="#cccccc">Supervisor Jerárquico</th>
+            </tr>
+            <tr nobr="true" align="left">
+               <td><small>Nombre y Apellidos:</small>
+                  <br/>
+                  <small>Cargo:</small>
+                  <br/>
+                  <small>Ubicación:</small>
+                  <br/><br/>
+                  __________________
+                  <br/>
+                  <small >Firma y Sello&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Fecha &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/
+                  </small>
+               </td>
+               <td><small>Comentarios:</small></td>
+            </tr>
+         </table>';
+      
+         $pdf->writeHTML($tbl, true, false, false, true, '');
       
    }
     
-   //----------------------------------------------------------------------
+   //--------------------------------------------------------------------------------------------
 
    // cleaning the buffer before Output()
    ob_clean();

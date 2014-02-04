@@ -97,13 +97,13 @@
 		case 'Pendiente':
 		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Realizar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>";
 		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="evaluacion"){
-		    echo "<a href='./lib/cDescargarEncuesta.php?id_encuesta=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta'][$i]."&id_fam=".$LISTA_EVALUACION_ACTUAL['Enc']['id_fam'][$i]."' title='Descargar encuesta en PDF'><img src='./img/iconos/pdf-16.png' style='margin-left:5px;'></a>"; 
+		    echo "<a href='./lib/cDescargarEncuesta.php?id_encuesta_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&id_fam=".$LISTA_EVALUACION_ACTUAL['Enc']['id_fam'][$i]."' title='Descargar encuesta en PDF'><img src='./img/iconos/pdf-16.png' style='margin-left:5px;'></a>"; 
 		  }
 		  break;
 		case 'En proceso': 
 		  echo "<a href='http://localhost/limesurvey/index.php?token=".$LISTA_EVALUACION_ACTUAL['Enc']['token_ls'][$i]."&sid=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&lang=es' title='Continuar evaluación'><img src='./img/iconos/edit-16.png' style='margin-left:5px;'></a>";
 		  if($LISTA_EVALUACION_ACTUAL['Enc']['tipo'][$i]=="evaluacion"){
-		    echo "<a href='./lib/cDescargarEncuesta.php?id_encuesta=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta'][$i]."&id_fam=".$LISTA_EVALUACION_ACTUAL['Enc']['id_fam'][$i]."' title='Descargar encuesta en PDF'><img src='./img/iconos/pdf-16.png' style='margin-left:5px;'></a>"; 
+		    echo "<a href='./lib/cDescargarEncuesta.php?id_encuesta_ls=".$LISTA_EVALUACION_ACTUAL['Enc']['id_encuesta_ls'][$i]."&id_fam=".$LISTA_EVALUACION_ACTUAL['Enc']['id_fam'][$i]."' title='Descargar encuesta en PDF'><img src='./img/iconos/pdf-16.png' style='margin-left:5px;'></a>"; 
 		  }
 		  break;  
 		case 'Finalizada':
@@ -197,11 +197,11 @@
                $mensaje='Se realizó'; 
                break;
             case 'Aprobada':
-               $color='rgb(166,197,243)';
+               $color='rgb(204,229,255)';
                $mensaje='Se aprobó';
                break;
             case 'Rechazada':
-               $color='rgb(255,229,204)';
+               $color='rgb(255,229,209)';
                $mensaje='Se rechazó';
                break;
          }?>

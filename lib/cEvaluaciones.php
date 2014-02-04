@@ -111,7 +111,8 @@
 	      
 	      //Buscar personas con el cargo de la familia de cargos de la encuesta de la i-ésima iteración
 	      $sql= "SELECT id_per, id_car, fecha_ini FROM PERSONA_CARGO WHERE actual=TRUE AND id_car IN (";
-	      $sql.="SELECT id FROM CARGO WHERE id_fam='".$id_fam."')";
+	      $sql.="SELECT id FROM CARGO WHERE id_fam='".$id_fam."') AND id_per IN (";
+	      $sql.="SELECT id FROM PERSONA WHERE unidad='".$id_unidad."')";
 	      $atts= array("id_per","id_car","fecha_ini");
 	      $LISTA_PERSONA= obtenerDatos($sql, $conexion, $atts, "Per");
 	      

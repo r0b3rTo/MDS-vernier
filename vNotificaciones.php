@@ -17,6 +17,7 @@
 	<table class="table table-hover" style="margin-left: 0; max-width: 900px;">
 	  <thead>
 	    <tr>
+	      <th class="lsmallT"><small>Fecha y hora</small></th>
 	      <th class="lsmallT"><small>Notificación</small></th>
 	      <th class="lsmallT"><small>Mensaje</small></th>
 	      <th class="lsmallT"><small>Acción</small></th>
@@ -27,7 +28,9 @@
 	  <?php
 	    for ($i=0;$i<$LISTA_NOTIFICACIONES['max_res'];$i++){
 	  ?>
-	    <tr class="<?php echo $color_tabla; ?>" >
+	    <tr>
+	      <!--Fecha-->
+	      <td class="center lsmallT" ><small><? echo $LISTA_NOTIFICACIONES['Not']['fecha'][$i];?></small></td> 
 	      <!--Notificación-->
 	      <td class="center lsmallT" ><small><? echo $LISTA_NOTIFICACIONES['Not']['notificacion'][$i];?></small></td>  
 	      <!--Mensaje-->
@@ -55,6 +58,7 @@
 	<table class="table table-hover" style="margin-left: 0; max-width: 900px;">
 	  <thead>
 	    <tr>
+	      <th class="lsmallT"><small>Fecha y hora</small></th>
 	      <th class="lsmallT"><small>Notificación</small></th>
 	      <th class="lsmallT"><small>Mensaje</small></th>
 	      <th class="lsmallT"><small>Acción</small></th>
@@ -65,7 +69,9 @@
 	  <?php
 	    for ($i=0;$i<$HISTORIAL_NOTIFICACIONES['max_res'] && $i<10;$i++){
 	  ?>
-	    <tr class="<?php echo $color_tabla; ?>" >
+	    <tr>
+	      <!--Fecha-->
+	      <td class="center lsmallT" ><small><? echo $HISTORIAL_NOTIFICACIONES['Not']['fecha'][$i];?></small></td> 
 	      <!--Notificación-->
 	      <td class="center lsmallT" ><small><? echo $HISTORIAL_NOTIFICACIONES['Not']['notificacion'][$i];?></small></td>  
 	      <!--Mensaje-->

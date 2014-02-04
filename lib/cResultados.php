@@ -38,8 +38,8 @@
       }
       
       //Obtención del ID para: encuesta, usuario evaluador, cargo evaluado, unidad asociada
-      $sql="SELECT id_encuesta, id_evaluado, id_car, id_unidad, periodo FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls_evaluado."'";
-      $atts = array("id_encuesta", "id_evaluado", "id_car", "id_unidad", "periodo");
+      $sql="SELECT id_encuesta, id_encuesta_ls, id_evaluado, id_car, id_unidad, periodo FROM PERSONA_ENCUESTA WHERE token_ls='".$token_ls_evaluado."'";
+      $atts = array("id_encuesta", "id_encuesta_ls", "id_evaluado", "id_car", "id_unidad", "periodo");
       $resultado= obtenerDatos($sql, $conexion, $atts, "Enc"); 
      
       $id_evaluado=$resultado['Enc']['id_evaluado'][0];//ID del usuario evaluado
@@ -65,13 +65,14 @@
       $UNIDAD=$aux['Org']['nombre'][0]; //Nombre de la unidad
       
       $id_encuesta=$resultado['Enc']['id_encuesta'][0];//ID de la encuesta para el token del usuario
+      $id_encuesta_ls=$resultado['Enc']['id_encuesta_ls'][0];//ID de la encuesta en Limesurvey para el token del usuario
       $id_proceso=$resultado['Enc']['periodo'][0];//ID del proceso de evaluación correspondiente al token del usuario
       
       //Obtención de las preguntas de la encuesta
-      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
       $atts = array("id_pregunta", "titulo", "resultado");
       $LISTA_COMPETENCIAS= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas de la sección de competencias
-      $sql="SELECT id_pregunta, titulo, peso FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
       $atts = array("id_pregunta", "titulo", "peso", "resultado");
       $LISTA_FACTORES= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas de la sección de competencias
 
@@ -84,13 +85,17 @@
 	$LISTA_COMPETENCIAS['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
       }
       
-      //Obtención de resultados para la sección de factores
+      //Obtención de resultados y pesos para la sección de factores 
       for($i=0; $i<$LISTA_FACTORES[max_res] ;$i++){
 	$id_pregunta_i=$LISTA_FACTORES['Preg']['id_pregunta'][$i];
 	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$id_pregunta_i."' AND token_ls='".$token_ls_evaluado."'";
 	$atts = array("respuesta");
 	$aux= obtenerDatos($sql, $conexion, $atts, "Res");
 	$LISTA_FACTORES['Preg']['resultado'][$i]=$aux['Res']['respuesta'][0];
+	$sql="SELECT peso FROM PREGUNTA_PESO WHERE id_pregunta='".$id_pregunta_i."' AND id_encuesta='".$id_encuesta."'";
+	$atts = array("peso");
+	$aux= obtenerDatos($sql, $conexion, $atts, "Aux");
+	$LISTA_FACTORES['Preg']['peso'][$i]=$aux['Aux']['peso'][0];
       }
       
       
@@ -203,8 +208,8 @@
 	$PUNTAJE_FACTORES_MAX=0;//Puntaje maximo de la seccion de competencias
 	$PUNTAJE_FACTORES=0;//Puntaje total de la sección de competencias
 	for($i=0; $i<$LISTA_FACTORES[max_res] ;$i++){
-	  $PUNTAJE_FACTORES_MAX+=3;
-	  $PUNTAJE_FACTORES+=($PROMEDIO_EVALUADORES['re_factor'][$i])/$n;
+	  $PUNTAJE_FACTORES_MAX+=3*$LISTA_FACTORES['Preg']['peso'][$i];
+	  $PUNTAJE_FACTORES+=($PROMEDIO_EVALUADORES['re_factor'][$i]*$LISTA_FACTORES['Preg']['peso'][$i])/$n;
 	}
 	
 	//Brecha del resultado (porcentaje)
@@ -255,14 +260,16 @@
 	      $sql="INSERT INTO SUPERVISOR_ENCUESTA (id_sup, token_ls_eva, aprobado, fecha, ip) VALUES (";
 	      $sql.="'$id_sup', '$token_ls', 'FALSE', '$fecha', '$ip')";
 	      $resultado_sql=ejecutarConsulta($sql, $conexion);
-	      //Determinar nombre del supervisor jerárquico
-	      $sql="SELECT nombre, apellido FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
-	      $atts=array("nombre", "apellido");
+	      //Determinar identificador del supervisor jerárquico
+	      $sql="SELECT id FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+	      $atts=array("id");
 	      $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-	      $nombre_supervisor=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	      $id_supervisor=$aux['Aux']['id'][0];
+	      //Determinar fecha y hora actual
+	      $fecha=date("d-m-Y.H:i");
 	      //Agregar notificación al administrador
-	      $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per) VALUES (";
-	      $sql.="'0', '$nombre_supervisor', '$token_ls')";
+	      $sql="INSERT INTO NOTIFICACION (tipo, id_per, token_ls_per, fecha) VALUES (";
+	      $sql.="'0', '$id_supervisor', '$token_ls', '$fecha')";
 	      $resultado_sql=ejecutarConsulta($sql, $conexion);
 	      //Actualizar estado
 	      $sql = "UPDATE PERSONA_ENCUESTA SET ".
@@ -279,13 +286,11 @@
 	  $atts=array("id_evaluado");
 	  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
 	  $id_evaluado=$aux['Aux']['id_evaluado'][0];
-	  $sql="SELECT nombre, apellido FROM PERSONA WHERE id='".$id_evaluado."'";
-	  $atts=array("nombre", "apellido");
-	  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-	  $nombre_evaluado=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	  //Determinar fecha y hora actual
+	  $fecha=date("d-m-Y.H:i");
 	  //Agregar notificación al administrador
-	  $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per, mensaje) VALUES (";
-	  $sql.="'1', '$nombre_evaluado', '$token_ls', '$mensaje')";
+	  $sql="INSERT INTO NOTIFICACION (tipo, id_per, token_ls_per, mensaje, fecha) VALUES (";
+	  $sql.="'1', '$id_evaluado', '$token_ls', '$mensaje', '$fecha')";
 	  $resultado_sql=ejecutarConsulta($sql, $conexion);
 	  $_SESSION['MSJ'] = "Se ha notificado su caso a la DGCH, el personla iniciará el estudio del mismo. Podrá ser contactado próximamente";
 	  header("Location: ../vListarEvaluaciones.php?warning");
@@ -293,14 +298,16 @@
 	 case 'validarR':
 	  //Insertar en tabla de supervisaciones
 	  $sql="UPDATE aprobado=TRUE WHERE token_ls_eva='".$_GET['token_ls']."'";
-	  //Determinar nombre del supervisor jerárquico
-	  $sql="SELECT nombre, apellido FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
-	  $atts=array("nombre", "apellido");
+	  //Determinar id del supervisor jerárquico
+	  $sql="SELECT id FROM PERSONA WHERE cedula='".$_SESSION['cedula']."'";
+	  $atts=array("id");
 	  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
-	  $nombre_supervisor=$aux['Aux']['nombre'][0]." ".$aux['Aux']['apellido'][0];
+	  $id_supervisor=$aux['Aux']['id'][0];
+	  //Determinar fecha y hora actual
+	  $fecha=date("d-m-Y.H:i");
 	  //Agregar notificación al administrador
-	  $sql="INSERT INTO NOTIFICACION (tipo, nombre_per, token_ls_per) VALUES (";
-	  $sql.="'2', '$nombre_supervisor', '$token_ls')";
+	  $sql="INSERT INTO NOTIFICACION (tipo, id_per, token_ls_per, fecha) VALUES (";
+	  $sql.="'2', '$id_supervisor', '$token_ls', '$fecha')";
 	  $resultado_sql=ejecutarConsulta($sql, $conexion);
 	  //Actualizar estado
 	  $sql = "UPDATE PERSONA_ENCUESTA SET ".

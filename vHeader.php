@@ -113,10 +113,12 @@
           <li class='dropdown' id='preview-menu'>
             <a class='dropdown-toggle' data-toggle='dropdown' href='#'>Evaluaciones<b class='caret'></b></a>
             <ul class='dropdown-menu'>
-              <li><a href='vEvaluaciones.php'>Administrar Evaluaciones</a></li>
+              <li><a href='vEvaluaciones.php'>Administrar Procesos de Evaluación</a></li>
               <li><a href='vBusquedaResultados.php'>Ver Resultados</a></li>
               <li class='divider'></li>
-              <li><a href='vEncuestas.php'>Administrar Encuestas Limesurvey</a></li>
+              <li><a href='vEncuestas.php'>Administrar Evaluaciones</a></li>
+              <li class='divider'></li>
+              <li><a href='vEncuestasLimesurvey.php'>Administrar Encuestas Limesurvey</a></li>
               <li><a href='vImportarEncuesta.php'>Importar Encuesta Limesurvey</a></li>              
             </ul>
           </li>

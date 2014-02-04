@@ -130,7 +130,7 @@
 	      //Obtención de los resultados
 	      ////////////////////////////
 	      
-	      $sql ="SELECT id_pregunta_ls, id_pregunta_root_ls, id_pregunta FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' ORDER BY id_pregunta";        
+	      $sql ="SELECT id_pregunta_ls, id_pregunta_root_ls, id_pregunta FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."' ORDER BY id_pregunta";        
 	      $atts = array("id_pregunta_ls", "id_pregunta_root_ls","id_pregunta");
 	      $LISTA_PREGUNTA= obtenerDatos($sql, $conexion, $atts, "Preg"); //Lista de preguntas
 	      $n=0; //indice del numero de preguntas con resultados
@@ -152,19 +152,13 @@
 		    //La pregunta no tiene subpreguntas, necesitamos su resultado
 		    $PREGUNTA_CON_RESPUESTA['id_pregunta_ls'][$n]=$LISTA_PREGUNTA['Preg']['id_pregunta_ls'][$i];
 		    $PREGUNTA_CON_RESPUESTA['id_pregunta'][$n]=$LISTA_PREGUNTA['Preg']['id_pregunta'][$i];
-		    $PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$n]=$tipo_respuesta;
+		    $PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$n]=NULL;//Este es el caso en que la respuesta es del tipo "campo de texto"; la respuesta se obtiene directamente
 		    $n++;
 		  }
 		} else { //Es una subpregunta, necesitamos su resultado
-		
-		  //Pedir tipos de respuesta a Limesurvey para la pregunta padre
-		  $properties=array("answeroptions");
-		  $id_pregunta_ls=intval($LISTA_PREGUNTA['Preg']['id_pregunta_root_ls'][$i]);
-		  $tipo_respuesta= $client_ls->get_question_properties($session_key, $aux, $properties);
-		  
 		  $PREGUNTA_CON_RESPUESTA['id_pregunta_ls'][$n]=$LISTA_PREGUNTA['Preg']['id_pregunta_ls'][$i];
 		  $PREGUNTA_CON_RESPUESTA['id_pregunta'][$n]=$LISTA_PREGUNTA['Preg']['id_pregunta'][$i];
-		  $PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$n]=$tipo_respuesta;
+		  $PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$n]=$tipo_respuesta;//Tipos de respuesta de la pregunta padre
 		  $n++;
 		}
 	      } //cierra el for
@@ -172,14 +166,18 @@
 	      //Pedir resultados a Limesurvey	    
 	      $resultado= $client_ls->export_responses_by_token($session_key, $id_encuesta_ls, 'csv',$token_ls);//Obtener respuestas para la encuesta
 	      $resultado=base64_decode($resultado); //decode    
-	      $aux= explode(",",$resultado); //colocar en arreglo
+	      $aux= explode("\",",$resultado); //colocar en arreglo
 	      $RESPUESTAS = array_slice($aux, -$n); //tomar las respuestas (al final del arreglo)
 	      
 	      for ($i=0; $i<count($RESPUESTAS); $i++){
 	      
 		$id_pregunta_i=$PREGUNTA_CON_RESPUESTA['id_pregunta'][$i];
 		$tipo_respuesta_i= trim($RESPUESTAS[$i], '"');     
-		$respuesta_i=$PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$i]['answeroptions'][$tipo_respuesta_i]['answer'];
+		if(isset($PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$i]['answeroptions'])){
+		  $respuesta_i=$PREGUNTA_CON_RESPUESTA['tipo_respuesta'][$i]['answeroptions'][$tipo_respuesta_i]['answer'];
+		} else {
+		  $respuesta_i=$tipo_respuesta_i;//Caso en que la respuesta es del tipo "campo de texto"
+		}
 
 		//Guardar las respuestas
 		$sql="INSERT INTO RESPUESTA (token_ls, id_pregunta, respuesta) VALUES (";

@@ -1,15 +1,13 @@
-MDS
-===
-Mini Proyecto de Desarrollo de Software - Sistema de Gestión de Capital Humano
+Proyecto
+========
+Sistema de evaluación del personal de la Universidad Simón Bolívar
 
-  Vernier
-  =======
-  Subsistema de configuración de la organización estructural de la USB
+Cliente
+=======
+Dirección de Gestión de Capital Humano
 
-  Encuestas
-  =========
-  Subsistema de evaluación del personal de la USB
-
-
-
-
+Desarrolladores
+===============
+Arturo Murillo
+Jerilyn Goncalves
+Roberto Omaña

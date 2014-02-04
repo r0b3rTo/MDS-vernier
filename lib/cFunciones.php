@@ -377,9 +377,14 @@ function determinarPeriodo ($month, $year){
 */
 function calcularPuntaje ($id_encuesta, $seccion, $token_ls){
   $resultado= array('maximo','puntaje');
+  //Determinar identificador de la encuesta de Limesurvey
+  $sql="SELECT id_encuesta_ls FROM ENCUESTA WHERE id='".$id_encuesta."'";
+  $atts= array("id_encuesta_ls");
+  $aux=obtenerDatos($sql, $conexion, $atts, "Aux");
+  $id_encuesta_ls=$aux['Aux']['id_encuesta_ls'][0];
   switch($seccion){
     case 'competencia': 
-      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL";
+      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL";
       $atts= array("id_pregunta", "respuesta");
       $LISTA_COMPETENCIAS=obtenerDatos($sql, $conexion, $atts, "Comp");     
       $resultado['maximo']=$LISTA_COMPETENCIAS['max_res']*3;//puntaje máximo en la sección de competencias
@@ -404,25 +409,34 @@ function calcularPuntaje ($id_encuesta, $seccion, $token_ls){
       }//Cierre del ciclo sobre las preguntas de competencias
       break; //Fin del case (competencia)
     case 'factor':
-      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta='".$id_encuesta."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL";
-      $atts= array("id_pregunta", "respuesta");
-      $LISTA_FACTORES=obtenerDatos($sql, $conexion, $atts, "Fac");     
-      $resultado['maximo']=$LISTA_FACTORES['max_res']*3;//puntaje máximo en la sección de factores
+      $sql="SELECT id_pregunta FROM PREGUNTA WHERE id_encuesta_ls='".$id_encuesta_ls."' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL";
+      $atts= array("id_pregunta", "respuesta", "peso");
+      $LISTA_FACTORES=obtenerDatos($sql, $conexion, $atts, "Fac");
+      
       $resultado['puntaje']=0; //inicialización
+      $resultado['maximo']=0;
       for($j=0; $j<$LISTA_FACTORES['max_res']; $j++){
-	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$LISTA_FACTORES['Fac']['id_pregunta'][$j]."' AND token_ls='".$token_ls."'";
+	//Determinar peso del factor
+	$id_pregunta_j=$LISTA_FACTORES['Fac']['id_pregunta'][$j];
+	$sql="SELECT peso FROM PREGUNTA_PESO WHERE id_pregunta='".$id_pregunta_j."' AND id_encuesta='".$id_encuesta."'";
+	$atts = array("peso");
+	$aux= obtenerDatos($sql, $conexion, $atts, "Aux");
+	$LISTA_FACTORES['Fac']['peso'][$j]=$aux['Aux']['peso'][0];
+	$resultado['maximo']+=3*$LISTA_FACTORES['Fac']['peso'][$j];
+	//Determinar respuesta
+	$sql="SELECT respuesta FROM RESPUESTA WHERE id_pregunta='".$id_pregunta_j."' AND token_ls='".$token_ls."'";
 	$atts= array("respuesta");
 	$aux=obtenerDatos($sql, $conexion, $atts, "Aux");
 	$LISTA_FACTORES['Fac']['respuesta'][$j]=$aux['Aux']['respuesta'][0];
 	switch($LISTA_FACTORES['Fac']['respuesta'][$j]){
 	  case 'Excelente':
-	    $resultado['puntaje']+=3;
+	    $resultado['puntaje']+=3*$LISTA_FACTORES['Fac']['peso'][$j];
 	  break;
 	  case 'Sobre lo esperado':
-	    $resultado['puntaje']+=2;
+	    $resultado['puntaje']+=2*$LISTA_FACTORES['Fac']['peso'][$j];
 	  break;
 	  case 'En lo esperado':
-	    $resultado['puntaje']+=1;
+	    $resultado['puntaje']+=1*$LISTA_FACTORES['Fac']['peso'][$j];
 	  break;
 	} //Fin del switch
       }//Cierre del ciclo sobre las preguntas de factores
@@ -451,20 +465,20 @@ function determinarDeficiencias ($id_unidad, $id_proceso){
   for($i=0; $i<$LISTA_EVALUADOS['max_res']; $i++){
     
     //Obtener datos de las evaluaciones de los supervisores inmediatos del trabajador evaluado
-    $sql="SELECT id_encuesta, id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_unidad='".$id_unidad."' AND periodo='".$id_proceso."'";
+    $sql="SELECT id_encuesta, id_encuesta_ls, id_encuestado, token_ls FROM PERSONA_ENCUESTA WHERE id_unidad='".$id_unidad."' AND periodo='".$id_proceso."'";
     $sql.=" AND tipo='evaluador' AND id_evaluado='".$LISTA_EVALUADOS['Eva']['id_evaluado'][$i]."' AND estado!='Pendiente' AND estado!='En proceso'";
-    $atts= array("id_encuesta", "id_encuestado", "token_ls");
+    $atts= array("id_encuesta", "id_encuesta_ls", "id_encuestado", "token_ls");
     $LISTA_EVALUADORES=obtenerDatos($sql, $conexion, $atts, "Eva");
     
     if($LISTA_EVALUADORES['max_res']){
       //Lista de preguntas de la sección de competencias
-      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta='".$LISTA_EVALUADORES['Eva']['id_encuesta'][0];
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$LISTA_EVALUADORES['Eva']['id_encuesta_ls'][0];
       $sql.="' AND seccion='competencia' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
       $atts = array("id_pregunta", "titulo", "resultado_promedio", "deficiente");
       $LISTA_COMPETENCIAS= obtenerDatos($sql, $conexion, $atts, "Comp");
       
       //Lista de preguntas de la sección de factores
-      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta='".$LISTA_EVALUADORES['Eva']['id_encuesta'][0];
+      $sql="SELECT id_pregunta, titulo FROM PREGUNTA WHERE id_encuesta_ls='".$LISTA_EVALUADORES['Eva']['id_encuesta_ls'][0];
       $sql.="' AND seccion='factor' AND id_pregunta_root_ls IS NOT NULL ORDER BY id_pregunta";
       $atts = array("id_pregunta", "titulo", "resultado_promedio", "deficiente");
       $LISTA_FACTORES= obtenerDatos($sql, $conexion, $atts, "Fac");

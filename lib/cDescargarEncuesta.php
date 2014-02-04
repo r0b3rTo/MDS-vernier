@@ -55,9 +55,9 @@
    // set document information
    $pdf->SetCreator(PDF_CREATOR);
    $pdf->SetAuthor(PDF_AUTHOR);
-   $pdf->SetTitle('Encuesta Nombre');
-   $pdf->SetSubject('TCPDF Tutorial');
-   $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
+   $pdf->SetTitle('Evaluación de desempeño');
+   $pdf->SetSubject('Evaluación del desempeño del personal administrativo y obrero de la Universidad Simón Bolívar');
+   $pdf->SetKeywords('DGCH, PDF, evaluación, USB');
 
    // set default header data
    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 001', PDF_HEADER_STRING, array(0,64,255), array(0,64,128));
@@ -90,14 +90,14 @@
    // dejavusans is a UTF-8 Unicode font, if you only need to
    // print standard ASCII chars, you can use core fonts like
    // helvetica or times to reduce file size.
-   $pdf->SetFont('dejavusans', '', 14, '', true);
+   $pdf->SetFont('helvetica', '', 12, '', true);
 
    // set text shadow effect
    $pdf->setTextShadow(array('enabled'=>true, 'depth_w'=>0.2, 'depth_h'=>0.2, 'color'=>array(196,196,196), 'opacity'=>1, 'blend_mode'=>'Normal'));
 
    // ---------------------------------------------------------------------
    
-   if (isset($_GET['id_encuesta'])){
+   if (isset($_GET['id_encuesta_ls'])){
    
       //Obtención de la familia de cargos asociada a la encuesta
       $sql ="SELECT nombre ";
@@ -147,18 +147,18 @@
    
    
       //Lista de preguntas
-      $sql ="SELECT id_encuesta, id_encuesta_ls, id_pregunta, id_pregunta_ls, titulo, peso, seccion ";
-      $sql.="FROM PREGUNTA WHERE id_encuesta='".$_GET['id_encuesta']."' AND id_pregunta_root_ls IS NULL ";
+      $sql ="SELECT id_encuesta_ls, id_pregunta, id_pregunta_ls, titulo, seccion ";
+      $sql.="FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."' AND id_pregunta_root_ls IS NULL ";
       $sql.="ORDER BY seccion, id_pregunta_ls";
-      $atts = array("id_encuesta", "id_encuesta_ls", "id_pregunta", "id_pregunta_ls", "titulo", "peso", "seccion");
+      $atts = array("id_encuesta_ls", "id_pregunta", "id_pregunta_ls", "titulo", "seccion");
       
       $LISTA_PREGUNTAS= obtenerDatos($sql, $conexion, $atts, "Preg");
       
       for($i=0; $i<$LISTA_PREGUNTAS[max_res]; $i++){
          //Lista de subpreguntas de la pregunta correspondiente
-         $sql ="SELECT id_encuesta, id_encuesta_ls, id_pregunta, id_pregunta_ls, titulo, peso, seccion ";
-         $sql.="FROM PREGUNTA WHERE id_encuesta='".$_GET['id_encuesta']."' AND id_pregunta_root_ls='".$LISTA_PREGUNTAS['Preg']['id_pregunta_ls'][$i]."'";        
-         $atts = array("id_encuesta", "id_encuesta_ls", "id_pregunta", "id_pregunta_ls", "titulo", "peso", "seccion");
+         $sql ="SELECT id_encuesta_ls, id_pregunta, id_pregunta_ls, titulo, seccion ";
+         $sql.="FROM PREGUNTA WHERE id_encuesta_ls='".$_GET['id_encuesta_ls']."' AND id_pregunta_root_ls='".$LISTA_PREGUNTAS['Preg']['id_pregunta_ls'][$i]."'";        
+         $atts = array("id_encuesta_ls", "id_pregunta", "id_pregunta_ls", "titulo", "seccion");
          
          $LISTA_SUBPREGUNTAS= obtenerDatos($sql, $conexion, $atts, "Preg");
          

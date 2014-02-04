@@ -88,10 +88,10 @@
                $color='rgb(223,240,216)';
                break;
             case 'Aprobada':
-               $color='rgb(197,189,206)';
+               $color='rgb(204,229,255)';
                break;
             case 'Rechazada':
-               $color='rgb(255,132,99)';
+               $color='rgb(255,229,209)';
                break;
          }?>
 	      <td class="center lsmallT" style="background-color: <?echo $color;?>;" nowrap><small><?

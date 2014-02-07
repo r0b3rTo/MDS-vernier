@@ -82,9 +82,9 @@
 		  <div class="control-group">
 		      <label class="control-label">Fecha de inicio del proceso</label>
 		      <div class="controls">
-			  <div class="input-prepend date datepicker" data-date="<? echo $ULTIMA_FECHA ?>" data-date-language="es" data-date-start-View="2" data-date-autoclose="true" data-date-format="dd-mm-yyyy" data-date-start-Date="<? echo $ULTIMA_FECHA;?>">
+			  <div class="input-prepend date datepicker" data-date="<? if($ULTIMA_FECHA>date("d-m-Y")) echo $ULTIMA_FECHA; else echo date("d-m-Y");?>" data-date-language="es" data-date-start-View="2" data-date-autoclose="true" data-date-format="dd-mm-yyyy" data-date-start-Date="<? echo $ULTIMA_FECHA;?>">
 			      <span class="add-on"><i class="icon-calendar"></i></span>
-			      <input size="12" id="ini" name="ini" class="input-xlarge" type="text" value="<? echo $ULTIMA_FECHA ?>">
+			      <input size="12" id="ini" name="ini" class="input-xlarge" type="text" value="<? if($ULTIMA_FECHA>date("d-m-Y")) echo $ULTIMA_FECHA; else echo date("d-m-Y");?>">
 			  </div>
 		      </div>
 		  </div>
